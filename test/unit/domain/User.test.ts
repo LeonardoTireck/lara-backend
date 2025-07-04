@@ -1,6 +1,6 @@
-import { CreateUser } from "../../../src/application/CreateUser.usecase.js";
-import { User } from "../../../src/domain/User.js";
-import { UserRepository } from "../../../src/domain/UserRepository.js";
+import { CreateUser } from "../../../src/application/CreateUser.usecase";
+import { User } from "../../../src/domain/User";
+import { UserRepository } from "../../../src/domain/UserRepository";
 
 class InMemoryUserRepo implements UserRepository {
   public users: User[] = [];
