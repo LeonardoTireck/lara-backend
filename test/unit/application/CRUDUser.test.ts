@@ -1,11 +1,19 @@
 import { CreateUser } from "../../../src/application/CreateUser.usecase";
+import { FindAllUsers } from "../../../src/application/FindAllUsers.usecase";
 import { FindUserById } from "../../../src/application/FindUserById.usecase";
 import { UpdateUserById } from "../../../src/application/UpdateUserById.usecase";
 import { User } from "../../../src/domain/User";
 import { UserRepository } from "../../../src/domain/UserRepository";
 
 class InMemoryUserRepo implements UserRepository {
-  public users: User[] = [];
+  public users: User[] = [
+    {
+      id: "99",
+      name: "John Doe",
+      email: "john@doe.com",
+      password: "securePassword",
+    },
+  ];
 
   async save(user: User) {
     this.users.push(user);
@@ -21,6 +29,18 @@ class InMemoryUserRepo implements UserRepository {
     const userIndex = this.users.findIndex((user) => user.id === userId);
     this.users.splice(userIndex, 1);
     if (user) return user;
+  }
+
+  async findAll(): Promise<User[] | undefined> {
+    const output = this.users.map((user) => {
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        password: user.password,
+      };
+    });
+    return output;
   }
 }
 
@@ -93,4 +113,30 @@ test("Should create and then update a user email or password", async () => {
   expect(user?.email).toBe("leo@test2.com");
   expect(user?.name).toBe("Leonardo");
   expect(user?.password).toBe("123test");
+});
+
+test("Should return all users", async () => {
+  const repo = new InMemoryUserRepo();
+  const useCaseCreate = new CreateUser(repo);
+
+  const input1 = {
+    id: "1",
+    name: "Leonardo",
+    email: "leo@test.com",
+    password: "test123",
+  };
+  await useCaseCreate.execute(input1);
+
+  const input2 = {
+    id: "2",
+    name: "Lara",
+    email: "lara@test.com",
+    password: "test321",
+  };
+  await useCaseCreate.execute(input2);
+
+  const useCaseFindAllUsers = new FindAllUsers(repo);
+  const users = await useCaseFindAllUsers.execute();
+  console.log(users);
+  expect(users).toHaveLength(3);
 });
