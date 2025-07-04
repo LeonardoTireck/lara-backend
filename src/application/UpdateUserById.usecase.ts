@@ -26,7 +26,6 @@ export class UpdateUserById {
     return updatedUser;
   }
 }
-
 type Input = { id: string; email?: string; password?: string };
 
 type Output = {
