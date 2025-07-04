@@ -3,8 +3,8 @@ import { UserRepository } from "../domain/UserRepository";
 export class FindUserById {
   constructor(private UserRepo: UserRepository) {}
 
-  async execute(userId: string) {
-    const user = this.UserRepo.findById(userId);
+  async execute(input: Input): Promise<Output | undefined> {
+    const user = this.UserRepo.findById(input.userId);
 
     if (user) {
       return user;
@@ -13,3 +13,14 @@ export class FindUserById {
     }
   }
 }
+
+type Input = {
+  userId: string;
+};
+
+type Output = {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+};

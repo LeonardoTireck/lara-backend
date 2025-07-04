@@ -4,10 +4,12 @@ import { FindUserById } from "./FindUserById.usecase";
 export class UpdateUserById {
   constructor(private UserRepo: UserRepository) {}
 
-  async execute(input: { id: string; email?: string; password?: string }) {
+  async execute(input: Input): Promise<Output> {
     const findUserByIdUsecase = new FindUserById(this.UserRepo);
-
-    const user = await findUserByIdUsecase.execute(input.id);
+    const userId = {
+      userId: input.id,
+    };
+    const user = await findUserByIdUsecase.execute(userId);
 
     if (!user) throw new Error("User not found");
 
@@ -24,3 +26,12 @@ export class UpdateUserById {
     return updatedUser;
   }
 }
+
+type Input = { id: string; email?: string; password?: string };
+
+type Output = {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+};
