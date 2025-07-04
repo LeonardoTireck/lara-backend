@@ -11,7 +11,7 @@ class InMemoryUserRepo implements UserRepository {
   }
 
   async findById(userId: string): Promise<User | undefined> {
-    const user = this.users.find((user) => user.id == userId);
+    const user = this.users.find((user) => user.id === userId);
     return user;
   }
 }
