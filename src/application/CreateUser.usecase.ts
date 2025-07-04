@@ -8,7 +8,12 @@ export class CreateUser {
     const user = User.create(input.id, input.name, input.email, input.password);
 
     await this.UserRepo.save(user);
-    return user;
+    const output = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    };
+    return output;
   }
 }
 type Input = {
@@ -22,5 +27,4 @@ type Output = {
   id: string;
   name: string;
   email: string;
-  password: string;
 };

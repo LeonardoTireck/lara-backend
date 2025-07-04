@@ -6,7 +6,14 @@ export class FindAllUsers {
   async execute(): Promise<Output | undefined> {
     const users = await this.UserRepo.findAll();
     if (!users) throw new Error("Users not found.");
-    return users;
+    const output = users.map((user) => {
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      };
+    });
+    return output;
   }
 }
 

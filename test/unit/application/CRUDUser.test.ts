@@ -58,7 +58,6 @@ test("Should create a user", async () => {
   const user = await useCase.execute(input);
   expect(user.name).toBe("Leonardo");
   expect(user.email).toBe("leo@test.com");
-  expect(user.password).toBe("test123");
 });
 
 test("Should create and then find a user by id", async () => {
@@ -83,7 +82,6 @@ test("Should create and then find a user by id", async () => {
   const user = await useCaseFind.execute(input2);
   expect(user?.name).toBe("Leonardo");
   expect(user?.email).toBe("leo@test.com");
-  expect(user?.password).toBe("test123");
 });
 
 test("Should create and then update a user email or password", async () => {
@@ -108,7 +106,6 @@ test("Should create and then update a user email or password", async () => {
 
   const user = await useCaseUpdate.execute(input2);
 
-  console.log(repo.users);
   expect(user?.id).toBe("1");
   expect(user?.email).toBe("leo@test2.com");
   expect(user?.name).toBe("Leonardo");

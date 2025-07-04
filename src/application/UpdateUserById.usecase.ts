@@ -14,7 +14,7 @@ export class UpdateUserById {
     if (!user) throw new Error("User not found");
 
     const updatedUser = {
-      id: user?.id,
+      id: user.id,
       name: user.name,
       email: input.email || user?.email,
       password: input.password || user?.password,

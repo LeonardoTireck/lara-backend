@@ -4,13 +4,17 @@ export class FindUserById {
   constructor(private UserRepo: UserRepository) {}
 
   async execute(input: Input): Promise<Output | undefined> {
-    const user = this.UserRepo.findById(input.userId);
+    const user = await this.UserRepo.findById(input.userId);
 
-    if (user) {
-      return user;
-    } else {
-      throw new Error("User not found.");
-    }
+    if (!user) throw new Error("User not found.");
+
+    const output = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      password: user.password,
+    };
+    return output;
   }
 }
 
