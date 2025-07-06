@@ -163,7 +163,29 @@ test("Should find a user by email, verify the password match and return a JWT", 
   };
 
   const token = await useCaseLogin.execute(input2);
-
-  console.log(token);
   expect(token).toBeDefined();
+});
+
+test("Should return an error when findind a user by email", async () => {
+  const repo = new InMemoryUserRepo();
+  const useCaseCreate = new CreateUser(repo);
+
+  const input1 = {
+    id: "1",
+    name: "Leonardo",
+    email: "leo@test.com",
+    password: "test123",
+  };
+  await useCaseCreate.execute(input1);
+
+  const useCaseLogin = new UserLogin(repo);
+
+  const input2 = {
+    email: "wrongEmail@test.com",
+    password: "test123",
+  };
+
+  await expect(useCaseLogin.execute(input2)).rejects.toThrow(
+    "Invalid Credentials",
+  );
 });
