@@ -5,7 +5,7 @@ export class CreateUser {
   constructor(private UserRepo: UserRepository) {}
 
   async execute(input: Input): Promise<Output> {
-    const user = User.create(input.id, input.name, input.email, input.password);
+    const user = User.create(input.name, input.email, input.password);
 
     await this.UserRepo.save(user);
     const output = {
@@ -17,7 +17,6 @@ export class CreateUser {
   }
 }
 type Input = {
-  id: string;
   name: string;
   email: string;
   password: string;

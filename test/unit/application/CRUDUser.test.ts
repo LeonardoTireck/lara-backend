@@ -55,7 +55,6 @@ test("Should create a user", async () => {
   const useCase = new CreateUser(repo);
 
   const input = {
-    id: "1",
     name: "Leonardo",
     email: "leo@test.com",
     password: "test123",
@@ -66,28 +65,17 @@ test("Should create a user", async () => {
   expect(user.email).toBe("leo@test.com");
 });
 
-test("Should create and then find a user by id", async () => {
+test("Should find a user by id", async () => {
   const repo = new InMemoryUserRepo();
-  const useCaseCreate = new CreateUser(repo);
-
-  const input1 = {
-    id: "1",
-    name: "Leonardo",
-    email: "leo@test.com",
-    password: "test123",
-  };
-
-  await useCaseCreate.execute(input1);
-
   const useCaseFind = new FindUserById(repo);
 
-  const input2 = {
-    userId: "1",
+  const input = {
+    userId: "99",
   };
 
-  const user = await useCaseFind.execute(input2);
-  expect(user?.name).toBe("Leonardo");
-  expect(user?.email).toBe("leo@test.com");
+  const user = await useCaseFind.execute(input);
+  expect(user?.name).toBe("John Doe");
+  expect(user?.email).toBe("john@doe.com");
 });
 
 test("Should create and then update a user email or password", async () => {
@@ -95,7 +83,6 @@ test("Should create and then update a user email or password", async () => {
   const useCaseCreate = new CreateUser(repo);
 
   const input1 = {
-    id: "1",
     name: "Leonardo",
     email: "leo@test.com",
     password: "test123",
@@ -103,19 +90,21 @@ test("Should create and then update a user email or password", async () => {
   await useCaseCreate.execute(input1);
 
   const useCaseUpdate = new UpdateUserById(repo);
+  const userToGetId = await repo.getByEmail(input1.email);
+  if (!userToGetId) throw new Error("User not found.");
+  const userId = userToGetId?.id;
 
   const input2 = {
-    id: "1",
+    id: userId,
     email: "leo@test2.com",
     password: "123test",
   };
 
   const user = await useCaseUpdate.execute(input2);
 
-  expect(user?.id).toBe("1");
-  expect(user?.email).toBe("leo@test2.com");
-  expect(user?.name).toBe("Leonardo");
-  expect(user?.password).toBe("123test");
+  expect(user.email).toBe("leo@test2.com");
+  expect(user.name).toBe("Leonardo");
+  expect(user.password).toBe("123test");
 });
 
 test("Should return all users", async () => {
@@ -123,7 +112,6 @@ test("Should return all users", async () => {
   const useCaseCreate = new CreateUser(repo);
 
   const input1 = {
-    id: "1",
     name: "Leonardo",
     email: "leo@test.com",
     password: "test123",
@@ -131,7 +119,6 @@ test("Should return all users", async () => {
   await useCaseCreate.execute(input1);
 
   const input2 = {
-    id: "2",
     name: "Lara",
     email: "lara@test.com",
     password: "test321",
@@ -148,7 +135,6 @@ test("Should find a user by email, verify the password match and return a JWT", 
   const useCaseCreate = new CreateUser(repo);
 
   const input1 = {
-    id: "1",
     name: "Leonardo",
     email: "leo@test.com",
     password: "test123",
@@ -171,7 +157,6 @@ test("Should return an error when findind a user by email", async () => {
   const useCaseCreate = new CreateUser(repo);
 
   const input1 = {
-    id: "1",
     name: "Leonardo",
     email: "leo@test.com",
     password: "test123",

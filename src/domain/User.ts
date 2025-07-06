@@ -1,3 +1,5 @@
+import crypto from "crypto";
+
 export class User {
   private constructor(
     readonly id: string,
@@ -6,7 +8,8 @@ export class User {
     readonly password: string,
   ) {}
 
-  static create(id: string, name: string, email: string, password: string) {
+  static create(name: string, email: string, password: string) {
+    const id = crypto.randomUUID();
     return new User(id, name, email, password);
   }
 }
