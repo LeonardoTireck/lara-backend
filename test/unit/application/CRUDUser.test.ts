@@ -2,6 +2,7 @@ import { CreateUser } from "../../../src/application/CreateUser.usecase";
 import { FindAllUsers } from "../../../src/application/FindAllUsers.usecase";
 import { FindUserById } from "../../../src/application/FindUserById.usecase";
 import { UpdateUserById } from "../../../src/application/UpdateUserById.usecase";
+import { UserLogin } from "../../../src/application/UserLogin.usecase";
 import { User } from "../../../src/domain/User";
 import { UserRepository } from "../../../src/domain/UserRepository";
 
@@ -21,6 +22,11 @@ class InMemoryUserRepo implements UserRepository {
 
   async findById(userId: string): Promise<User | undefined> {
     const user = this.users.find((user) => user.id === userId);
+    return user;
+  }
+
+  async findByEmail(userEmail: string): Promise<User | undefined> {
+    const user = this.users.find((user) => user.email === userEmail);
     return user;
   }
 
@@ -134,6 +140,30 @@ test("Should return all users", async () => {
 
   const useCaseFindAllUsers = new FindAllUsers(repo);
   const users = await useCaseFindAllUsers.execute();
-  console.log(users);
   expect(users).toHaveLength(3);
+});
+
+test("Should find a user by email, verify the password match and return a JWT", async () => {
+  const repo = new InMemoryUserRepo();
+  const useCaseCreate = new CreateUser(repo);
+
+  const input1 = {
+    id: "1",
+    name: "Leonardo",
+    email: "leo@test.com",
+    password: "test123",
+  };
+  await useCaseCreate.execute(input1);
+
+  const useCaseLogin = new UserLogin(repo);
+
+  const input2 = {
+    email: "leo@test.com",
+    password: "test123",
+  };
+
+  const token = await useCaseLogin.execute(input2);
+
+  console.log(token);
+  expect(token).toBeDefined();
 });
