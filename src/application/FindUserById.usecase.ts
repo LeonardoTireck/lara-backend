@@ -4,7 +4,7 @@ export class FindUserById {
   constructor(private UserRepo: UserRepository) {}
 
   async execute(input: Input): Promise<Output | undefined> {
-    const user = await this.UserRepo.findById(input.userId);
+    const user = await this.UserRepo.getById(input.userId);
 
     if (!user) throw new Error("User not found.");
 

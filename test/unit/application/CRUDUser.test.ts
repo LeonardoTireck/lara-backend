@@ -20,12 +20,12 @@ class InMemoryUserRepo implements UserRepository {
     this.users.push(user);
   }
 
-  async findById(userId: string): Promise<User | undefined> {
+  async getById(userId: string): Promise<User | undefined> {
     const user = this.users.find((user) => user.id === userId);
     return user;
   }
 
-  async findByEmail(userEmail: string): Promise<User | undefined> {
+  async getByEmail(userEmail: string): Promise<User | undefined> {
     const user = this.users.find((user) => user.email === userEmail);
     return user;
   }
@@ -37,7 +37,7 @@ class InMemoryUserRepo implements UserRepository {
     if (user) return user;
   }
 
-  async findAll(): Promise<User[] | undefined> {
+  async getAll(): Promise<User[] | undefined> {
     const output = this.users.map((user) => {
       return {
         id: user.id,

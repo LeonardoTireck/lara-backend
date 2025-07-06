@@ -4,7 +4,7 @@ export class FindAllUsers {
   constructor(private UserRepo: UserRepository) {}
 
   async execute(): Promise<Output | undefined> {
-    const users = await this.UserRepo.findAll();
+    const users = await this.UserRepo.getAll();
     if (!users) throw new Error("Users not found.");
     const output = users.map((user) => {
       return {
