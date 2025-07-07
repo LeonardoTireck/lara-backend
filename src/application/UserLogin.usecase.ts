@@ -9,21 +9,19 @@ export class UserLogin {
   async execute(input: Input): Promise<Output | undefined> {
     const user = await this.UserRepo.getByEmail(input.email);
     if (!user) throw new Error("Invalid Credentials.");
-    bcrypt.compare(input.password, user.password, (err, same) => {
-      if (err) throw err;
-      if (!same) throw new Error("Invalid Credentials.");
-    });
+
+    const same = await bcrypt.compare(input.password, user.password);
+    if (!same) throw new Error("Invalid Credentials.");
+
     const payload = {
       email: user.email,
       name: user.name,
     };
 
-    const output = {
-      token: jwt.sign(payload, process.env.JWT_SECRET!, {
-        expiresIn: "1h",
-      }),
-    };
-    return output;
+    const token = jwt.sign(payload, process.env.JWT_SECRET!, {
+      expiresIn: "1h",
+    });
+    return { token };
   }
 }
 

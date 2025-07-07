@@ -5,7 +5,6 @@ export class FindUserById {
 
   async execute(input: Input): Promise<Output | undefined> {
     const user = await this.UserRepo.getById(input.userId);
-
     if (!user) throw new Error("User not found.");
 
     const output = {

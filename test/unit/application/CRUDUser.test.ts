@@ -43,6 +43,38 @@ test("Should create a user and find it by id", async () => {
   expect(user?.email).toBe("leo@test.com");
 });
 
+test("Should delete a user", async () => {
+  const repo = new InMemoryUserRepo();
+  const useCaseCreate = new CreateUser(repo);
+
+  const inputForCreation = {
+    name: "Leonardo",
+    email: "leo@test.com",
+    password: "test123",
+  };
+
+  const userCreated = await useCaseCreate.execute(inputForCreation);
+  repo.delete(userCreated.id);
+  expect(repo.users).toHaveLength(0);
+});
+
+test("Should fail to delete a user", async () => {
+  const repo = new InMemoryUserRepo();
+
+  expect(repo.delete("wrong Id")).rejects.toThrow("User not found.");
+});
+
+test("Should fail to find a user by id", async () => {
+  const repo = new InMemoryUserRepo();
+  const useCaseFind = new FindUserById(repo);
+
+  const input = {
+    userId: "randomstring",
+  };
+
+  await expect(useCaseFind.execute(input)).rejects.toThrow("User not found.");
+});
+
 test("Should create and then update a user email or password", async () => {
   const repo = new InMemoryUserRepo();
   const useCaseCreate = new CreateUser(repo);
@@ -71,6 +103,22 @@ test("Should create and then update a user email or password", async () => {
   expect(user.name).toBe("Leonardo");
 });
 
+test("Should fail to update a user email or password", async () => {
+  const repo = new InMemoryUserRepo();
+
+  const useCaseUpdate = new UpdateUserById(repo);
+
+  const input2 = {
+    id: "something",
+    email: "leo@test2.com",
+    password: "123test",
+  };
+
+  await expect(useCaseUpdate.execute(input2)).rejects.toThrow(
+    "User not found.",
+  );
+});
+
 test("Should return all users", async () => {
   const repo = new InMemoryUserRepo();
   const useCaseCreate = new CreateUser(repo);
@@ -94,7 +142,7 @@ test("Should return all users", async () => {
   expect(users).toHaveLength(2);
 });
 
-test("Should fail to return all users", async () => {
+test("Should return an empty array of users", async () => {
   const repo = new InMemoryUserRepo();
   const useCaseFindAllUsers = new FindAllUsers(repo);
   const users = await useCaseFindAllUsers.execute();
@@ -127,6 +175,29 @@ test("Should login by email, verify the password match and return a JWT", async 
     email: "leo@test.com",
     name: "Leonardo",
   });
+});
+
+test("Should fail to login by email, verify the password match and return a JWT", async () => {
+  const repo = new InMemoryUserRepo();
+  const useCaseCreate = new CreateUser(repo);
+
+  const input1 = {
+    name: "Leonardo",
+    email: "leo@test.com",
+    password: "test123",
+  };
+  await useCaseCreate.execute(input1);
+
+  const useCaseLogin = new UserLogin(repo);
+
+  const input2 = {
+    email: "leo@test.com",
+    password: "wrongpassword",
+  };
+
+  await expect(useCaseLogin.execute(input2)).rejects.toThrow(
+    "Invalid Credentials.",
+  );
 });
 
 test("Should return an error when findind a user by email", async () => {

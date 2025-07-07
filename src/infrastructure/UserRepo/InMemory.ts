@@ -2,14 +2,7 @@ import { User } from "../../domain/User";
 import { UserRepository } from "../../domain/UserRepository";
 
 export class InMemoryUserRepo implements UserRepository {
-  public users: User[] = [
-    // {
-    //   id: "99",
-    //   name: "John Doe",
-    //   email: "john@doe.com",
-    //   password: "securePassword",
-    // },
-  ];
+  public users: User[] = [];
 
   async save(user: User) {
     this.users.push(user);
@@ -27,9 +20,10 @@ export class InMemoryUserRepo implements UserRepository {
 
   async delete(userId: string): Promise<User | undefined> {
     const user = this.users.find((user) => user.id === userId);
+    if (!user) throw new Error("User not found.");
     const userIndex = this.users.findIndex((user) => user.id === userId);
     this.users.splice(userIndex, 1);
-    if (user) return user;
+    return user;
   }
 
   async getAll(): Promise<User[] | undefined> {

@@ -10,8 +10,7 @@ export class UpdateUserById {
       userId: input.id,
     };
     const user = await findUserByIdUsecase.execute(userId);
-
-    if (!user) throw new Error("User not found");
+    if (!user) throw new Error("User not found.");
 
     const updatedUser = {
       id: user.id,
