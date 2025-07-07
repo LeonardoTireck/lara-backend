@@ -3,12 +3,12 @@ import { UserRepository } from "../../domain/UserRepository";
 
 export class InMemoryUserRepo implements UserRepository {
   public users: User[] = [
-    {
-      id: "99",
-      name: "John Doe",
-      email: "john@doe.com",
-      password: "securePassword",
-    },
+    // {
+    //   id: "99",
+    //   name: "John Doe",
+    //   email: "john@doe.com",
+    //   password: "securePassword",
+    // },
   ];
 
   async save(user: User) {

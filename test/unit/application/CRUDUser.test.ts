@@ -8,7 +8,7 @@ import { InMemoryUserRepo } from "../../../src/infrastructure/UserRepo/InMemory"
 
 test("Should create a user", async () => {
   const repo = new InMemoryUserRepo();
-  const useCase = new CreateUser(repo);
+  const useCaseCreate = new CreateUser(repo);
 
   const input = {
     name: "Leonardo",
@@ -16,22 +16,31 @@ test("Should create a user", async () => {
     password: "test123",
   };
 
-  const user = await useCase.execute(input);
+  const user = await useCaseCreate.execute(input);
   expect(user.name).toBe("Leonardo");
   expect(user.email).toBe("leo@test.com");
 });
 
-test("Should find a user by id", async () => {
+test("Should create a user and find it by id", async () => {
   const repo = new InMemoryUserRepo();
+  const useCaseCreate = new CreateUser(repo);
+
+  const inputForCreation = {
+    name: "Leonardo",
+    email: "leo@test.com",
+    password: "test123",
+  };
+
+  const userCreated = await useCaseCreate.execute(inputForCreation);
   const useCaseFind = new FindUserById(repo);
 
   const input = {
-    userId: "99",
+    userId: userCreated.id,
   };
 
   const user = await useCaseFind.execute(input);
-  expect(user?.name).toBe("John Doe");
-  expect(user?.email).toBe("john@doe.com");
+  expect(user?.name).toBe("Leonardo");
+  expect(user?.email).toBe("leo@test.com");
 });
 
 test("Should create and then update a user email or password", async () => {
@@ -82,7 +91,14 @@ test("Should return all users", async () => {
 
   const useCaseFindAllUsers = new FindAllUsers(repo);
   const users = await useCaseFindAllUsers.execute();
-  expect(users).toHaveLength(3);
+  expect(users).toHaveLength(2);
+});
+
+test("Should fail to return all users", async () => {
+  const repo = new InMemoryUserRepo();
+  const useCaseFindAllUsers = new FindAllUsers(repo);
+  const users = await useCaseFindAllUsers.execute();
+  expect(users).toEqual([]);
 });
 
 test("Should login by email, verify the password match and return a JWT", async () => {
