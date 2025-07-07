@@ -120,7 +120,6 @@ test("Should login by email, verify the password match and return a JWT", async 
   };
 
   const output = await useCaseLogin.execute(input2);
-  console.log(output!.token);
   expect(output).toBeDefined();
 
   const tokenPayload = jwt.verify(output!.token, process.env.JWT_SECRET!);
