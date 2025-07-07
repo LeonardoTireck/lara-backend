@@ -4,52 +4,7 @@ import { FindAllUsers } from "../../../src/application/FindAllUsers.usecase";
 import { FindUserById } from "../../../src/application/FindUserById.usecase";
 import { UpdateUserById } from "../../../src/application/UpdateUserById.usecase";
 import { UserLogin } from "../../../src/application/UserLogin.usecase";
-import { User } from "../../../src/domain/User";
-import { UserRepository } from "../../../src/domain/UserRepository";
-
-class InMemoryUserRepo implements UserRepository {
-  public users: User[] = [
-    {
-      id: "99",
-      name: "John Doe",
-      email: "john@doe.com",
-      password: "securePassword",
-    },
-  ];
-
-  async save(user: User) {
-    this.users.push(user);
-  }
-
-  async getById(userId: string): Promise<User | undefined> {
-    const user = this.users.find((user) => user.id === userId);
-    return user;
-  }
-
-  async getByEmail(userEmail: string): Promise<User | undefined> {
-    const user = this.users.find((user) => user.email === userEmail);
-    return user;
-  }
-
-  async delete(userId: string): Promise<User | undefined> {
-    const user = this.users.find((user) => user.id === userId);
-    const userIndex = this.users.findIndex((user) => user.id === userId);
-    this.users.splice(userIndex, 1);
-    if (user) return user;
-  }
-
-  async getAll(): Promise<User[] | undefined> {
-    const output = this.users.map((user) => {
-      return {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        password: user.password,
-      };
-    });
-    return output;
-  }
-}
+import { InMemoryUserRepo } from "../../../src/infrastructure/UserRepo/InMemory";
 
 test("Should create a user", async () => {
   const repo = new InMemoryUserRepo();
