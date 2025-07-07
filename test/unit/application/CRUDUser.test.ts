@@ -92,7 +92,7 @@ test("Should create and then update a user email or password", async () => {
   const useCaseUpdate = new UpdateUserById(repo);
   const userToGetId = await repo.getByEmail(input1.email);
   if (!userToGetId) throw new Error("User not found.");
-  const userId = userToGetId?.id;
+  const userId = userToGetId.id;
 
   const input2 = {
     id: userId,
@@ -104,7 +104,6 @@ test("Should create and then update a user email or password", async () => {
 
   expect(user.email).toBe("leo@test2.com");
   expect(user.name).toBe("Leonardo");
-  expect(user.password).toBe("123test");
 });
 
 test("Should return all users", async () => {

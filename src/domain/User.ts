@@ -1,4 +1,6 @@
 import crypto from "crypto";
+import bcrypt from "bcrypt";
+import "dotenv/config";
 
 export class User {
   private constructor(
@@ -8,8 +10,10 @@ export class User {
     readonly password: string,
   ) {}
 
-  static create(name: string, email: string, password: string) {
+  static async create(name: string, email: string, password: string) {
     const id = crypto.randomUUID();
-    return new User(id, name, email, password);
+    const saltRounds = +process.env.BCRYPT_SALTROUNDS!;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    return new User(id, name, email, hashedPassword);
   }
 }
