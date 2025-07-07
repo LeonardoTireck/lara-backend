@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import { CreateUser } from "../../../src/application/CreateUser.usecase";
 import { FindAllUsers } from "../../../src/application/FindAllUsers.usecase";
 import { FindUserById } from "../../../src/application/FindUserById.usecase";
@@ -129,7 +130,7 @@ test("Should return all users", async () => {
   expect(users).toHaveLength(3);
 });
 
-test("Should find a user by email, verify the password match and return a JWT", async () => {
+test("Should login by email, verify the password match and return a JWT", async () => {
   const repo = new InMemoryUserRepo();
   const useCaseCreate = new CreateUser(repo);
 
@@ -147,8 +148,15 @@ test("Should find a user by email, verify the password match and return a JWT", 
     password: "test123",
   };
 
-  const token = await useCaseLogin.execute(input2);
-  expect(token).toBeDefined();
+  const output = await useCaseLogin.execute(input2);
+  console.log(output!.token);
+  expect(output).toBeDefined();
+
+  const tokenPayload = jwt.verify(output!.token, process.env.JWT_SECRET!);
+  expect(tokenPayload).toMatchObject({
+    email: "leo@test.com",
+    name: "Leonardo",
+  });
 });
 
 test("Should return an error when findind a user by email", async () => {

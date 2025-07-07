@@ -1,5 +1,7 @@
 import { UserRepository } from "../domain/UserRepository";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import "dotenv/config";
 
 export class UserLogin {
   constructor(private UserRepo: UserRepository) {}
@@ -11,8 +13,15 @@ export class UserLogin {
       if (err) throw err;
       if (!same) throw new Error("Invalid Credentials.");
     });
+    const payload = {
+      email: user.email,
+      name: user.name,
+    };
+
     const output = {
-      token: `You logged in successfully, ${user.name}.`,
+      token: jwt.sign(payload, process.env.JWT_SECRET!, {
+        expiresIn: "1h",
+      }),
     };
     return output;
   }
