@@ -1,0 +1,36 @@
+import { CreateUser } from "../../../src/application/CreateUser.usecase";
+import { FindUserById } from "../../../src/application/FindUserById.usecase";
+import { InMemoryUserRepo } from "../../../src/infrastructure/UserRepo/InMemory";
+
+test("Should create a user and find it by id", async () => {
+  const repo = new InMemoryUserRepo();
+  const useCaseCreate = new CreateUser(repo);
+
+  const inputForCreation = {
+    name: "Leonardo",
+    email: "leo@test.com",
+    password: "test123",
+  };
+
+  const userCreated = await useCaseCreate.execute(inputForCreation);
+  const useCaseFind = new FindUserById(repo);
+
+  const input = {
+    userId: userCreated.id,
+  };
+
+  const user = await useCaseFind.execute(input);
+  expect(user?.name).toBe("Leonardo");
+  expect(user?.email).toBe("leo@test.com");
+});
+
+test("Should fail to find a user by id", async () => {
+  const repo = new InMemoryUserRepo();
+  const useCaseFind = new FindUserById(repo);
+
+  const input = {
+    userId: "randomstring",
+  };
+
+  await expect(useCaseFind.execute(input)).rejects.toThrow("User not found.");
+});
