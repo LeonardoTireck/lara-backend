@@ -1,16 +1,21 @@
 import { UserRepository } from "../domain/UserRepository";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
+import PasswordHasher from "../domain/PasswordHasher";
 
 export class UserLogin {
-  constructor(private UserRepo: UserRepository) {}
+  constructor(
+    private UserRepo: UserRepository,
+    private PasswordHasher: PasswordHasher,
+  ) {}
 
   async execute(input: Input): Promise<Output | undefined> {
     const user = await this.UserRepo.getByEmail(input.email);
     if (!user) throw new Error("Invalid Credentials.");
-
-    const same = await bcrypt.compare(input.password, user.password);
+    const same = await this.PasswordHasher.compare(
+      input.password,
+      user.hashedPassword,
+    );
     if (!same) throw new Error("Invalid Credentials.");
 
     const payload = {

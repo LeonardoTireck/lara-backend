@@ -11,7 +11,7 @@ export class FindUserById {
       id: user.id,
       name: user.name,
       email: user.email,
-      password: user.password,
+      hashedPassword: user.hashedPassword,
     };
     return output;
   }
@@ -25,5 +25,5 @@ type Output = {
   id: string;
   name: string;
   email: string;
-  password: string;
+  hashedPassword: string;
 };

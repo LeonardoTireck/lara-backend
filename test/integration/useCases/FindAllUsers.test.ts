@@ -1,10 +1,12 @@
 import { CreateUser } from "../../../src/application/CreateUser.usecase";
 import { FindAllUsers } from "../../../src/application/FindAllUsers.usecase";
+import BcryptPasswordHasher from "../../../src/infrastructure/Hashing/BcryptPasswordHasher";
 import { InMemoryUserRepo } from "../../../src/infrastructure/UserRepo/InMemory";
 
 test("Should return all users", async () => {
   const repo = new InMemoryUserRepo();
-  const useCaseCreate = new CreateUser(repo);
+  const bcryptPasswordHasher = new BcryptPasswordHasher(1);
+  const useCaseCreate = new CreateUser(repo, bcryptPasswordHasher);
 
   const input1 = {
     name: "Leonardo",

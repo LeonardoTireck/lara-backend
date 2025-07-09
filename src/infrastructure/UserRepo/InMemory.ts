@@ -32,7 +32,7 @@ export class InMemoryUserRepo implements UserRepository {
         id: user.id,
         name: user.name,
         email: user.email,
-        password: user.password,
+        hashedPassword: user.hashedPassword,
       };
     });
     return output;
