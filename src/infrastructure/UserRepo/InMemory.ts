@@ -27,24 +27,6 @@ export class InMemoryUserRepo implements UserRepository {
   }
 
   async getAll(): Promise<User[] | undefined> {
-    const output = this.users.map((user) => {
-      return {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        hashedPassword: user.hashedPassword,
-        phone: user.phone,
-        dateOfBirth: user.dateOfBirth,
-        userType: user.userType,
-        planType: user.planType,
-        dateOfRegistration: user.dateOfRegistration,
-        expirationDate: user.expirationDate,
-        paymentMethod: user.paymentMethod,
-        lastParqUpdate: user.lastParqUpdate,
-        trainingSessions: user.trainingSessions,
-        parq: user.parq,
-      };
-    });
-    return output;
+    return this.users;
   }
 }
