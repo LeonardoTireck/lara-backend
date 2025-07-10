@@ -12,9 +12,15 @@ test("Should create a user", async () => {
     name: "Leonardo",
     email: "leo@test.com",
     password: "test123",
-  };
+    phone: "+5547992000622",
+    dateOfBirth: new Date(),
+    userType: "admin",
+    planType: "diamond",
+    paymentMethod: "PIX",
+  } as const;
 
   const user = await useCaseCreate.execute(input);
+  console.log(user);
   expect(user.name).toBe("Leonardo");
   expect(user.email).toBe("leo@test.com");
 });

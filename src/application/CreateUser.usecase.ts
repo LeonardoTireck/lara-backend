@@ -1,6 +1,7 @@
 import PasswordHasher from "../domain/PasswordHasher";
 import { User } from "../domain/User";
 import { UserRepository } from "../domain/UserRepository";
+import { UserType } from "../domain/UserType";
 
 export class CreateUser {
   constructor(
@@ -10,7 +11,16 @@ export class CreateUser {
 
   async execute(input: Input): Promise<Output> {
     const hashedPassword = await this.PasswordHasher.hash(input.password);
-    const user = await User.create(input.name, input.email, hashedPassword);
+    const user = await User.create(
+      input.name,
+      input.email,
+      hashedPassword,
+      input.phone,
+      input.dateOfBirth,
+      input.userType,
+      input.planType,
+      input.paymentMethod,
+    );
 
     await this.UserRepo.save(user);
     const output = {
@@ -25,6 +35,11 @@ type Input = {
   name: string;
   email: string;
   password: string;
+  phone: string;
+  dateOfBirth: Date;
+  userType: UserType;
+  planType: "silver" | "gold" | "diamond";
+  paymentMethod: "card" | "PIX";
 };
 
 type Output = {

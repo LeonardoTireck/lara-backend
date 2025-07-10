@@ -8,24 +8,24 @@ test("Should login by email, verify the password match and return a JWT", async 
   const repo = new InMemoryUserRepo();
   const bcryptPasswordHasher = new BcryptPasswordHasher(1);
   const useCaseCreate = new CreateUser(repo, bcryptPasswordHasher);
-
   const input1 = {
     name: "Leonardo",
     email: "leo@test.com",
     password: "test123",
-  };
+    phone: "+5547992000622",
+    dateOfBirth: new Date(),
+    userType: "admin",
+    planType: "diamond",
+    paymentMethod: "PIX",
+  } as const;
   await useCaseCreate.execute(input1);
-
   const useCaseLogin = new UserLogin(repo, bcryptPasswordHasher);
-
   const input2 = {
     email: "leo@test.com",
     password: "test123",
   };
-
   const output = await useCaseLogin.execute(input2);
   expect(output).toBeDefined();
-
   const tokenPayload = jwt.verify(output!.token, process.env.JWT_SECRET!);
   expect(tokenPayload).toMatchObject({
     email: "leo@test.com",
@@ -37,21 +37,22 @@ test("Should fail to login by email, verify the password match and return a JWT"
   const repo = new InMemoryUserRepo();
   const bcryptPasswordHasher = new BcryptPasswordHasher(1);
   const useCaseCreate = new CreateUser(repo, bcryptPasswordHasher);
-
   const input1 = {
     name: "Leonardo",
     email: "leo@test.com",
     password: "test123",
-  };
+    phone: "+5547992000622",
+    dateOfBirth: new Date(),
+    userType: "admin",
+    planType: "diamond",
+    paymentMethod: "PIX",
+  } as const;
   await useCaseCreate.execute(input1);
-
   const useCaseLogin = new UserLogin(repo, bcryptPasswordHasher);
-
   const input2 = {
     email: "leo@test.com",
     password: "wrongpassword",
   };
-
   await expect(useCaseLogin.execute(input2)).rejects.toThrow(
     "Invalid Credentials.",
   );

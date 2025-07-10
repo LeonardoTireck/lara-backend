@@ -6,13 +6,16 @@ test("Should delete a user", async () => {
   const repo = new InMemoryUserRepo();
   const bcryptPasswordHasher = new BcryptPasswordHasher(1);
   const useCaseCreate = new CreateUser(repo, bcryptPasswordHasher);
-
   const inputForCreation = {
     name: "Leonardo",
     email: "leo@test.com",
     password: "test123",
-  };
-
+    phone: "+5547992000622",
+    dateOfBirth: new Date(),
+    userType: "admin",
+    planType: "diamond",
+    paymentMethod: "PIX",
+  } as const;
   const userCreated = await useCaseCreate.execute(inputForCreation);
   repo.delete(userCreated.id);
   expect(repo.users).toHaveLength(0);

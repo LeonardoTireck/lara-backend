@@ -7,12 +7,16 @@ test("Should return an error when findind a user by email", async () => {
   const repo = new InMemoryUserRepo();
   const bcryptPasswordHasher = new BcryptPasswordHasher(1);
   const useCaseCreate = new CreateUser(repo, bcryptPasswordHasher);
-
   const input1 = {
     name: "Leonardo",
     email: "leo@test.com",
     password: "test123",
-  };
+    phone: "+5547992000622",
+    dateOfBirth: new Date(),
+    userType: "admin",
+    planType: "diamond",
+    paymentMethod: "PIX",
+  } as const;
   await useCaseCreate.execute(input1);
 
   const useCaseLogin = new UserLogin(repo, bcryptPasswordHasher);
