@@ -1,5 +1,6 @@
 import { Parq } from "../domain/Parq";
 import { PlanType } from "../domain/PlanType";
+import { TrainingPlan } from "../domain/TrainingPlan";
 import { TrainingSession } from "../domain/TrainingSession";
 import { UserRepository } from "../domain/UserRepository";
 import { UserType } from "../domain/UserType";
@@ -19,10 +20,9 @@ export class FindUserById {
       phone: user.phone,
       dateOfBirth: user.dateOfBirth,
       userType: user.userType,
-      planType: user.planType,
-      dateOfRegistration: user.dateOfRegistration,
-      expirationDate: user.expirationDate,
-      paymentMethod: user.paymentMethod,
+      dateOfFirstPlanIngress: user.dateOfFirstPlanIngress,
+      activePlan: user.activePlan,
+      pastPlans: user.pastPlans,
       lastParqUpdate: user.lastParqUpdate,
       trainingSessions: user.trainingSessions,
       parq: user.parq,
@@ -43,10 +43,9 @@ type Output = {
   phone: string;
   dateOfBirth: Date;
   userType: UserType;
-  planType: PlanType;
-  dateOfRegistration: Date;
-  expirationDate: Date;
-  paymentMethod: "card" | "PIX";
+  dateOfFirstPlanIngress: Date;
+  activePlan: TrainingPlan | undefined;
+  pastPlans: TrainingPlan[] | undefined;
   lastParqUpdate: Date | undefined;
   trainingSessions: TrainingSession[] | undefined;
   parq: Parq | undefined;

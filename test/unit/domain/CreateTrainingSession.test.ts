@@ -27,6 +27,5 @@ test("Should create and return a new TrainingSession", async () => {
     input.notes,
     input.durationMinutes,
   );
-  console.log(traningSession.exercises[0].sets);
   expect(traningSession).toBeDefined();
 });

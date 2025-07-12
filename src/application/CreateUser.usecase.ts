@@ -18,8 +18,6 @@ export class CreateUser {
       input.phone,
       input.dateOfBirth,
       input.userType,
-      input.planType,
-      input.paymentMethod,
     );
 
     await this.UserRepo.save(user);
@@ -38,8 +36,6 @@ type Input = {
   phone: string;
   dateOfBirth: Date;
   userType: UserType;
-  planType: "silver" | "gold" | "diamond";
-  paymentMethod: "card" | "PIX";
 };
 
 type Output = {

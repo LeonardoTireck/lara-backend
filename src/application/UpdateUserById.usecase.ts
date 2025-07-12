@@ -26,10 +26,9 @@ export class UpdateUserById {
       phone: input.phone || user.phone,
       dateOfBirth: user.dateOfBirth,
       userType: user.userType,
-      planType: input.planType || user.planType,
-      dateOfRegistration: input.dateOfRegistration || user.dateOfRegistration,
-      expirationDate: input.expirationDate || user.expirationDate,
-      paymentMethod: input.paymentMethod || user.paymentMethod,
+      dateOfFirstPlanIngress: user.dateOfFirstPlanIngress,
+      activePlan: user.activePlan,
+      pastPlans: user.pastPlans,
       lastParqUpdate: input.lastParqUpdate || user.lastParqUpdate,
       trainingSessions: input.trainingSessions || user.trainingSessions,
       parq: input.parq || user.parq,
@@ -51,9 +50,6 @@ type Input = {
   plainTextPassword?: string;
   phone?: string;
   planType?: PlanType;
-  dateOfRegistration?: Date;
-  expirationDate?: Date;
-  paymentMethod?: "card" | "PIX";
   lastParqUpdate?: Date;
   trainingSessions?: TrainingSession[];
   parq?: Parq;
@@ -67,10 +63,7 @@ type Output = {
   phone: string;
   dateOfBirth: Date;
   userType: UserType;
-  planType: PlanType;
-  dateOfRegistration: Date;
-  expirationDate: Date;
-  paymentMethod: "card" | "PIX";
+  dateOfFirstPlanIngress: Date;
   lastParqUpdate: Date | undefined;
   trainingSessions: TrainingSession[] | undefined;
   parq: Parq | undefined;

@@ -15,8 +15,6 @@ test("Should login by email, verify the password match and return a JWT", async 
     phone: "+5547992000622",
     dateOfBirth: new Date(),
     userType: "admin",
-    planType: "diamond",
-    paymentMethod: "PIX",
   } as const;
   await useCaseCreate.execute(input1);
   const useCaseLogin = new UserLogin(repo, bcryptPasswordHasher);
@@ -44,8 +42,6 @@ test("Should fail to login by email, verify the password match and return a JWT"
     phone: "+5547992000622",
     dateOfBirth: new Date(),
     userType: "admin",
-    planType: "diamond",
-    paymentMethod: "PIX",
   } as const;
   await useCaseCreate.execute(input1);
   const useCaseLogin = new UserLogin(repo, bcryptPasswordHasher);

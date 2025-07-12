@@ -31,7 +31,6 @@ test("Should return all users", async () => {
   await useCaseCreate.execute(input2);
   const useCaseFindAllUsers = new FindAllUsers(repo);
   const users = await useCaseFindAllUsers.execute();
-  console.log(users);
   expect(users).toHaveLength(2);
 });
 

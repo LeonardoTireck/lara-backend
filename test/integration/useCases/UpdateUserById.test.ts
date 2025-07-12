@@ -14,8 +14,6 @@ test("Should create and then update a user email or password", async () => {
     phone: "+5547992000622",
     dateOfBirth: new Date(),
     userType: "admin",
-    planType: "diamond",
-    paymentMethod: "PIX",
   } as const;
   await useCaseCreate.execute(input1);
   const useCaseUpdate = new UpdateUserById(repo, bcryptPasswordHasher);
@@ -26,8 +24,10 @@ test("Should create and then update a user email or password", async () => {
     id: userId,
     email: "leo@test2.com",
     plainTextPassword: "123test",
-  };
+    phone: "+55555555",
+  } as const;
   const user = await useCaseUpdate.execute(input2);
+  console.log(user);
   expect(user.email).toBe("leo@test2.com");
   expect(user.name).toBe("Leonardo");
   expect(

@@ -15,8 +15,6 @@ test("Should create a user and find it by id", async () => {
     phone: "+5547992000622",
     dateOfBirth: new Date(),
     userType: "admin",
-    planType: "diamond",
-    paymentMethod: "PIX",
   } as const;
 
   const userCreated = await useCaseCreate.execute(inputForCreation);

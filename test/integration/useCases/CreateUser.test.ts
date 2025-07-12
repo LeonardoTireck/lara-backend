@@ -20,7 +20,6 @@ test("Should create a user", async () => {
   } as const;
 
   const user = await useCaseCreate.execute(input);
-  console.log(user);
   expect(user.name).toBe("Leonardo");
   expect(user.email).toBe("leo@test.com");
 });
