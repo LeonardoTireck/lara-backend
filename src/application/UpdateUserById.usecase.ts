@@ -1,6 +1,7 @@
 import { Parq } from "../domain/Parq";
 import PasswordHasher from "../domain/PasswordHasher";
 import { PlanType } from "../domain/PlanType";
+import { TrainingPlan } from "../domain/TrainingPlan";
 import { TrainingSession } from "../domain/TrainingSession";
 import { UserRepository } from "../domain/UserRepository";
 import { UserType } from "../domain/UserType";
@@ -33,10 +34,15 @@ export class UpdateUserById {
       trainingSessions: input.trainingSessions || user.trainingSessions,
       parq: input.parq || user.parq,
     };
-    if (input.plainTextPassword) {
+    if (
+      input.plainTextPassword &&
+      input.plainTextPassword != user.hashedPassword
+    ) {
       updatedUser.hashedPassword = await this.PasswordHasher.hash(
         input.plainTextPassword,
       );
+    }
+    if (!updatedUser.activePlan) {
     }
     this.UserRepo.delete(user.id);
     this.UserRepo.save(updatedUser);
@@ -49,10 +55,11 @@ type Input = {
   email?: string;
   plainTextPassword?: string;
   phone?: string;
-  planType?: PlanType;
+  activePlan?: TrainingPlan;
+  pastPlans?: TrainingPlan[];
+  parq?: Parq;
   lastParqUpdate?: Date;
   trainingSessions?: TrainingSession[];
-  parq?: Parq;
 };
 
 type Output = {
@@ -64,7 +71,9 @@ type Output = {
   dateOfBirth: Date;
   userType: UserType;
   dateOfFirstPlanIngress: Date;
+  activePlan: TrainingPlan | undefined;
+  pastPlans: TrainingPlan[] | undefined;
+  parq: Parq | undefined;
   lastParqUpdate: Date | undefined;
   trainingSessions: TrainingSession[] | undefined;
-  parq: Parq | undefined;
 };
