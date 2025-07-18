@@ -1,6 +1,5 @@
 import { Parq } from "../domain/Parq";
 import PasswordHasher from "../domain/PasswordHasher";
-import { PlanType } from "../domain/PlanType";
 import { TrainingPlan } from "../domain/TrainingPlan";
 import { TrainingSession } from "../domain/TrainingSession";
 import { UserRepository } from "../domain/UserRepository";

@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
-import { CreateUser } from "../../../src/application/CreateUser.usecase";
-import { UserLogin } from "../../../src/application/UserLogin.usecase";
-import { InMemoryUserRepo } from "../../../src/infrastructure/UserRepo/InMemory";
-import BcryptPasswordHasher from "../../../src/infrastructure/Hashing/BcryptPasswordHasher";
+import { CreateUser } from "../../src/application/CreateUser.usecase";
+import { UserLogin } from "../../src/application/UserLogin.usecase";
+import BcryptPasswordHasher from "../../src/infrastructure/Hashing/BcryptPasswordHasher";
+import { InMemoryUserRepo } from "../../src/infrastructure/UserRepo/InMemory";
 
 test("Should login by email, verify the password match and return a JWT", async () => {
   const repo = new InMemoryUserRepo();

@@ -1,7 +1,7 @@
-import { CreateUser } from "../../../src/application/CreateUser.usecase";
-import { FindAllUsers } from "../../../src/application/FindAllUsers.usecase";
-import BcryptPasswordHasher from "../../../src/infrastructure/Hashing/BcryptPasswordHasher";
-import { InMemoryUserRepo } from "../../../src/infrastructure/UserRepo/InMemory";
+import { CreateUser } from "../../src/application/CreateUser.usecase";
+import { FindAllUsers } from "../../src/application/FindAllUsers.usecase";
+import BcryptPasswordHasher from "../../src/infrastructure/Hashing/BcryptPasswordHasher";
+import { InMemoryUserRepo } from "../../src/infrastructure/UserRepo/InMemory";
 
 test("Should return all users", async () => {
   const repo = new InMemoryUserRepo();

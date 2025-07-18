@@ -1,7 +1,7 @@
-import { CreateUser } from "../../../src/application/CreateUser.usecase";
-import BcryptPasswordHasher from "../../../src/infrastructure/Hashing/BcryptPasswordHasher";
-import { InMemoryUserRepo } from "../../../src/infrastructure/UserRepo/InMemory";
 import "dotenv/config";
+import { CreateUser } from "../../src/application/CreateUser.usecase";
+import BcryptPasswordHasher from "../../src/infrastructure/Hashing/BcryptPasswordHasher";
+import { InMemoryUserRepo } from "../../src/infrastructure/UserRepo/InMemory";
 
 test("Should create a user", async () => {
   const repo = new InMemoryUserRepo();
