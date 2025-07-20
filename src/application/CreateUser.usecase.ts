@@ -1,4 +1,5 @@
 import PasswordHasher from "../domain/PasswordHasher";
+import { TrainingPlan } from "../domain/TrainingPlan";
 import { User } from "../domain/User";
 import { UserRepository } from "../domain/UserRepository";
 import { UserType } from "../domain/UserType";
@@ -11,12 +12,13 @@ export class CreateUser {
 
   async execute(input: Input): Promise<Output> {
     const hashedPassword = await this.PasswordHasher.hash(input.password);
-    const user = await User.create(
+    const user = User.create(
       input.name,
       input.email,
       hashedPassword,
       input.phone,
       input.dateOfBirth,
+      input.activePlan,
       input.userType,
     );
 
@@ -35,6 +37,7 @@ type Input = {
   password: string;
   phone: string;
   dateOfBirth: Date;
+  activePlan: TrainingPlan;
   userType: UserType;
 };
 

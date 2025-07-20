@@ -21,12 +21,13 @@ export class User {
     readonly trainingSessions: TrainingSession[] | undefined,
   ) {}
 
-  static async create(
+  static create(
     name: string,
     email: string,
     hashedPassword: string,
     phone: string,
     dateOfBirth: Date,
+    activePlan: TrainingPlan,
     userType: UserType,
   ) {
     const id = crypto.randomUUID();
@@ -39,7 +40,7 @@ export class User {
       dateOfBirth,
       hashedPassword,
       new Date(),
-      undefined,
+      activePlan,
       undefined,
       undefined,
       undefined,

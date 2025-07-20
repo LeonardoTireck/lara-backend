@@ -1,10 +1,12 @@
+import { PlanType } from "./PlanType";
+
 export class TrainingPlan {
-  constructor(
-    readonly planType: "silver" | "gold" | "diamond",
-    readonly startDate: Date = new Date(),
-    readonly expirationDate: Date,
+  private constructor(
+    readonly planType: PlanType,
     readonly paymentMethod: "card" | "PIX",
-  ) {
+  ) {}
+
+  static create(planType: PlanType, paymentMethod: "card" | "PIX") {
     let monthsToAdd = 0;
     switch (planType) {
       case "silver":
@@ -19,7 +21,9 @@ export class TrainingPlan {
       default:
         throw new Error(`Invalid planType: ${planType}.`);
     }
-    this.expirationDate = new Date(this.startDate);
-    expirationDate.setMonth(this.startDate.getMonth() + monthsToAdd);
+    const startDate = new Date();
+    const expirationDate = new Date(startDate);
+    expirationDate.setMonth(startDate.getMonth() + monthsToAdd);
+    return new TrainingPlan(planType, paymentMethod);
   }
 }
