@@ -11,7 +11,8 @@ test("Should return an error when findind a user by email", async () => {
   const input1 = {
     name: "Leonardo",
     email: "leo@test.com",
-    password: "test123",
+    documentCPF: "987.654.321-00",
+    password: "Test123@",
     phone: "+5547992000622",
     dateOfBirth: new Date(),
     activePlan: TrainingPlan.create("silver", "PIX"),
@@ -21,7 +22,7 @@ test("Should return an error when findind a user by email", async () => {
   const useCaseLogin = new UserLogin(repo, bcryptPasswordHasher);
   const input2 = {
     email: "wrongEmail@test.com",
-    password: "test123",
+    password: "Test123@",
   };
   await expect(useCaseLogin.execute(input2)).rejects.toThrow(
     "Invalid Credentials",

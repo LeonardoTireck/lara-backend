@@ -10,7 +10,8 @@ test("Should delete a user", async () => {
   const inputForCreation = {
     name: "Leonardo",
     email: "leo@test.com",
-    password: "test123",
+    documentCPF: "987.654.321-00",
+    password: "Test123@",
     phone: "+5547992000622",
     dateOfBirth: new Date(),
     activePlan: TrainingPlan.create("silver", "PIX"),

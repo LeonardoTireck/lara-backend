@@ -16,6 +16,7 @@ export class FindUserById {
       name: user.name,
       email: user.email,
       hashedPassword: user.hashedPassword,
+      documentCPF: user.documentCPF,
       phone: user.phone,
       dateOfBirth: user.dateOfBirth,
       userType: user.userType,
@@ -39,11 +40,12 @@ type Output = {
   name: string;
   email: string;
   hashedPassword: string;
+  documentCPF: string;
   phone: string;
   dateOfBirth: Date;
   userType: UserType;
   dateOfFirstPlanIngress: Date;
-  activePlan: TrainingPlan | undefined;
+  activePlan: TrainingPlan;
   pastPlans: TrainingPlan[] | undefined;
   lastParqUpdate: Date | undefined;
   trainingSessions: TrainingSession[] | undefined;

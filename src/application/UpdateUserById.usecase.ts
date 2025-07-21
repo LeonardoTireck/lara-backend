@@ -4,6 +4,9 @@ import { TrainingPlan } from "../domain/TrainingPlan";
 import { TrainingSession } from "../domain/TrainingSession";
 import { UserRepository } from "../domain/UserRepository";
 import { UserType } from "../domain/UserType";
+import { validateBrazilPhone } from "../domain/ValidateBrazilPhone";
+import { validateEmail } from "../domain/ValidateEmail";
+import { validatePassword } from "../domain/ValidatePassword";
 import { FindUserById } from "./FindUserById.usecase";
 
 export class UpdateUserById {
@@ -21,27 +24,41 @@ export class UpdateUserById {
     const updatedUser = {
       id: user.id,
       name: user.name,
-      email: input.email || user.email,
+      email: user.email,
       hashedPassword: user.hashedPassword,
-      phone: input.phone || user.phone,
+      documentCPF: user.documentCPF,
+      phone: user.phone,
       dateOfBirth: user.dateOfBirth,
       userType: user.userType,
       dateOfFirstPlanIngress: user.dateOfFirstPlanIngress,
+      // gotta find a way to pass an active and expired plan to pastplans
       activePlan: user.activePlan,
       pastPlans: user.pastPlans,
+      // gotta validate lastParqUpdate from the input
       lastParqUpdate: input.lastParqUpdate || user.lastParqUpdate,
+      // gotta validate trainingSessions from the input
       trainingSessions: input.trainingSessions || user.trainingSessions,
       parq: input.parq || user.parq,
     };
+    if (input.email && input.email != user.email) {
+      if (validateEmail(input.email)) {
+        updatedUser.email = input.email;
+      }
+    }
     if (
       input.plainTextPassword &&
       input.plainTextPassword != user.hashedPassword
     ) {
-      updatedUser.hashedPassword = await this.PasswordHasher.hash(
-        input.plainTextPassword,
-      );
+      if (validatePassword(input.plainTextPassword)) {
+        updatedUser.hashedPassword = await this.PasswordHasher.hash(
+          input.plainTextPassword,
+        );
+      }
     }
-    if (!updatedUser.activePlan) {
+    if (input.phone && input.phone != user.phone) {
+      if (validateBrazilPhone(input.phone)) {
+        updatedUser.phone = input.phone;
+      }
     }
     this.UserRepo.delete(user.id);
     this.UserRepo.save(updatedUser);
@@ -54,7 +71,7 @@ type Input = {
   email?: string;
   plainTextPassword?: string;
   phone?: string;
-  activePlan?: TrainingPlan;
+  activePlan: TrainingPlan;
   pastPlans?: TrainingPlan[];
   parq?: Parq;
   lastParqUpdate?: Date;
@@ -66,11 +83,12 @@ type Output = {
   name: string;
   email: string;
   hashedPassword: string;
+  documentCPF: string;
   phone: string;
   dateOfBirth: Date;
   userType: UserType;
   dateOfFirstPlanIngress: Date;
-  activePlan: TrainingPlan | undefined;
+  activePlan: TrainingPlan;
   pastPlans: TrainingPlan[] | undefined;
   parq: Parq | undefined;
   lastParqUpdate: Date | undefined;

@@ -12,7 +12,8 @@ test("Should login by email, verify the password match and return a JWT", async 
   const input1 = {
     name: "Leonardo",
     email: "leo@test.com",
-    password: "test123",
+    documentCPF: "987.654.321-00",
+    password: "Test123@",
     phone: "+5547992000622",
     dateOfBirth: new Date(),
     activePlan: TrainingPlan.create("silver", "PIX"),
@@ -22,7 +23,7 @@ test("Should login by email, verify the password match and return a JWT", async 
   const useCaseLogin = new UserLogin(repo, bcryptPasswordHasher);
   const input2 = {
     email: "leo@test.com",
-    password: "test123",
+    password: "Test123@",
   };
   const output = await useCaseLogin.execute(input2);
   expect(output).toBeDefined();
@@ -40,7 +41,8 @@ test("Should fail to login by email, verify the password match and return a JWT"
   const input1 = {
     name: "Leonardo",
     email: "leo@test.com",
-    password: "test123",
+    documentCPF: "987.654.321-00",
+    password: "Test123@",
     phone: "+5547992000622",
     dateOfBirth: new Date(),
     activePlan: TrainingPlan.create("silver", "PIX"),

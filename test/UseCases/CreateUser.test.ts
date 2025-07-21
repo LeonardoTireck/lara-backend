@@ -12,9 +12,10 @@ test("Should create a user", async () => {
   const input = {
     name: "Leonardo",
     email: "leo@test.com",
-    password: "test123",
+    documentCPF: "987.654.321-00",
     phone: "+5547992000622",
     dateOfBirth: new Date(),
+    password: "Test123@",
     activePlan: TrainingPlan.create("silver", "PIX"),
     userType: "client",
   } as const;

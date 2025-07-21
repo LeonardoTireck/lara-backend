@@ -11,7 +11,8 @@ test("Should return all users", async () => {
   const input1 = {
     name: "Leonardo",
     email: "leo@test.com",
-    password: "test123",
+    documentCPF: "987.654.321-00",
+    password: "Test123@",
     phone: "+5547992000622",
     dateOfBirth: new Date(),
     activePlan: TrainingPlan.create("silver", "PIX"),
@@ -22,7 +23,8 @@ test("Should return all users", async () => {
   const input2 = {
     name: "Leonardo",
     email: "leo@test.com",
-    password: "test123",
+    documentCPF: "987.654.321-00",
+    password: "Test123@",
     phone: "+5547992000622",
     dateOfBirth: new Date(),
     activePlan: TrainingPlan.create("gold", "card"),
