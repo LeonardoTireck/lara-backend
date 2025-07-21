@@ -1,5 +1,6 @@
 import { CreateUser } from "../../src/application/CreateUser.usecase";
 import { FindAllUsers } from "../../src/application/FindAllUsers.usecase";
+import { TrainingPlan } from "../../src/domain/TrainingPlan";
 import BcryptPasswordHasher from "../../src/infrastructure/Hashing/BcryptPasswordHasher";
 import { InMemoryUserRepo } from "../../src/infrastructure/UserRepo/InMemory";
 
@@ -13,10 +14,10 @@ test("Should return all users", async () => {
     password: "test123",
     phone: "+5547992000622",
     dateOfBirth: new Date(),
-    userType: "admin",
-    planType: "diamond",
-    paymentMethod: "PIX",
+    activePlan: TrainingPlan.create("silver", "PIX"),
+    userType: "client",
   } as const;
+
   await useCaseCreate.execute(input1);
   const input2 = {
     name: "Leonardo",
@@ -24,8 +25,8 @@ test("Should return all users", async () => {
     password: "test123",
     phone: "+5547992000622",
     dateOfBirth: new Date(),
+    activePlan: TrainingPlan.create("gold", "card"),
     userType: "client",
-    planType: "diamond",
     paymentMethod: "PIX",
   } as const;
   await useCaseCreate.execute(input2);

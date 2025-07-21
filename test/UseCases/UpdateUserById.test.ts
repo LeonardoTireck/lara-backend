@@ -1,5 +1,6 @@
 import { CreateUser } from "../../src/application/CreateUser.usecase";
 import { UpdateUserById } from "../../src/application/UpdateUserById.usecase";
+import { TrainingPlan } from "../../src/domain/TrainingPlan";
 import BcryptPasswordHasher from "../../src/infrastructure/Hashing/BcryptPasswordHasher";
 import { InMemoryUserRepo } from "../../src/infrastructure/UserRepo/InMemory";
 
@@ -13,7 +14,8 @@ test("Should create and then update a user email or password", async () => {
     password: "test123",
     phone: "+5547992000622",
     dateOfBirth: new Date(),
-    userType: "admin",
+    activePlan: TrainingPlan.create("silver", "PIX"),
+    userType: "client",
   } as const;
   await useCaseCreate.execute(input1);
   const useCaseUpdate = new UpdateUserById(repo, bcryptPasswordHasher);
@@ -46,8 +48,9 @@ test("Should create a user, create a training session and assign that to the use
     email: "leo@test.com",
     password: "test123",
     phone: "+5547992000622",
-    dateOfBirth: new Date("1997-12-04T08:00:00.000Z"),
-    userType: "admin",
+    dateOfBirth: new Date(),
+    activePlan: TrainingPlan.create("silver", "PIX"),
+    userType: "client",
   } as const;
   await useCaseCreate.execute(input1);
   const useCaseUpdate = new UpdateUserById(repo, bcryptPasswordHasher);
@@ -62,8 +65,7 @@ test("Should create a user, create a training session and assign that to the use
     planType: "gold",
     lastParqUpdate: new Date(),
   } as const;
-  const user = await useCaseUpdate.execute(input2);
-  console.log(user);
+  await useCaseUpdate.execute(input2);
 });
 
 test("Should fail to update a user email or password", async () => {

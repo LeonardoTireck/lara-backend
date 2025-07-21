@@ -3,6 +3,7 @@ import { CreateUser } from "../../src/application/CreateUser.usecase";
 import { UserLogin } from "../../src/application/UserLogin.usecase";
 import BcryptPasswordHasher from "../../src/infrastructure/Hashing/BcryptPasswordHasher";
 import { InMemoryUserRepo } from "../../src/infrastructure/UserRepo/InMemory";
+import { TrainingPlan } from "../../src/domain/TrainingPlan";
 
 test("Should login by email, verify the password match and return a JWT", async () => {
   const repo = new InMemoryUserRepo();
@@ -14,7 +15,8 @@ test("Should login by email, verify the password match and return a JWT", async 
     password: "test123",
     phone: "+5547992000622",
     dateOfBirth: new Date(),
-    userType: "admin",
+    activePlan: TrainingPlan.create("silver", "PIX"),
+    userType: "client",
   } as const;
   await useCaseCreate.execute(input1);
   const useCaseLogin = new UserLogin(repo, bcryptPasswordHasher);
@@ -41,7 +43,8 @@ test("Should fail to login by email, verify the password match and return a JWT"
     password: "test123",
     phone: "+5547992000622",
     dateOfBirth: new Date(),
-    userType: "admin",
+    activePlan: TrainingPlan.create("silver", "PIX"),
+    userType: "client",
   } as const;
   await useCaseCreate.execute(input1);
   const useCaseLogin = new UserLogin(repo, bcryptPasswordHasher);
