@@ -5,7 +5,8 @@ export class FindAllUsers {
 
   async execute(): Promise<Output | undefined> {
     const users = await this.UserRepo.getAll();
-    const output = users!.map((user) => {
+    if (!users) throw new Error("No users found.");
+    const output = users.map((user) => {
       return {
         id: user.id,
         name: user.name,

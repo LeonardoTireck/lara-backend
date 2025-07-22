@@ -45,8 +45,8 @@ type Output = {
   dateOfBirth: Date;
   userType: UserType;
   dateOfFirstPlanIngress: Date;
-  activePlan: TrainingPlan;
-  pastPlans: TrainingPlan[] | undefined;
+  activePlan: TrainingPlan | undefined;
+  pastPlans: TrainingPlan[] | [];
   lastParqUpdate: Date | undefined;
   trainingSessions: TrainingSession[] | undefined;
   parq: Parq | undefined;

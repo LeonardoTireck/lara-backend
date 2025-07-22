@@ -21,6 +21,14 @@ export class UpdateUserById {
     };
     const user = await findUserByIdUsecase.execute(userId);
     if (!user) throw new Error("User not found.");
+    let updatedUserPastPlans = user.pastPlans.slice();
+    let updatedUserActivePlan: TrainingPlan | undefined;
+    if (user.activePlan && user.activePlan.expirationDate < new Date()) {
+      updatedUserPastPlans.push(user.activePlan);
+      updatedUserActivePlan = undefined;
+    } else {
+      updatedUserActivePlan = user.activePlan;
+    }
     const updatedUser = {
       id: user.id,
       name: user.name,
@@ -31,8 +39,7 @@ export class UpdateUserById {
       dateOfBirth: user.dateOfBirth,
       userType: user.userType,
       dateOfFirstPlanIngress: user.dateOfFirstPlanIngress,
-      // gotta find a way to pass an active and expired plan to pastplans
-      activePlan: user.activePlan,
+      activePlan: updatedUserActivePlan,
       pastPlans: user.pastPlans,
       // gotta validate lastParqUpdate from the input
       lastParqUpdate: input.lastParqUpdate || user.lastParqUpdate,
@@ -40,6 +47,7 @@ export class UpdateUserById {
       trainingSessions: input.trainingSessions || user.trainingSessions,
       parq: input.parq || user.parq,
     };
+
     if (input.email && input.email != user.email) {
       if (validateEmail(input.email)) {
         updatedUser.email = input.email;
@@ -71,7 +79,7 @@ type Input = {
   email?: string;
   plainTextPassword?: string;
   phone?: string;
-  activePlan: TrainingPlan;
+  activePlan: TrainingPlan | undefined;
   pastPlans?: TrainingPlan[];
   parq?: Parq;
   lastParqUpdate?: Date;
@@ -88,7 +96,7 @@ type Output = {
   dateOfBirth: Date;
   userType: UserType;
   dateOfFirstPlanIngress: Date;
-  activePlan: TrainingPlan;
+  activePlan: TrainingPlan | undefined;
   pastPlans: TrainingPlan[] | undefined;
   parq: Parq | undefined;
   lastParqUpdate: Date | undefined;

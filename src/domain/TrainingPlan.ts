@@ -1,12 +1,12 @@
 import { PlanType } from "./PlanType";
 
 export class TrainingPlan {
+  public startDate: Date;
+  public expirationDate: Date;
   private constructor(
     readonly planType: PlanType,
     readonly paymentMethod: "card" | "PIX",
-  ) {}
-
-  static create(planType: PlanType, paymentMethod: "card" | "PIX") {
+  ) {
     let monthsToAdd = 0;
     switch (planType) {
       case "silver":
@@ -21,9 +21,12 @@ export class TrainingPlan {
       default:
         throw new Error(`Invalid planType: ${planType}.`);
     }
-    const startDate = new Date();
-    const expirationDate = new Date(startDate);
-    expirationDate.setMonth(startDate.getMonth() + monthsToAdd);
+    this.startDate = new Date();
+    this.expirationDate = new Date(this.startDate);
+    this.expirationDate.setMonth(this.startDate.getMonth() + monthsToAdd);
+  }
+
+  static create(planType: PlanType, paymentMethod: "card" | "PIX") {
     return new TrainingPlan(planType, paymentMethod);
   }
 }
