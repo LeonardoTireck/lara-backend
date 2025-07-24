@@ -1,5 +1,5 @@
-import { CreateUser } from "../../../src/application/CreateUser.usecase";
-import { UserLogin } from "../../../src/application/UserLogin.usecase";
+import { CreateUser } from "../../../src/application/usecases/CreateUser.usecase";
+import { UserLogin } from "../../../src/application/usecases/UserLogin.usecase";
 import { TrainingPlan } from "../../../src/domain/TrainingPlan";
 import BcryptPasswordHasher from "../../../src/infrastructure/Hashing/BcryptPasswordHasher";
 import { InMemoryUserRepo } from "../../../src/infrastructure/UserRepo/InMemory";
@@ -9,7 +9,7 @@ test("Should return an error when findind a user by email", async () => {
   const bcryptPasswordHasher = new BcryptPasswordHasher(1);
   const useCaseCreate = new CreateUser(repo, bcryptPasswordHasher);
   const input1 = {
-    name: "Leonardo",
+    name: "Leonardo Tireck",
     email: "leo@test.com",
     documentCPF: "987.654.321-00",
     password: "Test123@",

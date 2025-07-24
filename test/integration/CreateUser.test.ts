@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { CreateUser } from "../../src/application/CreateUser.usecase";
+import { CreateUser } from "../../src/application/usecases/CreateUser.usecase";
 import BcryptPasswordHasher from "../../src/infrastructure/Hashing/BcryptPasswordHasher";
 import { InMemoryUserRepo } from "../../src/infrastructure/UserRepo/InMemory";
 import { TrainingPlan } from "../../src/domain/TrainingPlan";
@@ -10,7 +10,7 @@ test("Should create a user", async () => {
   const useCaseCreate = new CreateUser(repo, bcryptPasswordHasher);
 
   const input = {
-    name: "Leonardo",
+    name: "Leonardo Tireck",
     email: "leo@test.com",
     documentCPF: "987.654.321-00",
     phone: "+5547992000622",
@@ -21,6 +21,6 @@ test("Should create a user", async () => {
   } as const;
 
   const user = await useCaseCreate.execute(input);
-  expect(user.name).toBe("Leonardo");
+  expect(user.name).toBe("Leonardo Tireck");
   expect(user.email).toBe("leo@test.com");
 });

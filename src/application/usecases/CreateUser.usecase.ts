@@ -1,12 +1,9 @@
-import PasswordHasher from "../domain/PasswordHasher";
-import { TrainingPlan } from "../domain/TrainingPlan";
-import { User } from "../domain/User";
-import { UserRepository } from "../domain/UserRepository";
-import { UserType } from "../domain/UserType";
-import { validateEmail } from "../domain/ValidateEmail";
-import { validatePassword } from "../domain/ValidatePassword";
-import { validateCPF } from "../domain/ValidateCPF";
-import { validateBrazilPhone } from "../domain/ValidateBrazilPhone";
+import PasswordHasher from "../../domain/PasswordHasher";
+import { TrainingPlan } from "../../domain/TrainingPlan";
+import { User } from "../../domain/User";
+import { UserRepository } from "../ports/UserRepository";
+import { UserType } from "../../domain/UserType";
+import { validatePassword } from "../../domain/ValidatePassword";
 
 export class CreateUser {
   constructor(
@@ -15,15 +12,11 @@ export class CreateUser {
   ) {}
 
   async execute(input: Input): Promise<Output> {
-    if (!validateEmail(input.email))
-      throw new Error("Email does not meet criteria.");
     if (!validatePassword(input.password))
       throw new Error("Password does not meet criteria.");
-    if (!validateCPF(input.documentCPF))
-      throw new Error("Document does not meet criteria.");
-    if (!validateBrazilPhone(input.phone))
-      throw new Error("Phone does not meet criteria.");
+
     const hashedPassword = await this.PasswordHasher.hash(input.password);
+
     const user = User.create(
       input.name,
       input.email,
@@ -36,12 +29,12 @@ export class CreateUser {
     );
 
     await this.UserRepo.save(user);
-    const output = {
+
+    return {
       id: user.id,
       name: user.name,
       email: user.email,
     };
-    return output;
   }
 }
 type Input = {

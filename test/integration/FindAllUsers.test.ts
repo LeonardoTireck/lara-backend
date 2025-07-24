@@ -1,5 +1,5 @@
-import { CreateUser } from "../../src/application/CreateUser.usecase";
-import { FindAllUsers } from "../../src/application/FindAllUsers.usecase";
+import { CreateUser } from "../../src/application/usecases/CreateUser.usecase";
+import { FindAllUsers } from "../../src/application/usecases/FindAllUsers.usecase";
 import { TrainingPlan } from "../../src/domain/TrainingPlan";
 import BcryptPasswordHasher from "../../src/infrastructure/Hashing/BcryptPasswordHasher";
 import { InMemoryUserRepo } from "../../src/infrastructure/UserRepo/InMemory";
@@ -9,7 +9,7 @@ test("Should return all users", async () => {
   const bcryptPasswordHasher = new BcryptPasswordHasher(1);
   const useCaseCreate = new CreateUser(repo, bcryptPasswordHasher);
   const input1 = {
-    name: "Leonardo",
+    name: "Leonardo Tireck",
     email: "leo@test.com",
     documentCPF: "987.654.321-00",
     password: "Test123@",
@@ -21,7 +21,7 @@ test("Should return all users", async () => {
 
   await useCaseCreate.execute(input1);
   const input2 = {
-    name: "Leonardo",
+    name: "Leonardo Tireck",
     email: "leo@test.com",
     documentCPF: "987.654.321-00",
     password: "Test123@",

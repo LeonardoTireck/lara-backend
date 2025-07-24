@@ -1,11 +1,18 @@
 import { User } from "../../domain/User";
-import { UserRepository } from "../../domain/UserRepository";
+import { UserRepository } from "../../application/ports/UserRepository";
 
 export class InMemoryUserRepo implements UserRepository {
   public users: User[] = [];
 
   async save(user: User) {
     this.users.push(user);
+  }
+
+  async update(user: User): Promise<User> {
+    let userToBeUpdated = this.users.find((u) => u.id === user.id);
+    if (!userToBeUpdated) throw new Error("User not found.");
+    // update the user information based on input
+    return userToBeUpdated;
   }
 
   async getById(userId: string): Promise<User | undefined> {

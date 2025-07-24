@@ -1,4 +1,4 @@
-import { UserRepository } from "../domain/UserRepository";
+import { UserRepository } from "../ports/UserRepository";
 
 export class FindAllUsers {
   constructor(private UserRepo: UserRepository) {}

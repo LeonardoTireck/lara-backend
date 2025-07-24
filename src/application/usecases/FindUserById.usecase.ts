@@ -1,21 +1,20 @@
-import { Parq } from "../domain/Parq";
-import { TrainingPlan } from "../domain/TrainingPlan";
-import { TrainingSession } from "../domain/TrainingSession";
-import { UserRepository } from "../domain/UserRepository";
-import { UserType } from "../domain/UserType";
+import { Parq } from "../../domain/Parq";
+import { TrainingPlan } from "../../domain/TrainingPlan";
+import { TrainingSession } from "../../domain/TrainingSession";
+import { UserRepository } from "../ports/UserRepository";
+import { UserType } from "../../domain/UserType";
 
 export class FindUserById {
-  constructor(private UserRepo: UserRepository) {}
+  constructor(private userRepo: UserRepository) {}
 
-  async execute(input: Input): Promise<Output | undefined> {
-    const user = await this.UserRepo.getById(input.userId);
+  async execute(input: Input): Promise<Output> {
+    const user = await this.userRepo.getById(input.userId);
     if (!user) throw new Error("User not found.");
 
-    const output = {
+    return {
       id: user.id,
       name: user.name,
       email: user.email,
-      hashedPassword: user.hashedPassword,
       documentCPF: user.documentCPF,
       phone: user.phone,
       dateOfBirth: user.dateOfBirth,
@@ -27,7 +26,6 @@ export class FindUserById {
       trainingSessions: user.trainingSessions,
       parq: user.parq,
     };
-    return output;
   }
 }
 
@@ -39,7 +37,6 @@ type Output = {
   id: string;
   name: string;
   email: string;
-  hashedPassword: string;
   documentCPF: string;
   phone: string;
   dateOfBirth: Date;
