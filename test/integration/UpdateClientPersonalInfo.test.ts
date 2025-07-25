@@ -46,3 +46,35 @@ test("Should update a user email, password and phone", async () => {
     ),
   ).toBe(true);
 });
+
+test("Should fail to update a client email, password and phone", async () => {
+  const repo = new InMemoryUserRepo();
+  const bcryptPasswordHasher = new BcryptPasswordHasher(1);
+  const useCaseCreate = new CreateUser(repo, bcryptPasswordHasher);
+
+  const input = {
+    name: "Leonardo Tireck",
+    email: "leo@test.com",
+    documentCPF: "987.654.321-00",
+    phone: "+5547992000622",
+    dateOfBirth: new Date(),
+    password: "Test123@",
+    activePlan: TrainingPlan.create("silver", "PIX"),
+    userType: "client",
+  } as const;
+
+  const user = await useCaseCreate.execute(input);
+  const useCaseUpdateClientPersonalInfo = new UpdateClientPersonalInfo(
+    repo,
+    bcryptPasswordHasher,
+  );
+  const inputForUpdate = {
+    id: user.id,
+    email: "leo2test2.com",
+    phone: "+7991079000",
+    plainTextPassword: "123wront",
+  };
+  await expect(
+    useCaseUpdateClientPersonalInfo.execute(inputForUpdate),
+  ).rejects.toThrow("Email does not meet criteria.");
+});
