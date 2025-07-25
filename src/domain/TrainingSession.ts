@@ -1,9 +1,6 @@
-import { Exercise } from "./Exercise";
-
 export class TrainingSession {
   private constructor(
     readonly sessionDay: "A" | "B" | "C" | "D" | "E" | "F" | "G",
-    readonly sessionId: number,
     readonly exercises: Exercise[],
     readonly notes?: string[],
     readonly durationMinutes?: number,
@@ -13,17 +10,24 @@ export class TrainingSession {
 
   static create(
     sessionDay: "A" | "B" | "C" | "D" | "E" | "F" | "G",
-    sessionId: number,
     exercises: Exercise[],
     notes?: string[],
     durationMinutes?: number,
   ) {
-    return new TrainingSession(
-      sessionDay,
-      sessionId,
-      exercises,
-      notes,
-      durationMinutes,
-    );
+    return new TrainingSession(sessionDay, exercises, notes, durationMinutes);
   }
 }
+
+type Exercise = {
+  name: string;
+  sets: Set[];
+  notes: string;
+  restInSeconds: number;
+  videoUrl: string;
+};
+
+type Set = {
+  orderNumber: number;
+  reps: number;
+  weight: number;
+};

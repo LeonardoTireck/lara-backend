@@ -114,6 +114,10 @@ export class User {
     this._trainingSessions = trainingSessions;
   }
 
+  addTrainingSession(trainingSession: TrainingSession) {
+    this._trainingSessions.push(trainingSession);
+  }
+
   updateParq(newParq: Parq) {
     this._parq = newParq;
     this._lastParqUpdate = new Date();

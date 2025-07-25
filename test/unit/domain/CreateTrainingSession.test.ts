@@ -22,7 +22,6 @@ test("Should create and return a new TrainingSession", async () => {
   };
   const traningSession = TrainingSession.create(
     input.sessionDay,
-    input.sessionId,
     input.exercises,
     input.notes,
     input.durationMinutes,

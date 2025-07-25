@@ -72,7 +72,7 @@ test("Should fail to update a client email, password and phone", async () => {
     id: user.id,
     email: "leo2test2.com",
     phone: "+7991079000",
-    plainTextPassword: "123wront",
+    plainTextPassword: "123wrong",
   };
   await expect(
     useCaseUpdateClientPersonalInfo.execute(inputForUpdate),

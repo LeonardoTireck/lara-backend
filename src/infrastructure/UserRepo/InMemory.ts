@@ -20,6 +20,15 @@ export class InMemoryUserRepo implements UserRepository {
     if (user.phone) {
       userToBeUpdated.updatePhone(user.phone);
     }
+    if (user.trainingSessions) {
+      userToBeUpdated.updateTrainingSessions(user.trainingSessions);
+    }
+    if (user.activePlan) {
+      userToBeUpdated.updateActivePlan(user.activePlan);
+    }
+    if (user.parq) {
+      userToBeUpdated.updateParq(user.parq);
+    }
   }
 
   async getById(userId: string): Promise<User | undefined> {
