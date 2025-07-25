@@ -1,7 +1,7 @@
 import { UserRepository } from "../ports/UserRepository";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
-import PasswordHasher from "../../domain/PasswordHasher";
+import PasswordHasher from "../ports/PasswordHasher";
 
 export class UserLogin {
   constructor(

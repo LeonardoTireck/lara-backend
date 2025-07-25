@@ -35,7 +35,6 @@ export class User {
     hashedPassword: string,
     activePlan: TrainingPlan,
     userType: UserType,
-    dateOfFirstPlanIngress?: Date,
   ) {
     if (!validateName(name)) throw new Error("Name does not meet criteria");
     if (!validateEmail(email)) throw new Error("Email does not meet criteria.");
@@ -50,11 +49,11 @@ export class User {
       id,
       userType,
       name,
-      dateOfFirstPlanIngress || new Date(),
+      new Date(),
       documentCPF,
       dateOfBirth,
-      email,
-      phone,
+      email.trim(),
+      phone.trim(),
       hashedPassword,
       activePlan,
     );

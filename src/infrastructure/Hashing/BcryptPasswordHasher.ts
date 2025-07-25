@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import PasswordHasher from "../../domain/PasswordHasher";
+import PasswordHasher from "../../application/ports/PasswordHasher";
 
 export default class BcryptPasswordHasher implements PasswordHasher {
   constructor(private saltRounds: number) {}

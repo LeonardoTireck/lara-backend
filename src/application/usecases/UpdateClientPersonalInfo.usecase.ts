@@ -1,4 +1,4 @@
-import PasswordHasher from "../../domain/PasswordHasher";
+import PasswordHasher from "../ports/PasswordHasher";
 import { validatePassword } from "../../domain/ValidatePassword";
 import { UserRepository } from "../ports/UserRepository";
 
