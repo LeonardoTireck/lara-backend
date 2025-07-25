@@ -17,6 +17,7 @@ export class FindUserById {
       email: user.email,
       documentCPF: user.documentCPF,
       phone: user.phone,
+      password: user.hashedPassword,
       dateOfBirth: user.dateOfBirth,
       userType: user.userType,
       dateOfFirstPlanIngress: user.dateOfFirstPlanIngress,
@@ -39,6 +40,7 @@ type Output = {
   email: string;
   documentCPF: string;
   phone: string;
+  password: string;
   dateOfBirth: Date;
   userType: UserType;
   dateOfFirstPlanIngress: Date;

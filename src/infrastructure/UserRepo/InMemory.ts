@@ -8,11 +8,18 @@ export class InMemoryUserRepo implements UserRepository {
     this.users.push(user);
   }
 
-  async update(user: User): Promise<User> {
+  async update(user: User): Promise<void> {
     let userToBeUpdated = this.users.find((u) => u.id === user.id);
     if (!userToBeUpdated) throw new Error("User not found.");
-    // update the user information based on input
-    return userToBeUpdated;
+    if (user.email) {
+      userToBeUpdated.updateEmail(user.email);
+    }
+    if (user.hashedPassword) {
+      userToBeUpdated.updatePassword(user.hashedPassword);
+    }
+    if (user.phone) {
+      userToBeUpdated.updatePhone(user.phone);
+    }
   }
 
   async getById(userId: string): Promise<User | undefined> {
