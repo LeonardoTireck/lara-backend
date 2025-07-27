@@ -1,5 +1,6 @@
-import { AddTrainingSession } from "../../src/application/usecases/AddTrainingSessions.usecase";
 import { CreateUser } from "../../src/application/usecases/CreateUser.usecase";
+import { FindUserById } from "../../src/application/usecases/FindUserById.usecase";
+import { UpdateTrainingSessions } from "../../src/application/usecases/UpdateTrainingSessions.usecase";
 import { TrainingPlan } from "../../src/domain/TrainingPlan";
 import { TrainingSession } from "../../src/domain/TrainingSession";
 import BcryptPasswordHasher from "../../src/infrastructure/Hashing/BcryptPasswordHasher";
@@ -23,6 +24,10 @@ test("Should add a training session to a client", async () => {
 
   const user = await useCaseCreate.execute(input);
 
+  const useCaseFindById = new FindUserById(repo);
+  let currentTrainingSessions = (
+    await useCaseFindById.execute({ userId: user.id })
+  ).trainingSessions;
   const newTrainingSession = TrainingSession.create(
     "A",
     [
@@ -41,21 +46,22 @@ test("Should add a training session to a client", async () => {
     ["Array of notes about the training session itself"],
     60,
   );
+  currentTrainingSessions!.push(newTrainingSession);
+  const useCaseUpdateTrainingSessions = new UpdateTrainingSessions(repo);
 
-  const addTrainingSessionsUseCase = new AddTrainingSession(repo);
-
-  const updatedUsed = await addTrainingSessionsUseCase.execute(
+  const updatedUser = await useCaseUpdateTrainingSessions.execute(
     user.id,
-    newTrainingSession,
+    currentTrainingSessions!,
   );
 
-  expect(updatedUsed.trainingSessions[0].sessionDay).toBe("A");
-  expect(updatedUsed.trainingSessions[0].exercises[0].name).toBe("Supino Reto");
-  expect(updatedUsed.trainingSessions[0].exercises[0].sets[0].orderNumber).toBe(
+  expect(updatedUser.trainingSessions[0].sessionDay).toBe("A");
+  expect(updatedUser.trainingSessions[0].exercises[0].name).toBe("Supino Reto");
+  expect(updatedUser.trainingSessions[0].exercises[0].sets[0].orderNumber).toBe(
     1,
   );
-  expect(updatedUsed.trainingSessions[0].exercises[0].notes).toBe(
+  expect(updatedUser.trainingSessions[0].exercises[0].notes).toBe(
     "notes about the specific exercise",
   );
-  expect(updatedUsed.trainingSessions[0].durationMinutes).toBe(60);
+  expect(updatedUser.trainingSessions[0].durationMinutes).toBe(60);
+  console.log(updatedUser);
 });

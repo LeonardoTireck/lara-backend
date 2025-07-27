@@ -47,6 +47,6 @@ type Output = {
   activePlan?: TrainingPlan;
   pastPlans: TrainingPlan[] | [];
   lastParqUpdate?: Date;
-  trainingSessions: TrainingSession[] | [];
+  trainingSessions?: TrainingSession[];
   parq?: Parq;
 };
