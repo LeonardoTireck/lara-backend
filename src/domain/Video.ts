@@ -1,3 +1,4 @@
+import { Comment } from "./Comment";
 import crypto from "crypto";
 
 export class Video {
@@ -33,5 +34,29 @@ export class Video {
   }
   get comments() {
     return [...this._comments];
+  }
+
+  updateVideoUrl(newUrl: string) {
+    this._videoUrl = newUrl;
+  }
+
+  updateCategory(category: string) {
+    this._category = category;
+  }
+
+  updateDescription(description: string) {
+    this._description = description;
+  }
+
+  addComment(comment: Comment) {
+    this._comments.push(comment);
+  }
+
+  deleteComment(commentId: string) {
+    const commentIndex = this._comments.findIndex(
+      (comment) => comment.id == commentId,
+    );
+    if (commentIndex === undefined) throw new Error("Comment not found.");
+    this._comments.splice(commentIndex, 1);
   }
 }
