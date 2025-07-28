@@ -63,5 +63,4 @@ test("Should add a training session to a client", async () => {
     "notes about the specific exercise",
   );
   expect(updatedUser.trainingSessions[0].durationMinutes).toBe(60);
-  console.log(updatedUser);
 });
