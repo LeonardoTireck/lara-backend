@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-export class Comment {
+export class VideoComment {
   private constructor(
     readonly id: string,
     readonly author: string,
@@ -8,6 +8,6 @@ export class Comment {
   ) {}
   static create(author: string, text: string) {
     const id = crypto.randomUUID();
-    return new Comment(id, author, text);
+    return new VideoComment(id, author, text);
   }
 }

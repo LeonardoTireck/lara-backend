@@ -1,5 +1,5 @@
-import { Comment } from "./Comment";
 import crypto from "crypto";
+import { VideoComment } from "./VideoComment";
 
 export class Video {
   private constructor(
@@ -9,7 +9,7 @@ export class Video {
     private _videoUrl: string,
     private _category: string,
     private _description: string,
-    private _comments: Comment[] = [],
+    private _videoComments: VideoComment[] = [],
   ) {}
 
   static create(
@@ -32,8 +32,8 @@ export class Video {
   get description() {
     return this._description;
   }
-  get comments() {
-    return [...this._comments];
+  get videoComments() {
+    return [...this._videoComments];
   }
 
   updateVideoUrl(newUrl: string) {
@@ -48,15 +48,15 @@ export class Video {
     this._description = description;
   }
 
-  addComment(comment: Comment) {
-    this._comments.push(comment);
+  addComment(comment: VideoComment) {
+    this._videoComments.push(comment);
   }
 
   deleteComment(commentId: string) {
-    const commentIndex = this._comments.findIndex(
+    const commentIndex = this._videoComments.findIndex(
       (comment) => comment.id == commentId,
     );
     if (commentIndex === undefined) throw new Error("Comment not found.");
-    this._comments.splice(commentIndex, 1);
+    this._videoComments.splice(commentIndex, 1);
   }
 }

@@ -1,5 +1,5 @@
-import { Comment } from "../../../src/domain/Comment";
 import { Video } from "../../../src/domain/Video";
+import { VideoComment } from "../../../src/domain/VideoComment";
 
 test("Should create a new video", function () {
   const input = {
@@ -21,7 +21,7 @@ test("Should create a new video", function () {
   expect(newVideo.videoUrl).toBeDefined();
   expect(newVideo.category).toBeDefined();
   expect(newVideo.description).toBeDefined();
-  expect(newVideo.comments).toBeDefined();
+  expect(newVideo.videoComments).toBeDefined();
 });
 
 test("Should update the video url", function () {
@@ -99,10 +99,10 @@ test("Should add a comment to a video", async () => {
     input.description,
   );
 
-  const newComment = Comment.create("Leonardo Tireck", "Great video!");
+  const newComment = VideoComment.create("Leonardo Tireck", "Great video!");
   newVideo.addComment(newComment);
 
-  expect(newVideo.comments[0]).toBe(newComment);
+  expect(newVideo.videoComments[0]).toBe(newComment);
 });
 
 test("Should delete a comment form a video", async () => {
@@ -120,8 +120,8 @@ test("Should delete a comment form a video", async () => {
     input.description,
   );
 
-  const newComment = Comment.create("Leonardo Tireck", "Great video!");
+  const newComment = VideoComment.create("Leonardo Tireck", "Great video!");
   newVideo.addComment(newComment);
   newVideo.deleteComment(newComment.id);
-  expect(newVideo.comments[0]).toBe(undefined);
+  expect(newVideo.videoComments[0]).toBe(undefined);
 });
