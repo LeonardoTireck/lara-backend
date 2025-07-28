@@ -5,14 +5,14 @@ import PasswordHasher from "../ports/PasswordHasher";
 
 export class UserLogin {
   constructor(
-    private UserRepo: UserRepository,
-    private PasswordHasher: PasswordHasher,
+    private userRepo: UserRepository,
+    private passwordHasher: PasswordHasher,
   ) {}
 
   async execute(input: Input): Promise<Output | undefined> {
-    const user = await this.UserRepo.getByEmail(input.email);
+    const user = await this.userRepo.getByEmail(input.email);
     if (!user) throw new Error("Invalid Credentials.");
-    const passwordMatch = await this.PasswordHasher.compare(
+    const passwordMatch = await this.passwordHasher.compare(
       input.password,
       user.hashedPassword,
     );

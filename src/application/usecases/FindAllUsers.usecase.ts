@@ -1,10 +1,10 @@
 import { UserRepository } from "../ports/UserRepository";
 
 export class FindAllUsers {
-  constructor(private UserRepo: UserRepository) {}
+  constructor(private userRepo: UserRepository) {}
 
   async execute(): Promise<Output | undefined> {
-    const users = await this.UserRepo.getAll();
+    const users = await this.userRepo.getAll();
     if (!users) throw new Error("No users found.");
     const output = users.map((user) => {
       return {

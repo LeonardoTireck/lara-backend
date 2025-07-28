@@ -7,15 +7,15 @@ import { validatePassword } from "../../domain/ValidatePassword";
 
 export class CreateUser {
   constructor(
-    private UserRepo: UserRepository,
-    private PasswordHasher: PasswordHasher,
+    private userRepo: UserRepository,
+    private passwordHasher: PasswordHasher,
   ) {}
 
   async execute(input: Input): Promise<Output> {
     if (!validatePassword(input.password))
       throw new Error("Password does not meet criteria.");
 
-    const hashedPassword = await this.PasswordHasher.hash(input.password);
+    const hashedPassword = await this.passwordHasher.hash(input.password);
 
     const user = User.create(
       input.name,
@@ -28,7 +28,7 @@ export class CreateUser {
       input.userType,
     );
 
-    await this.UserRepo.save(user);
+    await this.userRepo.save(user);
 
     return {
       id: user.id,
