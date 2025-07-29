@@ -19,6 +19,7 @@ export class UserLogin {
     if (!passwordMatch) throw new Error("Invalid Credentials.");
 
     const payload = {
+      id: user.id,
       email: user.email,
       name: user.name,
     };
@@ -26,6 +27,7 @@ export class UserLogin {
     const token = jwt.sign(payload, process.env.JWT_SECRET!, {
       expiresIn: "1h",
     });
+
     return { token };
   }
 }

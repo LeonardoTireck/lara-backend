@@ -26,8 +26,8 @@ test("Should create a user and find it by id", async () => {
   };
 
   const user = await useCaseFind.execute(input);
-  expect(user?.name).toBe("Leonardo Tireck");
-  expect(user?.email).toBe("leo@test.com");
+  expect(user.name).toBe("Leonardo Tireck");
+  expect(user.email).toBe("leo@test.com");
 });
 
 test("Should fail to find a user by id", async () => {
