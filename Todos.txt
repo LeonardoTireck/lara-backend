@@ -1,4 +1,4 @@
-1: Generate a thubnailURL when uploading a video. Should I upload the thumbnail along with the video? Should I generate it outsite with a Lambda function when uploading to S3? (Reacting to the event). Implement this generation in both uploadVideo usecase and create a separate useCase for uploading just the thubnailURL, persisting the new url to DB.
+1: Implement thubnailURL generation in a separate useCase for uploading just the thubnailURL, persisting the new url to DB.
 
 2: Create VO's from User and Video entity. 
 
