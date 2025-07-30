@@ -3,14 +3,18 @@ import { VideoComment } from "../../../src/domain/VideoComment";
 
 test("Should create a new video", function () {
   const input = {
-    name: "New Video",
-    videoUrl: "www.s3.com",
-    category: "Alongamento",
-    description: "Alongamento estatico simples de posterior de coxas",
+    id: "fakeId",
+    name: "First Video",
+    thumbnailUrl: "www.fake-thumb.com",
+    category: "Streaching",
+    description: "Video description",
+    videoBuffer: Buffer.from("fake-content"),
+    thumbnailBuffer: Buffer.from("fake-thumb"),
   };
   const newVideo = Video.create(
+    input.id,
     input.name,
-    input.videoUrl,
+    input.thumbnailUrl,
     input.category,
     input.description,
   );
@@ -18,7 +22,7 @@ test("Should create a new video", function () {
   expect(newVideo.id).toBeDefined();
   expect(newVideo.name).toBeDefined();
   expect(newVideo.uploadDate).toBeDefined();
-  expect(newVideo.videoUrl).toBeDefined();
+  expect(newVideo.thumbnailUrl).toBeDefined();
   expect(newVideo.category).toBeDefined();
   expect(newVideo.description).toBeDefined();
   expect(newVideo.videoComments).toBeDefined();
@@ -26,37 +30,46 @@ test("Should create a new video", function () {
 
 test("Should update the video url", function () {
   const input = {
-    name: "New Video",
-    videoUrl: "www.s3.com",
-    category: "Alongamento",
-    description: "Alongamento estatico simples de posterior de coxas",
+    id: "fakeId",
+    name: "First Video",
+    thumbnailUrl: "www.fake-thumb.com",
+    category: "Streaching",
+    description: "Video description",
+    videoBuffer: Buffer.from("fake-content"),
+    thumbnailBuffer: Buffer.from("fake-thumb"),
   };
   const newVideo = Video.create(
+    input.id,
     input.name,
-    input.videoUrl,
+    input.thumbnailUrl,
     input.category,
     input.description,
   );
   const newUrl = "www.anotherbucket.com";
 
-  newVideo.updateVideoUrl(newUrl);
+  newVideo.updateThumbailUrl(newUrl);
 
-  expect(newVideo.videoUrl).toBe("www.anotherbucket.com");
+  expect(newVideo.thumbnailUrl).toBe("www.anotherbucket.com");
 });
 
 test("Should update the category", function () {
   const input = {
-    name: "New Video",
-    videoUrl: "www.s3.com",
-    category: "Alongamento",
-    description: "Alongamento estatico simples de posterior de coxas",
+    id: "fakeId",
+    name: "First Video",
+    thumbnailUrl: "www.fake-thumb.com",
+    category: "Streaching",
+    description: "Video description",
+    videoBuffer: Buffer.from("fake-content"),
+    thumbnailBuffer: Buffer.from("fake-thumb"),
   };
   const newVideo = Video.create(
+    input.id,
     input.name,
-    input.videoUrl,
+    input.thumbnailUrl,
     input.category,
     input.description,
   );
+
   const category = "Alongamento 2";
 
   newVideo.updateCategory(category);
@@ -66,14 +79,18 @@ test("Should update the category", function () {
 
 test("Should update the description", function () {
   const input = {
-    name: "New Video",
-    videoUrl: "www.s3.com",
-    category: "Alongamento",
-    description: "Alongamento estatico simples de posterior de coxas",
+    id: "fakeId",
+    name: "First Video",
+    thumbnailUrl: "www.fake-thumb.com",
+    category: "Streaching",
+    description: "Video description",
+    videoBuffer: Buffer.from("fake-content"),
+    thumbnailBuffer: Buffer.from("fake-thumb"),
   };
   const newVideo = Video.create(
+    input.id,
     input.name,
-    input.videoUrl,
+    input.thumbnailUrl,
     input.category,
     input.description,
   );
@@ -86,19 +103,21 @@ test("Should update the description", function () {
 
 test("Should add a comment to a video", async () => {
   const input = {
-    name: "New Video",
-    videoUrl: "www.s3.com",
-    category: "Alongamento",
-    description: "Alongamento estatico simples de posterior de coxas",
+    id: "fakeId",
+    name: "First Video",
+    thumbnailUrl: "www.fake-thumb.com",
+    category: "Streaching",
+    description: "Video description",
+    videoBuffer: Buffer.from("fake-content"),
+    thumbnailBuffer: Buffer.from("fake-thumb"),
   };
-
   const newVideo = Video.create(
+    input.id,
     input.name,
-    input.videoUrl,
+    input.thumbnailUrl,
     input.category,
     input.description,
   );
-
   const newComment = VideoComment.create("Leonardo Tireck", "Great video!");
   newVideo.addComment(newComment);
 
@@ -107,15 +126,18 @@ test("Should add a comment to a video", async () => {
 
 test("Should delete a comment form a video", async () => {
   const input = {
-    name: "New Video",
-    videoUrl: "www.s3.com",
-    category: "Alongamento",
-    description: "Alongamento estatico simples de posterior de coxas",
+    id: "fakeId",
+    name: "First Video",
+    thumbnailUrl: "www.fake-thumb.com",
+    category: "Streaching",
+    description: "Video description",
+    videoBuffer: Buffer.from("fake-content"),
+    thumbnailBuffer: Buffer.from("fake-thumb"),
   };
-
   const newVideo = Video.create(
+    input.id,
     input.name,
-    input.videoUrl,
+    input.thumbnailUrl,
     input.category,
     input.description,
   );

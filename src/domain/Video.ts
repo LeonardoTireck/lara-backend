@@ -1,4 +1,3 @@
-import crypto from "crypto";
 import { VideoComment } from "./VideoComment";
 
 export class Video {
@@ -6,24 +5,24 @@ export class Video {
     readonly id: string,
     readonly name: string,
     readonly uploadDate: Date,
-    private _videoUrl: string,
+    private _thumbnailUrl: string,
     private _category: string,
     private _description: string,
     private _videoComments: VideoComment[] = [],
   ) {}
 
   static create(
+    id: string,
     name: string,
-    videoUrl: string,
+    thumbnailUrl: string,
     category: string,
     description: string,
   ) {
-    const id = crypto.randomUUID();
-    return new Video(id, name, new Date(), videoUrl, category, description);
+    return new Video(id, name, new Date(), thumbnailUrl, category, description);
   }
 
-  get videoUrl() {
-    return this._videoUrl;
+  get thumbnailUrl() {
+    return this._thumbnailUrl;
   }
 
   get category() {
@@ -36,8 +35,8 @@ export class Video {
     return [...this._videoComments];
   }
 
-  updateVideoUrl(newUrl: string) {
-    this._videoUrl = newUrl;
+  updateThumbailUrl(newUrl: string) {
+    this._thumbnailUrl = newUrl;
   }
 
   updateCategory(category: string) {

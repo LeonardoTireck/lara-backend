@@ -11,13 +11,20 @@ test("Should upload a new video in memory", async () => {
     name: "First Video",
     category: "Streaching",
     description: "Video description",
-    fileBuffer: Buffer.from("fake-content"),
-    fileName: "firstvideo",
+    videoBuffer: Buffer.from("fake-content"),
+    thumbnailBuffer: Buffer.from("fake-thumb"),
   };
+
+  const nameWithUnderscore = input.name.replace(" ", "_");
 
   const video = await useCaseUploadVideo.execute(input);
 
   expect(video).toBeDefined();
-  expect(video.videoUrl).toBe("https://fake-s3.local/firstvideo");
+  expect(video.thumbnailUrl).toBe(
+    `https://fake-s3.local/thumbnails/${video.id}_${nameWithUnderscore}.jpg`,
+  );
+  expect(video.videoUrl).toBe(
+    `https://fake-s3.local/videos/${video.id}_${nameWithUnderscore}.mp4`,
+  );
   expect(video.category).toBe("Streaching");
 });

@@ -12,7 +12,7 @@ export class GetAllVideosMetadata {
       id: v.id,
       name: v.name,
       uploadDate: v.uploadDate,
-      videoUrl: v.videoUrl,
+      thumbnailUrl: v.thumbnailUrl,
       category: v.category,
       description: v.description,
       comments: v.videoComments,
@@ -24,7 +24,7 @@ type Output = {
   id: string;
   name: string;
   uploadDate: Date;
-  videoUrl: string;
+  thumbnailUrl: string;
   category: string;
   description: string;
   comments: VideoComment[];

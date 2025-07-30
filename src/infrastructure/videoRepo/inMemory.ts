@@ -24,8 +24,8 @@ export class InMemoryVideoRepository implements VideoMetadataRepository {
     if (video.description) {
       videoToBeUpdated.updateDescription(video.description);
     }
-    if (video.videoUrl) {
-      videoToBeUpdated.updateVideoUrl(video.videoUrl);
+    if (video.thumbnailUrl) {
+      videoToBeUpdated.updateThumbailUrl(video.thumbnailUrl);
     }
   }
 }

@@ -13,18 +13,17 @@ test("Should return all videos metadata", async () => {
     name: "First Video",
     category: "Streaching",
     description: "Video description",
-    fileBuffer: Buffer.from("fake-content"),
-    fileName: "firstvideo",
+    videoBuffer: Buffer.from("fake-content"),
+    thumbnailBuffer: Buffer.from("fake-thumb"),
   };
-
   await useCaseUploadVideo.execute(input);
 
   const input2 = {
     name: "Second Video",
-    category: "Exercise",
+    category: "Streaching",
     description: "Video description",
-    fileBuffer: Buffer.from("fake-content"),
-    fileName: "secondvideo",
+    videoBuffer: Buffer.from("fake-content"),
+    thumbnailBuffer: Buffer.from("fake-thumb"),
   };
 
   await useCaseUploadVideo.execute(input2);
