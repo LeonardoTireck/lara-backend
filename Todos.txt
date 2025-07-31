@@ -1,5 +1,3 @@
-1: Implement thubnailURL generation in a separate useCase for uploading just the thubnailURL, persisting the new url to DB.
+*: Create VO's from User and Video entity. 
 
-2: Create VO's from User and Video entity. 
-
-3: Create a useCase for generating a pre-signed video url.
+*: Create a useCase for generating a pre-signed video url.
