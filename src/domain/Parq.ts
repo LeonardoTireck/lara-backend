@@ -1,6 +1,7 @@
 export class Parq {
   private _questions: string[];
   private _answers: string[];
+
   private constructor(questions: string[], answers: string[]) {
     this._questions = questions;
     this._answers = answers;

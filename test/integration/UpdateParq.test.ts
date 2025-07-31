@@ -34,5 +34,6 @@ test("Should update a user's Parq", async () => {
 
   expect(updatedUser).toBeDefined();
   expect(updatedUser.parq).toBeDefined();
-  expect(updatedUser.parq?.questions).toBeDefined();
+  expect(updatedUser.parq.questions[0]).toBe("Question1");
+  expect(updatedUser.parq.answers[0]).toBe("Answer1");
 });

@@ -124,6 +124,7 @@ export class User {
   }
 
   updateParq(newParq: Parq) {
+    if (!newParq) throw new Error("Invalid Parq");
     this._parq = newParq;
     this._lastParqUpdate = new Date();
   }
