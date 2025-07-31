@@ -1,6 +1,6 @@
 import PasswordHasher from "../ports/PasswordHasher";
-import { validatePassword } from "../../domain/ValidatePassword";
 import { UserRepository } from "../ports/UserRepository";
+import { Password } from "../../domain/Password";
 
 export class UpdateClientPersonalInfo {
   constructor(
@@ -18,10 +18,9 @@ export class UpdateClientPersonalInfo {
       user.updatePhone(input.phone);
     }
     if (input.plainTextPassword) {
-      if (!validatePassword(input.plainTextPassword))
-        throw new Error("Password does not meet criteria.");
+      const newPassword = new Password(input.plainTextPassword);
       const newHashedPassword = await this.passwordHasher.hash(
-        input.plainTextPassword,
+        newPassword.value,
       );
       user.updatePassword(newHashedPassword);
     }

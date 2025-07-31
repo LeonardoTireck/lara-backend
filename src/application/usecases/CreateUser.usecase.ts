@@ -3,7 +3,7 @@ import { TrainingPlan } from "../../domain/TrainingPlan";
 import { User } from "../../domain/User";
 import { UserRepository } from "../ports/UserRepository";
 import { UserType } from "../../domain/UserType";
-import { validatePassword } from "../../domain/ValidatePassword";
+import { Password } from "../../domain/Password";
 
 export class CreateUser {
   constructor(
@@ -12,10 +12,8 @@ export class CreateUser {
   ) {}
 
   async execute(input: Input): Promise<Output> {
-    if (!validatePassword(input.password))
-      throw new Error("Password does not meet criteria.");
-
-    const hashedPassword = await this.passwordHasher.hash(input.password);
+    const newPassword = new Password(input.password).value;
+    const hashedPassword = await this.passwordHasher.hash(newPassword);
 
     const user = User.create(
       input.name,

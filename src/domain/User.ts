@@ -3,28 +3,40 @@ import { Parq } from "./Parq";
 import { TrainingPlan } from "./TrainingPlan";
 import { TrainingSession } from "./TrainingSession";
 import { UserType } from "./UserType";
-import { validateBrazilPhone } from "./ValidateBrazilPhone";
-import { validateCPF } from "./ValidateCPF";
-import { validateEmail } from "./ValidateEmail";
-import { validateName } from "./ValidateName";
+import { Name } from "./Name";
+import { Email } from "./Email";
+import { Document } from "./Document";
+import { Phone } from "./Phone";
 
 export class User {
-  private constructor(
+  private _name: Name;
+  private _email: Email;
+  private _documentCPF: Document;
+  private _phone: Phone;
+  private _hashedPassword: string;
+
+  constructor(
     readonly id: string,
     readonly userType: UserType,
-    readonly name: string,
+    name: string,
     readonly dateOfFirstPlanIngress: Date,
-    readonly documentCPF: string,
+    documentCPF: string,
     readonly dateOfBirth: Date,
-    private _email: string,
-    private _phone: string,
-    private _hashedPassword: string,
+    email: string,
+    phone: string,
+    hashedPassword: string,
     private _activePlan?: TrainingPlan,
     private _pastPlans: TrainingPlan[] = [],
     private _parq?: Parq,
     private _lastParqUpdate?: Date,
     private _trainingSessions: TrainingSession[] = [],
-  ) {}
+  ) {
+    this._name = new Name(name);
+    this._email = new Email(email);
+    this._documentCPF = new Document(documentCPF);
+    this._phone = new Phone(phone);
+    this._hashedPassword = hashedPassword;
+  }
 
   static create(
     name: string,
@@ -32,17 +44,10 @@ export class User {
     documentCPF: string,
     phone: string,
     dateOfBirth: Date,
-    hashedPassword: string,
+    password: string,
     activePlan: TrainingPlan,
     userType: UserType,
   ) {
-    if (!validateName(name)) throw new Error("Name does not meet criteria");
-    if (!validateEmail(email)) throw new Error("Email does not meet criteria.");
-    if (!validateCPF(documentCPF))
-      throw new Error("Document does not meet criteria.");
-    if (!validateBrazilPhone(phone))
-      throw new Error("Phone does not meet criteria.");
-
     const id = crypto.randomUUID();
 
     return new User(
@@ -52,19 +57,26 @@ export class User {
       new Date(),
       documentCPF,
       dateOfBirth,
-      email.trim(),
-      phone.trim(),
-      hashedPassword,
+      email,
+      phone,
+      password,
       activePlan,
     );
   }
+  get name() {
+    return this._name.value;
+  }
 
   get email() {
-    return this._email;
+    return this._email.value;
+  }
+
+  get documentCPF() {
+    return this._documentCPF.value;
   }
 
   get phone() {
-    return this._phone;
+    return this._phone.value;
   }
 
   get hashedPassword() {
@@ -92,21 +104,15 @@ export class User {
   }
 
   updateEmail(newEmail: string) {
-    if (!validateEmail(newEmail))
-      throw new Error("Email does not meet criteria.");
-    this._email = newEmail;
+    this._email = new Email(newEmail);
   }
 
   updatePhone(newPhone: string) {
-    if (!validateBrazilPhone(newPhone))
-      throw new Error("Phone does not meet criteria.");
-    this._phone = newPhone;
+    this._phone = new Phone(newPhone);
   }
 
-  updatePassword(newHashedPassword: string) {
-    if (!newHashedPassword || newHashedPassword.length < 10)
-      throw new Error("Invalid hashed password");
-    this._hashedPassword = newHashedPassword;
+  updatePassword(newHashedPasword: string) {
+    this._hashedPassword = newHashedPasword;
   }
 
   updateTrainingSessions(trainingSessions: TrainingSession[]) {
