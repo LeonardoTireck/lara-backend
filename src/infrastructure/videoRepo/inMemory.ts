@@ -16,16 +16,18 @@ export class InMemoryVideoRepository implements VideoMetadataRepository {
   }
 
   async update(video: Video): Promise<void> {
-    const videoToBeUpdated = this.videos.find((v) => v.id == video.id);
+    let videoToBeUpdated = this.videos.find((v) => v.id == video.id);
     if (!videoToBeUpdated) throw new Error("Video not found.");
-    if (video.category) {
-      videoToBeUpdated.updateCategory(video.category);
-    }
-    if (video.description) {
-      videoToBeUpdated.updateDescription(video.description);
-    }
-    if (video.thumbnailUrl) {
-      videoToBeUpdated.updateThumbailUrl(video.thumbnailUrl);
-    }
+
+    videoToBeUpdated.updateCategory(video.category);
+    videoToBeUpdated.updateDescription(video.description);
+    videoToBeUpdated.updateThumbnailUrl(video.thumbnailUrl);
+  }
+  async delete(videoId: string): Promise<void> {
+    const videoToBeDeletedIndex = this.videos.findIndex(
+      (video) => video.id == videoId,
+    );
+    if (!videoToBeDeletedIndex) throw new Error("Video not found.");
+    this.videos.splice(videoToBeDeletedIndex, 1);
   }
 }

@@ -13,4 +13,9 @@ export class InMemoryVideoStorage implements VideoStorageService {
   async generatePresignedUrl(key: string): Promise<string> {
     return `https://fake-s3.local/${key}`;
   }
+
+  // this method is strictly for testing purposes.
+  async getFileInMemory(key: string) {
+    return this.storage.get(key);
+  }
 }

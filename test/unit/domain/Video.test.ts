@@ -43,7 +43,7 @@ test("Should update the video url", function () {
   );
   const newUrl = "www.anotherbucket.com";
 
-  newVideo.updateThumbailUrl(newUrl);
+  newVideo.updateThumbnailUrl(newUrl);
 
   expect(newVideo.thumbnailUrl).toBe("www.anotherbucket.com");
 });

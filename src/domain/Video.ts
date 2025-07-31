@@ -36,7 +36,7 @@ export class Video {
     return [...this._videoComments];
   }
 
-  updateThumbailUrl(newUrl: string) {
+  updateThumbnailUrl(newUrl: string) {
     this._thumbnailUrl = newUrl;
   }
 

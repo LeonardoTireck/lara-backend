@@ -17,17 +17,25 @@ export class UploadVideo {
       input.description,
     );
 
+    const thumbnailKey = StorageKeyBuilder.build(
+      "thumbnail",
+      input.name,
+      video.id,
+    );
+
     const thumbnailUrl = await this.storageService.upload(
       input.thumbnailBuffer,
-      StorageKeyBuilder.build("thumbnail", input.name, video.id),
+      thumbnailKey,
     );
+
+    const videoKey = StorageKeyBuilder.build("video", input.name, video.id);
 
     const videoUrl = await this.storageService.upload(
       input.videoBuffer,
-      StorageKeyBuilder.build("video", input.name, video.id),
+      videoKey,
     );
 
-    video.updateThumbailUrl(thumbnailUrl);
+    video.updateThumbnailUrl(thumbnailUrl);
 
     await this.metadataRepo.save(video);
 
