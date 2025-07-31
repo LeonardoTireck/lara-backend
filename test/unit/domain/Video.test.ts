@@ -3,7 +3,6 @@ import { VideoComment } from "../../../src/domain/VideoComment";
 
 test("Should create a new video", function () {
   const input = {
-    id: "fakeId",
     name: "First Video",
     thumbnailUrl: "www.fake-thumb.com",
     category: "Streaching",
@@ -12,7 +11,6 @@ test("Should create a new video", function () {
     thumbnailBuffer: Buffer.from("fake-thumb"),
   };
   const newVideo = Video.create(
-    input.id,
     input.name,
     input.thumbnailUrl,
     input.category,
@@ -30,7 +28,6 @@ test("Should create a new video", function () {
 
 test("Should update the video url", function () {
   const input = {
-    id: "fakeId",
     name: "First Video",
     thumbnailUrl: "www.fake-thumb.com",
     category: "Streaching",
@@ -39,7 +36,6 @@ test("Should update the video url", function () {
     thumbnailBuffer: Buffer.from("fake-thumb"),
   };
   const newVideo = Video.create(
-    input.id,
     input.name,
     input.thumbnailUrl,
     input.category,
@@ -54,7 +50,6 @@ test("Should update the video url", function () {
 
 test("Should update the category", function () {
   const input = {
-    id: "fakeId",
     name: "First Video",
     thumbnailUrl: "www.fake-thumb.com",
     category: "Streaching",
@@ -63,7 +58,6 @@ test("Should update the category", function () {
     thumbnailBuffer: Buffer.from("fake-thumb"),
   };
   const newVideo = Video.create(
-    input.id,
     input.name,
     input.thumbnailUrl,
     input.category,
@@ -79,7 +73,6 @@ test("Should update the category", function () {
 
 test("Should update the description", function () {
   const input = {
-    id: "fakeId",
     name: "First Video",
     thumbnailUrl: "www.fake-thumb.com",
     category: "Streaching",
@@ -88,7 +81,6 @@ test("Should update the description", function () {
     thumbnailBuffer: Buffer.from("fake-thumb"),
   };
   const newVideo = Video.create(
-    input.id,
     input.name,
     input.thumbnailUrl,
     input.category,
@@ -103,7 +95,6 @@ test("Should update the description", function () {
 
 test("Should add a comment to a video", async () => {
   const input = {
-    id: "fakeId",
     name: "First Video",
     thumbnailUrl: "www.fake-thumb.com",
     category: "Streaching",
@@ -112,7 +103,6 @@ test("Should add a comment to a video", async () => {
     thumbnailBuffer: Buffer.from("fake-thumb"),
   };
   const newVideo = Video.create(
-    input.id,
     input.name,
     input.thumbnailUrl,
     input.category,
@@ -126,7 +116,6 @@ test("Should add a comment to a video", async () => {
 
 test("Should delete a comment form a video", async () => {
   const input = {
-    id: "fakeId",
     name: "First Video",
     thumbnailUrl: "www.fake-thumb.com",
     category: "Streaching",
@@ -135,7 +124,6 @@ test("Should delete a comment form a video", async () => {
     thumbnailBuffer: Buffer.from("fake-thumb"),
   };
   const newVideo = Video.create(
-    input.id,
     input.name,
     input.thumbnailUrl,
     input.category,

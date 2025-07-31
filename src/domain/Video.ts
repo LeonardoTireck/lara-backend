@@ -1,4 +1,5 @@
 import { VideoComment } from "./VideoComment";
+import crypto from "crypto";
 
 export class Video {
   private constructor(
@@ -12,12 +13,12 @@ export class Video {
   ) {}
 
   static create(
-    id: string,
     name: string,
     thumbnailUrl: string,
     category: string,
     description: string,
   ) {
+    const id = crypto.randomUUID();
     return new Video(id, name, new Date(), thumbnailUrl, category, description);
   }
 

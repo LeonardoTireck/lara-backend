@@ -2,7 +2,6 @@ import { Video } from "../../domain/Video";
 import { VideoStorageService } from "../ports/VideoStorageService";
 import { VideoMetadataRepository } from "../ports/VideoMetadataRepository";
 import { StorageKeyBuilder } from "../../domain/StorageKeyBuilder";
-import crypto from "crypto";
 
 export class UploadVideo {
   constructor(
@@ -11,25 +10,25 @@ export class UploadVideo {
   ) {}
 
   async execute(input: Input): Promise<Output> {
-    const id = crypto.randomUUID();
+    const video = Video.create(
+      input.name,
+      "",
+      input.category,
+      input.description,
+    );
 
     const thumbnailUrl = await this.storageService.upload(
       input.thumbnailBuffer,
-      StorageKeyBuilder.build("thumbnail", input.name, id),
+      StorageKeyBuilder.build("thumbnail", input.name, video.id),
     );
 
     const videoUrl = await this.storageService.upload(
       input.videoBuffer,
-      StorageKeyBuilder.build("video", input.name, id),
+      StorageKeyBuilder.build("video", input.name, video.id),
     );
 
-    const video = Video.create(
-      id,
-      input.name,
-      thumbnailUrl,
-      input.category,
-      input.description,
-    );
+    video.updateThumbailUrl(thumbnailUrl);
+
     await this.metadataRepo.save(video);
 
     return {
