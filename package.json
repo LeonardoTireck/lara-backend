@@ -6,7 +6,8 @@
     "test": "jest",
     "dev": "ts-node src/index.ts",
     "docker:build": "docker build -t lara_backend docker",
-    "docker:run": "docker run -it -v $(pwd)/.:/app lara_backend bash"
+    "docker:run": "docker run -it -v $(pwd)/.:/app --name lara_container lara_backend bash",
+    "docker:start": "docker start -i lara_container"
   },
   "license": "ISC",
   "devDependencies": {
