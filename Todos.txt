@@ -1,3 +1,5 @@
-*: Create VO's from User and Video entity. 
-
 *: Create a useCase for generating a pre-signed video url.
+
+*: Create a useCase for adding a comment to a video.
+
+*: Implement a web server like Express, decoupled with interfaces.
