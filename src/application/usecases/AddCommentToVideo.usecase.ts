@@ -1,10 +1,24 @@
+import { VideoComment } from "../../domain/VideoComment";
 import { VideoMetadataRepository } from "../ports/VideoMetadataRepository";
 
 export class AddCommentToVideo {
   constructor(private videoRepo: VideoMetadataRepository) {}
 
   async execute(input: Input): Promise<Output> {
-    return {};
+    const video = await this.videoRepo.findById(input.videoId);
+    if (!video) throw new Error("Video not found.");
+
+    const newComment = VideoComment.create(input.author, input.text);
+    video.addComment(newComment);
+
+    await this.videoRepo.save(video);
+
+    return {
+      videoId: video.id,
+      commentId: newComment.id,
+      author: newComment.author,
+      text: newComment.text,
+    };
   }
 }
 
@@ -16,6 +30,7 @@ type Input = {
 
 type Output = {
   videoId: string;
+  commentId: string;
   author: string;
   text: string;
 };

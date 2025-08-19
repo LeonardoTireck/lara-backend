@@ -1,3 +1,4 @@
+import { AddCommentToVideo } from "../../src/application/usecases/AddCommentToVideo.usecase";
 import { UploadVideo } from "../../src/application/usecases/UploadVideo.usecase";
 import { InMemoryVideoRepository } from "../../src/infrastructure/videoRepo/inMemory";
 import { InMemoryVideoStorage } from "../../src/infrastructure/videoStorage/inMemory";
