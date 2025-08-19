@@ -26,7 +26,11 @@ test("Should add a comment to a video", async () => {
     text: "Fake comment",
   };
 
-  const outputAddComment = useCaseAddCommentToVideo.execute(inputForAddComment);
+  const outputAddComment =
+    await useCaseAddCommentToVideo.execute(inputForAddComment);
 
-  expect(outputAddComment).toBeDefined();
+  expect(outputAddComment.commentId).toBeDefined();
+  expect(outputAddComment.videoId).toBe(outputUploadvideo.id);
+  expect(outputAddComment.author).toBe(inputForAddComment.author);
+  expect(outputAddComment.text).toBe(inputForAddComment.text);
 });
