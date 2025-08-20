@@ -23,7 +23,7 @@ export class CreateUser {
       input.dateOfBirth,
       hashedPassword,
       input.activePlan,
-      input.userType,
+      input.userType || "client",
     );
 
     await this.userRepo.save(user);
@@ -43,7 +43,7 @@ type Input = {
   phone: string;
   dateOfBirth: Date;
   activePlan: TrainingPlan;
-  userType: UserType;
+  userType?: UserType;
 };
 
 type Output = {
