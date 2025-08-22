@@ -10,8 +10,9 @@
     "docker:start": "docker start -i lara_container",
     "docker:stop": "docker stop lara_container",
     "docker:exec": "docker exec -i -t lara_container bash",
-    "docker:up": "docker compose -f ./docker/docker-compose.yaml up -d",
-    "docker:down": "docker compose -f ./docker/docker-compose.yaml down",
+    "compose:up": "docker compose -f ./docker/docker-compose.yaml up -d --build",
+    "compose:down": "docker compose -f ./docker/docker-compose.yaml -v down",
+    "compose:exec": "docker compose -f docker/docker-compose.yaml exec -it lara_backend bash",
     "db:createtable": "npx ts-node src/infrastructure/dynamodb/CreateUserTable.ts"
   },
   "license": "ISC",

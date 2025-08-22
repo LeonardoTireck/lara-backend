@@ -1,4 +1,12 @@
 services:
+  lara_backend:
+    build:
+      context: .
+    volumes:
+      - ..:/app
+    working_dir: /app
+    command: sleep infinity
+
   dynamodb-local:
     command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
     image: "amazon/dynamodb-local:latest"
