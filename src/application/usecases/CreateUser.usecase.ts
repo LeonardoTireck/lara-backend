@@ -20,7 +20,7 @@ export class CreateUser {
       input.email,
       input.documentCPF,
       input.phone,
-      input.dateOfBirth,
+      new Date(input.dateOfBirth),
       hashedPassword,
       input.activePlan,
       input.userType || "client",

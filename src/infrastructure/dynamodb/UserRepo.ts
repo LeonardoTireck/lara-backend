@@ -3,9 +3,9 @@ import { UserRepository } from "../../application/ports/UserRepository";
 import { User } from "../../domain/User";
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 import "dotenv/config";
+import { UserType } from "../../domain/UserType";
 
 export class DynamoDbUserRepo implements UserRepository {
-  private client;
   private docClient;
 
   constructor() {
@@ -14,7 +14,7 @@ export class DynamoDbUserRepo implements UserRepository {
     const region = `${process.env.AWS_REGION}`;
     const endpoint = `${process.env.DDB_ENDPOINT}`;
 
-    this.client = new DynamoDBClient({
+    const client = new DynamoDBClient({
       region: region,
       endpoint: endpoint,
       credentials: {
@@ -22,7 +22,7 @@ export class DynamoDbUserRepo implements UserRepository {
         secretAccessKey: secretAccessKey,
       },
     });
-    this.docClient = DynamoDBDocumentClient.from(this.client);
+    this.docClient = DynamoDBDocumentClient.from(client);
   }
 
   async save(user: User): Promise<void> {
@@ -35,19 +35,19 @@ export class DynamoDbUserRepo implements UserRepository {
         DocumentCPF: user.documentCPF,
         Phone: user.phone,
         HashedPassword: user.hashedPassword,
-        DateOfBirth: user.dateOfBirth,
-        DateOfFirstPlanIngress: user.dateOfFirstPlanIngress,
+        DateOfBirth: user.dateOfBirth.toISOString(),
+        DateOfFirstPlanIngress: user.dateOfFirstPlanIngress.toISOString(),
         ActivePlan: user.activePlan,
         PastPlans: user.pastPlans,
         Parq: user.parq,
-        LastParqUpdate: user.lastParqUpdate,
+        LastParqUpdate: user.lastParqUpdate?.toISOString(),
         TrainingSessions: user.trainingSessions,
         UserType: user.userType,
       },
     });
-    const response = await this.docClient.send(command);
-    return;
+    await this.docClient.send(command);
   }
+
   update(user: User): Promise<void> {
     throw new Error("Method not implemented.");
   }
@@ -57,21 +57,23 @@ export class DynamoDbUserRepo implements UserRepository {
   getByEmail(userEmail: string): Promise<User | undefined> {
     throw new Error("Method not implemented.");
   }
+
   async getAll(): Promise<User[] | undefined> {
     const usersArray: User[] = [];
     const command = new ScanCommand({
       TableName: "Users",
     });
 
-    const response = await this.client.send(command);
+    const response = await this.docClient.send(command);
     if (!response.Items) throw new Error("No users found.");
 
-    response.Items.forEach((element) => {
-      console.log(element.Id, element.Name);
+    response.Items.map((u) => {
+      console.log(u);
     });
 
     return;
   }
+
   delete(userId: string): Promise<User | undefined> {
     throw new Error("Method not implemented.");
   }

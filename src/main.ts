@@ -11,7 +11,7 @@ app.use(express.json());
 const repo = new DynamoDbUserRepo();
 const hasher = new BcryptPasswordHasher(+process.env.BCRYPT_SALTROUNDS!);
 
-app.get("/users", async (req: Request, res: Response) => {
+app.get("/users", async (_req: Request, res: Response) => {
   const users = await repo.getAll();
 
   res.json(users);
