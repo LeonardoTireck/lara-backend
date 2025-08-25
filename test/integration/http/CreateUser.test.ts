@@ -2,7 +2,7 @@ import "dotenv/config";
 import { TrainingPlan } from "../../../src/domain/TrainingPlan";
 import axios from "axios";
 
-test("Should create a user using express", async () => {
+test("Should create a user using express and dynamodb", async () => {
   const input = {
     name: "Leonardo Tireck",
     email: "leo@test.com",
@@ -18,5 +18,6 @@ test("Should create a user using express", async () => {
     input,
   );
 
-  expect(outputHttpCreateUser).toBeDefined();
+  expect(outputHttpCreateUser.data.name).toBe(input.name);
+  expect(outputHttpCreateUser.data.email).toBe(input.email);
 });

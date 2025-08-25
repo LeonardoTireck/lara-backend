@@ -1,14 +1,14 @@
 import express, { Request, Response } from "express";
 import { CreateUser } from "./application/usecases/CreateUser.usecase";
 import "dotenv/config";
-import { InMemoryUserRepo } from "./infrastructure/UserRepo/InMemory";
 import BcryptPasswordHasher from "./infrastructure/Hashing/BcryptPasswordHasher";
+import { DynamoDbUserRepo } from "./infrastructure/dynamodb/UserRepo";
 
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(express.json());
 
-const repo = new InMemoryUserRepo();
+const repo = new DynamoDbUserRepo();
 const hasher = new BcryptPasswordHasher(+process.env.BCRYPT_SALTROUNDS!);
 
 app.get("/users", async (req: Request, res: Response) => {
