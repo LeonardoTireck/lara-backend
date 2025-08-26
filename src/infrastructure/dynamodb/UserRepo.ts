@@ -57,20 +57,20 @@ export class DynamoDbUserRepo implements UserRepository {
 
     response.Items.map((u: any) => {
       let newUser = new User(
-        String(u.Id),
-        u.UserType as UserType,
-        String(u.Name), // ensure it's a string
-        new Date(String(u.DateOfFirstPlanIngress)),
-        String(u.DocumentCPF),
-        new Date(String(u.DateOfBirth)),
-        String(u.Email),
-        String(u.Phone),
-        String(u.HashedPassword),
-        u.ActivePlan as any,
-        u.PastPlans as any,
+        String(u.Id.S!),
+        u.UserType.S! as UserType,
+        String(u.Name.S!), // ensure it's a string
+        new Date(u.DateOfFirstPlanIngress.S!),
+        String(u.DocumentCPF.S!),
+        new Date(u.DateOfBirth.S!),
+        String(u.Email.S!),
+        String(u.Phone.S!),
+        String(u.HashedPassword.S!),
+        u.ActivePlan.M! as any,
+        u.PastPlans.L! as any,
         u.Parq as any,
         u.LastParqUpdate as any,
-        u.TrainingSessions as any,
+        u.TrainingSessions.L! as any,
       );
 
       usersArray.push(newUser);

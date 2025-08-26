@@ -2,7 +2,6 @@ export class Name {
   private _value: string;
 
   constructor(value: string) {
-    console.log("Creating a new name with:", value);
     if (!this.isValid(value)) throw new Error("Name does not meet criteria.");
     this._value = value;
   }
