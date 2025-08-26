@@ -1,4 +1,5 @@
-import { DynamoDBClient, ScanCommand } from "@aws-sdk/client-dynamodb";
+import { ScanCommand } from "@aws-sdk/client-dynamodb";
+import { client } from "./DynamoDBClient";
 import { UserRepository } from "../../application/ports/UserRepository";
 import { User } from "../../domain/User";
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
@@ -9,19 +10,6 @@ export class DynamoDbUserRepo implements UserRepository {
   private docClient;
 
   constructor() {
-    const accessKeyId = `${process.env.AWS_ACCESS_KEY_ID}`;
-    const secretAccessKey = `${process.env.AWS_SECRET_ACCESS_KEY}`;
-    const region = `${process.env.AWS_REGION}`;
-    const endpoint = `${process.env.DDB_ENDPOINT}`;
-
-    const client = new DynamoDBClient({
-      region: region,
-      endpoint: endpoint,
-      credentials: {
-        accessKeyId: accessKeyId,
-        secretAccessKey: secretAccessKey,
-      },
-    });
     this.docClient = DynamoDBDocumentClient.from(client);
   }
 
@@ -67,11 +55,28 @@ export class DynamoDbUserRepo implements UserRepository {
     const response = await this.docClient.send(command);
     if (!response.Items) throw new Error("No users found.");
 
-    response.Items.map((u) => {
-      console.log(u);
-    });
+    response.Items.map((u: any) => {
+      let newUser = new User(
+        String(u.Id),
+        u.UserType as UserType,
+        String(u.Name), // ensure it's a string
+        new Date(String(u.DateOfFirstPlanIngress)),
+        String(u.DocumentCPF),
+        new Date(String(u.DateOfBirth)),
+        String(u.Email),
+        String(u.Phone),
+        String(u.HashedPassword),
+        u.ActivePlan as any,
+        u.PastPlans as any,
+        u.Parq as any,
+        u.LastParqUpdate as any,
+        u.TrainingSessions as any,
+      );
 
-    return;
+      usersArray.push(newUser);
+    });
+    console.log(usersArray);
+    return usersArray;
   }
 
   delete(userId: string): Promise<User | undefined> {
