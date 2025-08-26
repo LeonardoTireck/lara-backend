@@ -3,34 +3,39 @@ import { UploadVideo } from "../../src/application/usecases/UploadVideo.usecase"
 import { InMemoryVideoRepository } from "../../src/infrastructure/videoRepo/inMemory";
 import { InMemoryVideoStorage } from "../../src/infrastructure/videoStorage/inMemory";
 
-test("Should return all videos metadata", async () => {
-  const videoRepo = new InMemoryVideoRepository();
-  const useCaseGetAllVideos = new GetAllVideosMetadata(videoRepo);
-  const storageService = new InMemoryVideoStorage();
-  const useCaseUploadVideo = new UploadVideo(videoRepo, storageService);
+describe("GetAllVideosMetadata Integration Test", () => {
+  let useCaseGetAllVideos: GetAllVideosMetadata;
 
-  const input = {
-    name: "First Video",
-    category: "Streaching",
-    description: "Video description",
-    videoBuffer: Buffer.from("fake-content"),
-    thumbnailBuffer: Buffer.from("fake-thumb"),
-  };
-  await useCaseUploadVideo.execute(input);
+  beforeEach(async () => {
+    const videoRepo = new InMemoryVideoRepository();
+    useCaseGetAllVideos = new GetAllVideosMetadata(videoRepo);
+    const storageService = new InMemoryVideoStorage();
+    const useCaseUploadVideo = new UploadVideo(videoRepo, storageService);
 
-  const input2 = {
-    name: "Second Video",
-    category: "Streaching",
-    description: "Video description",
-    videoBuffer: Buffer.from("fake-content"),
-    thumbnailBuffer: Buffer.from("fake-thumb"),
-  };
+    const input1 = {
+      name: "First Video",
+      category: "Stretching",
+      description: "Video description",
+      videoBuffer: Buffer.from("fake-content"),
+      thumbnailBuffer: Buffer.from("fake-thumb"),
+    };
+    await useCaseUploadVideo.execute(input1);
 
-  await useCaseUploadVideo.execute(input2);
+    const input2 = {
+      name: "Second Video",
+      category: "Stretching",
+      description: "Video description",
+      videoBuffer: Buffer.from("fake-content"),
+      thumbnailBuffer: Buffer.from("fake-thumb"),
+    };
+    await useCaseUploadVideo.execute(input2);
+  });
 
-  const videos = await useCaseGetAllVideos.execute();
+  test("Should return all videos metadata", async () => {
+    const videos = await useCaseGetAllVideos.execute();
 
-  expect(videos).toHaveLength(2);
-  expect(videos[0].name).toBe("First Video");
-  expect(videos[1].name).toBe("Second Video");
+    expect(videos).toHaveLength(2);
+    expect(videos[0].name).toBe("First Video");
+    expect(videos[1].name).toBe("Second Video");
+  });
 });

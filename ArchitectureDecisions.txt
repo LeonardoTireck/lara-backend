@@ -1,0 +1,53 @@
+# Architecture Decisions Record
+
+This document records the key technology and architectural decisions made for this project. The goal is to provide context and reasoning for why certain choices were made.
+
+## 1. Core Technologies
+
+### Runtime & Language: Node.js & TypeScript
+
+-   **Technology**: Node.js as the server-side runtime and TypeScript as the primary language.
+-   **Why**:
+    -   **Node.js** was chosen for its event-driven, non-blocking I/O model, which is highly efficient for building scalable, real-time APIs. Its vast `npm` ecosystem provides libraries for nearly any required functionality.
+    -   **TypeScript** was chosen to add static typing to JavaScript. This enhances developer productivity, improves code quality by catching errors during development, and makes the codebase more robust, readable, and maintainable as it grows.
+
+### Web Framework: Express.js
+
+-   **Technology**: Express.js
+-   **Why**: Express is a minimalist, fast, and unopinionated web framework for Node.js. Its simplicity provides a flexible foundation for building the API without imposing a rigid structure. The extensive middleware ecosystem allows for easy integration of functionalities like authentication, logging, and error handling. This choice aligns with the goal of a decoupled architecture where the framework is just a detail.
+
+### Database: AWS DynamoDB
+
+-   **Technology**: AWS DynamoDB
+-   **Why**: DynamoDB is a fully managed, serverless NoSQL database that offers high performance at any scale.
+    -   **Scalability**: It scales seamlessly to handle high traffic loads, which is ideal for a growing user base.
+    -   **Flexibility**: As a NoSQL database, its flexible schema is well-suited for evolving application requirements without requiring complex migrations.
+    -   **Managed Service**: Being serverless, it removes the operational overhead of managing database servers, backups, and scaling.
+    -   **Local Development**: The availability of `dynamodb-local` allows for efficient and cost-free local development and testing, as configured in the `docker-compose.yaml` file.
+
+### Testing Framework: Jest
+
+-   **Technology**: Jest
+-   **Why**: Jest is an all-in-one testing framework that provides a test runner, assertion library, and mocking capabilities out of the box. Its "zero-config" approach for many projects, combined with powerful features like snapshot testing and parallel test execution, makes it an excellent choice for writing both unit and integration tests in a TypeScript/Node.js environment.
+
+## 2. Architectural Patterns
+
+### Clean / Hexagonal Architecture
+
+-   **Pattern**: The project is structured following the principles of Clean Architecture (also known as Hexagonal or Ports and Adapters Architecture). This is visible in the separation of code into `domain`, `application`, and `infrastructure` layers.
+-   **Why**:
+    -   **Decoupling**: This pattern decouples the core business logic (domain entities and application use cases) from external concerns like the database, web framework, and other services.
+    -   **Testability**: The core logic is independent of any infrastructure, making it easy to test in isolation with mock dependencies.
+    -   **Maintainability & Flexibility**: It allows for swapping out infrastructure components with minimal impact on the core application. For example, the database could be changed from DynamoDB to another provider by simply creating a new repository implementation, without altering the use cases or domain entities.
+
+### Dependency Injection (DI)
+
+-   **Pattern**: Dependencies are explicitly "injected" into classes (primarily via constructors) rather than being created internally.
+-   **Why**: DI is a core tenet of Clean Architecture. It enables loose coupling between components. By injecting dependencies, we can easily replace them with mock implementations during testing (e.g., injecting an `InMemoryUserRepository` instead of the real `DynamoDBUserRepo`). This is the foundation for the "Dependency Injection Container" task noted in `Todos.txt`, which aims to automate this process.
+
+## 3. Tooling & Infrastructure
+
+### Containerization: Docker
+
+-   **Technology**: Docker and Docker Compose.
+-   **Why**: Docker is used to containerize the application, ensuring a consistent and reproducible environment for both development and production. The `docker-compose.yaml` file simplifies the local development setup by defining and running the entire multi-service application stack (including the application server and the DynamoDB local instance) with a single command. This eliminates "it works on my machine" problems and streamlines the onboarding of new developers.

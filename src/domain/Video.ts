@@ -56,7 +56,7 @@ export class Video {
     const commentIndex = this._videoComments.findIndex(
       (comment) => comment.id == commentId,
     );
-    if (commentIndex === undefined) throw new Error("Comment not found.");
+    if (commentIndex === -1) throw new Error("Comment not found.");
     this._videoComments.splice(commentIndex, 1);
   }
 }

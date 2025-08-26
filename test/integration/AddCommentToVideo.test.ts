@@ -3,34 +3,42 @@ import { UploadVideo } from "../../src/application/usecases/UploadVideo.usecase"
 import { InMemoryVideoRepository } from "../../src/infrastructure/videoRepo/inMemory";
 import { InMemoryVideoStorage } from "../../src/infrastructure/videoStorage/inMemory";
 
-test("Should add a comment to a video", async () => {
-  const videoRepo = new InMemoryVideoRepository();
-  const storageService = new InMemoryVideoStorage();
-  const useCaseUploadVideo = new UploadVideo(videoRepo, storageService);
+describe("AddCommentToVideo Integration Test", () => {
+  let videoRepo: InMemoryVideoRepository;
+  let useCaseAddCommentToVideo: AddCommentToVideo;
+  let videoId: string;
 
-  const input = {
-    name: "First Video",
-    category: "Streaching",
-    description: "Video description",
-    videoBuffer: Buffer.from("fake-content"),
-    thumbnailBuffer: Buffer.from("fake-thumb"),
-  };
+  beforeEach(async () => {
+    videoRepo = new InMemoryVideoRepository();
+    const storageService = new InMemoryVideoStorage();
+    const useCaseUploadVideo = new UploadVideo(videoRepo, storageService);
+    useCaseAddCommentToVideo = new AddCommentToVideo(videoRepo);
 
-  const outputUploadvideo = await useCaseUploadVideo.execute(input);
+    const input = {
+      name: "First Video",
+      category: "Stretching",
+      description: "Video description",
+      videoBuffer: Buffer.from("fake-content"),
+      thumbnailBuffer: Buffer.from("fake-thumb"),
+    };
+    const outputUploadVideo = await useCaseUploadVideo.execute(input);
+    videoId = outputUploadVideo.id;
+  });
 
-  const useCaseAddCommentToVideo = new AddCommentToVideo(videoRepo);
+  test("Should add a comment to a video", async () => {
+    const inputForAddComment = {
+      videoId: videoId,
+      author: "Fake User",
+      text: "Fake comment",
+    };
 
-  const inputForAddComment = {
-    videoId: outputUploadvideo.id,
-    author: "Fake User",
-    text: "Fake comment",
-  };
+    const outputAddComment = await useCaseAddCommentToVideo.execute(
+      inputForAddComment
+    );
 
-  const outputAddComment =
-    await useCaseAddCommentToVideo.execute(inputForAddComment);
-
-  expect(outputAddComment.commentId).toBeDefined();
-  expect(outputAddComment.videoId).toBe(outputUploadvideo.id);
-  expect(outputAddComment.author).toBe(inputForAddComment.author);
-  expect(outputAddComment.text).toBe(inputForAddComment.text);
+    expect(outputAddComment.commentId).toBeDefined();
+    expect(outputAddComment.videoId).toBe(videoId);
+    expect(outputAddComment.author).toBe(inputForAddComment.author);
+    expect(outputAddComment.text).toBe(inputForAddComment.text);
+  });
 });
