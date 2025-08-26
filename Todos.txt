@@ -1,5 +1,101 @@
-*: Create a useCase for generating a pre-signed video url.
+# Lara's Personal Training Platform - Development Roadmap
 
-*: Create a useCase for adding a comment to a video.
+## Phase 1: Foundation & Core Architecture (Backend)
+- [ ] **1. Finish implementing DynamoDB**
+    - [ ] Fix all repo methods.
 
-*: Implement a web server like Express, decoupled with interfaces.
+- [ ] **2. Decouple HTTP Server:**
+    - [ ] Create an `HttpServer` interface to abstract the web server framework (e.g., Express).
+    - [ ] Create an `ExpressAdapter` that implements the `HttpServer` interface.
+    - [ ] Refactor `src/main.ts` to use the adapter, decoupling the application from Express.
+
+- [ ] **3. Dependency Injection:**
+    - [ ] Implement a dependency injection (DI) container to manage dependencies.
+    - [ ] Refactor the application to use the DI container for creating use cases and their dependencies.
+
+- [ ] **4. API Documentation:**
+    - [ ] Integrate Swagger or a similar tool to automatically generate API documentation.
+    - [ ] Annotate the existing endpoints.
+
+- [ ] **5. User Management & Authentication:**
+    - [ ] Create a `UserLogin` use case.
+    - [ ] Create a `RefreshToken` use case.
+    - [ ] Implement JWT-based authentication middleware.
+    - [ ] Protect routes that require authentication.
+
+- [ ] **6. Observability (Logging & Tracing):**
+    - [ ] Implement a structured logging library (e.g., Winston or Pino).
+    - [ ] Add logging to all use cases and important events.
+    - [ ] Implement distributed tracing using OpenTelemetry to trace requests across the application.
+
+## Phase 2: Admin & User Functionality (Backend)
+
+- [ ] **1. Admin Dashboard:**
+    - [ ] Create a `GetAllClients` use case.
+    - [ ] Create a `GetClientById` use case.
+    - [ ] Create a `CreateTrainingSession` use case for a specific client.
+    - [ ] Create an `UpdateTrainingSession` use case.
+    - [ ] Create a `DeleteTrainingSession` use case.
+    - [ ] Implement role-based access control (RBAC) to protect admin routes.
+
+- [ ] **2. Client Dashboard:**
+    - [ ] Create a `GetMyProfile` use case.
+    - [ ] Create a `GetMyTrainingSessions` use case.
+    - [ ] Create a `GetMyActivePlan` use case.
+    - [ ] Create a `GetMyPastPlans` use case.
+    - [ ] Create a `SubmitParq` use case.
+
+## Phase 3: Video Content (Backend)
+
+- [ ] **1. Video Upload & Processing:**
+    - [ ] Create a `GeneratePresignedUrl` use case for secure video uploads to S3.
+    - [ ] Implement a Lambda function to process uploaded videos (e.g., transcode to different resolutions).
+    - [ ] Create a `SaveVideoMetadata` use case to save video information to DynamoDB.
+
+- [ ] **2. Video Streaming:**
+    - [ ] Create a `GetVideoStream` use case that returns a streaming URL (e.g., from CloudFront).
+    - [ ] Implement a `GetAllVideosByCategory` use case.
+    - [ ] Implement a `SearchVideos` use case.
+
+## Phase 4: Payments & Subscriptions (Backend)
+
+- [ ] **1. Payment Gateway Integration:**
+    - [ ] Choose and integrate a payment gateway (e.g., Stripe or Paddle).
+    - [ ] Create a `CreateCheckoutSession` use case.
+    - [ ] Implement a webhook to handle successful payments and create user subscriptions.
+
+- [ ] **2. Subscription Management:**
+    - [ ] Create a `CancelSubscription` use case.
+    - [ ] Create a `GetMySubscription` use case.
+    - [ ] Implement a mechanism to check for active subscriptions and restrict access to content.
+
+## Phase 5: Frontend Development
+
+- [ ] **1. Landing Page:**
+    - [ ] Create the main landing page showing available plans.
+    - [ ] Integrate the payment gateway to handle plan purchases.
+
+- [ ] **2. User Authentication:**
+    - [ ] Create the user registration and login pages.
+    - [ ] Implement the PARQ form for new users.
+
+- [ ] **3. Client Dashboard:**
+    - [ ] Create the main dashboard with the video carousel.
+    - [ ] Implement the profile page showing training sessions and plan details.
+
+- [ ] **4. Admin Dashboard:**
+    - [ ] Create the admin dashboard to manage clients and training sessions.
+
+## Phase 6: Production Readiness & CI/CD
+
+- [ ] **1. Containerization:**
+    - [ ] Create a `Dockerfile` for the frontend application.
+    - [ ] Update the `docker-compose.yaml` to include the frontend service.
+
+- [ ] **2. CI/CD Pipeline:**
+    - [ ] Set up a CI/CD pipeline (e.g., using GitHub Actions) to automatically build, test, and deploy the application.
+    - [ ] Deploy the backend and frontend to a cloud provider (e.g., AWS ECS or Vercel).
+
+- [ ] **3. Monitoring & Alerting:**
+    - [ ] Set up monitoring dashboards (e.g., using CloudWatch or Grafana) to track application performance and health.
+    - [ ] Configure alerts to notify you of any issues.
