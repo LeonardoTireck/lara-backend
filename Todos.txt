@@ -1,32 +1,38 @@
 # Lara's Personal Training Platform - Development Roadmap
 
-## Phase 1: Foundation & Core Architecture (Backend)
-- [ ] **1. Finish implementing DynamoDB**
-    - [ ] Fix all repo methods.
+## Phase 1: Foundation & Core Architecture (The Path Out of Paralysis)
 
-- [ ] **2. Decouple HTTP Server:**
-    - [ ] Create an `HttpServer` interface to abstract the web server framework (e.g., Express).
+- [ ] **Step 1: Solidify Data Layer & Code Quality**
+    - [ ] **A. TDD:** Finish implementing all methods in `DynamoDbUserRepo` (e.g., `update`, `getById`).
+    - [ ] Create a separate suite of **integration tests** for the `DynamoDbUserRepo` that connect to the local Dockerized DynamoDB.
+    - [ ] Ensure existing use case **unit tests** continue to use the fast `InMemory` repositories.
+    - [ ] **B. Code Quality:** Integrate `ESLint` for linting and `Prettier` for code formatting to ensure a professional and consistent codebase.
+
+- [ ] **Step 2: Implement Foundational Services & Security**
+    - [ ] **A. Centralized Configuration:** Create a `src/config.ts` module to load, validate, and provide all environment variables.
+    - [ ] **B. Global Error Handling:** Implement a centralized error-handling middleware in Express for consistent JSON error responses.
+    - [ ] **C. Input Validation:** Implement a strategy for validating all incoming API data (e.g., using a library like Zod or Joi) as a primary security measure.
+    - [ ] **D. Health Check:** Add a `/health` endpoint to monitor the application's status and database connectivity.
+
+- [ ] **Step 3: Decouple Web Framework**
+    - [ ] Create a generic `HttpServer` interface (port) with methods like `on()` and `listen()`.
     - [ ] Create an `ExpressAdapter` that implements the `HttpServer` interface.
-    - [ ] Refactor `src/main.ts` to use the adapter, decoupling the application from Express.
+    - [ ] Refactor `src/main.ts` to use the adapter, cleanly separating the application from Express.
 
-- [ ] **3. Dependency Injection:**
-    - [ ] Implement a dependency injection (DI) container to manage dependencies.
-    - [ ] Refactor the application to use the DI container for creating use cases and their dependencies.
+- [ ] **Step 4: Implement IoC Container**
+    - [ ] Integrate a library like `InversifyJS` to manage dependency injection.
+    - [ ] Define bindings for all dependencies (e.g., `UserRepository`).
+    - [ ] Refactor the application to resolve dependencies from the IoC container.
 
-- [ ] **4. API Documentation:**
-    - [ ] Integrate Swagger or a similar tool to automatically generate API documentation.
-    - [ ] Annotate the existing endpoints.
+- [ ] **Step 5: Implement Core User Features & Security**
+    - [ ] Create the `UserLogin` and `RefreshToken` use cases.
+    - [ ] Implement JWT-based authentication middleware to protect routes.
+    - [ ] **Security:** Implement rate limiting on authentication and other sensitive endpoints to prevent abuse.
 
-- [ ] **5. User Management & Authentication:**
-    - [ ] Create a `UserLogin` use case.
-    - [ ] Create a `RefreshToken` use case.
-    - [ ] Implement JWT-based authentication middleware.
-    - [ ] Protect routes that require authentication.
-
-- [ ] **6. Observability (Logging & Tracing):**
-    - [ ] Implement a structured logging library (e.g., Winston or Pino).
-    - [ ] Add logging to all use cases and important events.
-    - [ ] Implement distributed tracing using OpenTelemetry to trace requests across the application.
+- [ ] **Step 6: Enhance Observability and Documentation**
+    - [ ] **Observability:** Implement a structured logging library (e.g., Winston or Pino).
+    - [ ] **API Documentation:** Integrate Swagger or a similar tool to automatically generate API documentation.
+    - [ ] **Tracing:** Implement distributed tracing using OpenTelemetry (can be deferred if needed).
 
 ## Phase 2: Admin & User Functionality (Backend)
 
@@ -44,6 +50,7 @@
     - [ ] Create a `GetMyActivePlan` use case.
     - [ ] Create a `GetMyPastPlans` use case.
     - [ ] Create a `SubmitParq` use case.
+    - [ ] Create an `UpdateClientPersonalInfo` use case.
 
 ## Phase 3: Video Content (Backend)
 
@@ -96,6 +103,21 @@
     - [ ] Set up a CI/CD pipeline (e.g., using GitHub Actions) to automatically build, test, and deploy the application.
     - [ ] Deploy the backend and frontend to a cloud provider (e.g., AWS ECS or Vercel).
 
-- [ ] **3. Monitoring & Alerting:**
-    - [ ] Set up monitoring dashboards (e.g., using CloudWatch or Grafana) to track application performance and health.
+- [ ] **3. Production Operations:**
+    - [ ] **Secrets Management:** Plan for production secrets management (e.g., AWS Secrets Manager) instead of .env files.
+    - [ ] **Graceful Shutdown:** Implement graceful shutdown logic in the server to handle deployments smoothly.
+    - [ ] **Monitoring & Alerting:** Set up monitoring dashboards (e.g., using CloudWatch or Grafana) to track application performance and health.
     - [ ] Configure alerts to notify you of any issues.
+
+## Phase 7: Backend Processes (No direct routes)
+
+- [ ] **1. Plan Management:**
+    - [ ] Create an `ExpireUserPlan` use case to move expired plans to the past plans list.
+    - [ ] Set up a scheduled job to run the `ExpireUserPlan` use case daily.
+
+## Phase 8: Future-Proofing & Advanced Testing
+
+- [ ] **1. API Evolution:**
+    - [ ] Plan and implement an API versioning strategy (e.g., `/api/v1/...`).
+- [ ] **2. Advanced Testing:**
+    - [ ] Plan and implement End-to-End (E2E) tests to simulate full user journeys.

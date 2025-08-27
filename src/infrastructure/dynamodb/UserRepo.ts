@@ -72,10 +72,8 @@ export class DynamoDbUserRepo implements UserRepository {
         u.LastParqUpdate as any,
         u.TrainingSessions.L! as any,
       );
-
       usersArray.push(newUser);
     });
-    console.log(usersArray);
     return usersArray;
   }
 

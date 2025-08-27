@@ -1,0 +1,137 @@
+# Todo Routes
+
+This file outlines the routes that need to be implemented in the application, based on the existing use cases and the development roadmap.
+
+## Phase 1: Foundation & Core Architecture
+
+### User Management & Authentication
+
+- **POST /login**
+  - Description: User login.
+  - Use Case: `UserLogin.usecase.ts`
+  - Dependencies: `jsonwebtoken`
+
+- **POST /refresh-token**
+  - Description: Refresh an expired JWT token.
+  - Use Case: `RefreshToken.usecase.ts` (to be created)
+  - Dependencies: `jsonwebtoken`
+
+## Phase 2: Admin & User Functionality
+
+### Admin Dashboard
+
+- **GET /admin/clients**
+  - Description: Get all clients (for admin).
+  - Use Case: `GetAllClients.usecase.ts` (to be created)
+  - Dependencies: `express`
+
+- **GET /admin/clients/:clientId**
+  - Description: Get a client by their ID (for admin).
+  - Use Case: `GetClientById.usecase.ts` (to be created)
+  - Dependencies: `express`
+
+- **POST /admin/clients/:clientId/training-sessions**
+  - Description: Create a new training session for a client.
+  - Use Case: `CreateTrainingSession.usecase.ts` (to be created)
+  - Dependencies: `express`
+
+- **PUT /admin/training-sessions/:sessionId**
+  - Description: Update a training session.
+  - Use Case: `UpdateTrainingSession.usecase.ts` (to be created)
+  - Dependencies: `express`
+
+- **DELETE /admin/training-sessions/:sessionId**
+  - Description: Delete a training session.
+  - Use Case: `DeleteTrainingSession.usecase.ts` (to be created)
+  - Dependencies: `express`
+
+### Client Dashboard
+
+- **GET /me**
+  - Description: Get the profile of the currently logged-in user.
+  - Use Case: `GetMyProfile.usecase.ts` (to be created)
+  - Dependencies: `express`, `jsonwebtoken`
+
+- **PUT /me/personal-info**
+  - Description: Update the personal information (email, phone, password) of the currently logged-in user.
+  - Use Case: `UpdateClientPersonalInfo.usecase.ts`
+  - Dependencies: `express`, `jsonwebtoken`
+
+- **GET /me/training-sessions**
+  - Description: Get the training sessions of the currently logged-in user.
+  - Use Case: `GetMyTrainingSessions.usecase.ts` (to be created)
+  - Dependencies: `express`, `jsonwebtoken`
+
+- **GET /me/plan**
+  - Description: Get the active plan of the currently logged-in user.
+  - Use Case: `GetMyActivePlan.usecase.ts` (to be created)
+  - Dependencies: `express`, `jsonwebtoken`
+
+- **GET /me/past-plans**
+  - Description: Get the past plans of the currently logged-in user.
+  - Use Case: `GetMyPastPlans.usecase.ts` (to be created)
+  - Dependencies: `express`, `jsonwebtoken`
+
+- **POST /me/parq**
+  - Description: Submit the PAR-Q form for the currently logged-in user.
+  - Use Case: `SubmitParq.usecase.ts` (to be created)
+  - Dependencies: `express`, `jsonwebtoken`
+
+## Phase 3: Video Content
+
+### Video Upload & Processing
+
+- **POST /videos/upload-url**
+  - Description: Generate a presigned URL for secure video uploads to S3.
+  - Use Case: `GeneratePresignedUrl.usecase.ts` (to be created)
+  - Dependencies: `aws-sdk`
+
+- **POST /videos/metadata**
+  - Description: Save video metadata to the database.
+  - Use Case: `SaveVideoMetadata.usecase.ts` (to be created)
+  - Dependencies: `express`, `@aws-sdk/client-dynamodb`
+
+### Video Streaming
+
+- **GET /videos/:videoId/stream**
+  - Description: Get a streaming URL for a video.
+  - Use Case: `GetVideoStream.usecase.ts` (to be created)
+  - Dependencies: `aws-sdk`
+
+- **GET /videos/category/:category**
+  - Description: Get all videos by category.
+  - Use Case: `GetAllVideosByCategory.usecase.ts` (to be created)
+  - Dependencies: `express`
+
+- **GET /videos/search**
+  - Description: Search for videos.
+  - Use Case: `SearchVideos.usecase.ts` (to be created)
+  - Dependencies: `express`
+
+## Phase 4: Payments & Subscriptions
+
+### Payment Gateway Integration
+
+- **POST /payments/checkout-session**
+  - Description: Create a new checkout session for a plan.
+  - Use Case: `CreateCheckoutSession.usecase.ts` (to be created)
+  - Dependencies: `stripe` (or other payment gateway)
+
+### Subscription Management
+
+- **POST /subscriptions/cancel**
+  - Description: Cancel a subscription.
+  - Use Case: `CancelSubscription.usecase.ts` (to be created)
+  - Dependencies: `stripe` (or other payment gateway)
+
+- **GET /me/subscription**
+  - Description: Get the subscription of the currently logged-in user.
+  - Use Case: `GetMySubscription.usecase.ts` (to be created)
+  - Dependencies: `stripe` (or other payment gateway), `jsonwebtoken`
+
+## Backend Processes (No direct routes)
+
+- **ExpireUserPlan**
+  - Description: Moves an expired active plan to the past plans list.
+  - Use Case: `ExpireUserPlan.usecase.ts` (to be created)
+  - Trigger: Scheduled job or event-driven.

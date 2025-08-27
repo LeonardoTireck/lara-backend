@@ -1,8 +1,11 @@
 import axios from "axios";
 
-test("Should return all users", async () => {
-  const users = await axios.get("http://localhost:3000/users");
-  console.log("Users data form Axios:", users.data);
+describe("Get all users route test", () => {
+  test("Should return all users", async () => {
+    const users = await axios.get("http://localhost:3000/users");
+    console.log("Users data form Axios:");
+    console.dir(users.data);
 
-  expect(users).toBeDefined();
+    expect(users).toBeDefined();
+  });
 });

@@ -1,3 +1,4 @@
+import { TrainingPlan } from "../../domain/TrainingPlan";
 import { UserRepository } from "../ports/UserRepository";
 
 export class FindAllUsers {
@@ -11,6 +12,7 @@ export class FindAllUsers {
         id: user.id,
         name: user.name,
         email: user.email,
+        activePlan: user.activePlan,
       };
     });
     return output;
@@ -21,4 +23,5 @@ type Output = {
   id: string;
   name: string;
   email: string;
+  activePlan?: TrainingPlan;
 }[];

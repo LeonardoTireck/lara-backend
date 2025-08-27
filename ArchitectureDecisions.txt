@@ -45,9 +45,56 @@ This document records the key technology and architectural decisions made for th
 -   **Pattern**: Dependencies are explicitly "injected" into classes (primarily via constructors) rather than being created internally.
 -   **Why**: DI is a core tenet of Clean Architecture. It enables loose coupling between components. By injecting dependencies, we can easily replace them with mock implementations during testing (e.g., injecting an `InMemoryUserRepository` instead of the real `DynamoDBUserRepo`). This is the foundation for the "Dependency Injection Container" task noted in `Todos.txt`, which aims to automate this process.
 
+### Separation of Authorization and Data Access
+
+-   **Decision**: The responsibility for authorizing data modifications is explicitly separated from the data access layer (repositories).
+-   **Why**:
+    -   **Single Responsibility Principle**: The `UserRepository`'s sole responsibility is to interact with the database (the "how"). It should not contain business logic or authorization rules (the "what" and "why").
+    -   **Business Logic in Use Cases**: Authorization logic is a business rule and belongs in the **application (use case) layer**.
+    -   **Maintainability and Testability**: This separation makes the system easier to maintain and test.
+
+### API Versioning
+
+-   **Decision**: The API will be versioned from the start (e.g., `/api/v1/...`).
+-   **Why**: Versioning is crucial for long-term maintainability. It allows for introducing breaking changes in future versions without disrupting existing client integrations.
+
 ## 3. Tooling & Infrastructure
 
 ### Containerization: Docker
 
 -   **Technology**: Docker and Docker Compose.
--   **Why**: Docker is used to containerize the application, ensuring a consistent and reproducible environment for both development and production. The `docker-compose.yaml` file simplifies the local development setup by defining and running the entire multi-service application stack (including the application server and the DynamoDB local instance) with a single command. This eliminates "it works on my machine" problems and streamlines the onboarding of new developers.
+-   **Why**: Docker is used to containerize the application, ensuring a consistent and reproducible environment for both development and production. The `docker-compose.yaml` file simplifies the local development setup.
+
+### Code Quality & Formatting
+
+-   **Technology**: ESLint and Prettier.
+-   **Why**: Enforcing a consistent code style and automatically catching common errors is non-negotiable for professional development. It improves readability, reduces trivial bugs, and makes collaboration seamless.
+
+## 4. Application Security
+
+### Input Validation
+
+-   **Decision**: All data coming from external clients (API requests) will be rigorously validated.
+-   **Why**: This is the first and most important line of defense. It prevents a wide range of security vulnerabilities, including injection attacks and malformed data corrupting the system.
+
+### Rate Limiting
+
+-   **Decision**: Rate limiting will be applied to sensitive and computationally expensive endpoints.
+-   **Why**: This protects the application from denial-of-service (DoS) attacks and general abuse, ensuring the API remains available for legitimate users.
+
+### Secrets Management
+
+-   **Decision**: `.env` files are suitable for local development, but a secure secret management solution (like AWS Secrets Manager or HashiCorp Vault) will be planned for production.
+-   **Why**: Committing secrets to version control is a major security risk. A dedicated secrets manager provides a secure, auditable way to manage and inject secrets into the production environment.
+
+## 5. Production Readiness
+
+### Health Checks
+
+-   **Decision**: A dedicated `/health` endpoint will be implemented.
+-   **Why**: This provides a simple, standard way for monitoring services and load balancers to verify that the application is running and able to connect to its dependencies.
+
+### Graceful Shutdown
+
+-   **Decision**: The application server will be configured to handle graceful shutdowns.
+-   **Why**: In a containerized or serverless environment, instances can be stopped at any time. A graceful shutdown ensures that the server stops accepting new requests but allows ongoing ones to complete, preventing data corruption and client errors during deployments.
