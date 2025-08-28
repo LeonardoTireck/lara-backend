@@ -4,7 +4,7 @@ import { TrainingPlan } from "../../../../src/domain/TrainingPlan";
 import BcryptPasswordHasher from "../../../../src/infrastructure/Hashing/BcryptPasswordHasher";
 import { InMemoryUserRepo } from "../../../../src/infrastructure/UserRepo/InMemory";
 
-describe("UserLogin Failure Case Test", () => {
+describe("User Login Failure Case Test", () => {
   let repo: InMemoryUserRepo;
   let useCaseLogin: UserLogin;
 
@@ -33,7 +33,8 @@ describe("UserLogin Failure Case Test", () => {
       password: "Test123@",
     };
     await expect(useCaseLogin.execute(input)).rejects.toThrow(
-      "Invalid Credentials"
+      "Invalid Credentials",
     );
   });
 });
+
