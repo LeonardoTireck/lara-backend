@@ -1,100 +1,76 @@
-# Architecture Decisions Record
+# Architecture Decision Record (ADR)
 
-This document records the key technology and architectural decisions made for this project. The goal is to provide context and reasoning for why certain choices were made.
+This document records the key technology and architectural decisions for this project. The goal is to provide context and reasoning for why certain choices were made, creating a guide for future development.
+
+---
 
 ## 1. Core Technologies
 
-### Runtime & Language: Node.js & TypeScript
+### ADR-001: Runtime & Language
+-   **Technology**: Node.js & TypeScript.
+-   **Reasoning**: Node.js was chosen for its high-performance, non-blocking I/O model, ideal for scalable APIs. TypeScript was chosen to add static typing, which improves code quality, catches errors early, and makes the codebase more robust and maintainable.
 
--   **Technology**: Node.js as the server-side runtime and TypeScript as the primary language.
--   **Why**:
-    -   **Node.js** was chosen for its event-driven, non-blocking I/O model, which is highly efficient for building scalable, real-time APIs. Its vast `npm` ecosystem provides libraries for nearly any required functionality.
-    -   **TypeScript** was chosen to add static typing to JavaScript. This enhances developer productivity, improves code quality by catching errors during development, and makes the codebase more robust, readable, and maintainable as it grows.
+### ADR-002: Database
+-   **Technology**: AWS DynamoDB (with `dynamodb-local` for development).
+-   **Reasoning**: DynamoDB is a fully managed, serverless NoSQL database that offers high performance and seamless scalability. Its flexible schema is well-suited for evolving requirements. The local version enables efficient, cost-free development and testing.
 
-### Web Framework: Express.js
+### ADR-003: Testing Framework
+-   **Technology**: Jest.
+-   **Reasoning**: Jest is an all-in-one testing framework providing a test runner, assertion library, and mocking capabilities out of the box. Its speed and powerful features are ideal for both unit and integration tests in a Node.js environment.
 
--   **Technology**: Express.js
--   **Why**: Express is a minimalist, fast, and unopinionated web framework for Node.js. Its simplicity provides a flexible foundation for building the API without imposing a rigid structure. The extensive middleware ecosystem allows for easy integration of functionalities like authentication, logging, and error handling. This choice aligns with the goal of a decoupled architecture where the framework is just a detail.
-
-### Database: AWS DynamoDB
-
--   **Technology**: AWS DynamoDB
--   **Why**: DynamoDB is a fully managed, serverless NoSQL database that offers high performance at any scale.
-    -   **Scalability**: It scales seamlessly to handle high traffic loads, which is ideal for a growing user base.
-    -   **Flexibility**: As a NoSQL database, its flexible schema is well-suited for evolving application requirements without requiring complex migrations.
-    -   **Managed Service**: Being serverless, it removes the operational overhead of managing database servers, backups, and scaling.
-    -   **Local Development**: The availability of `dynamodb-local` allows for efficient and cost-free local development and testing, as configured in the `docker-compose.yaml` file.
-
-### Testing Framework: Jest
-
--   **Technology**: Jest
--   **Why**: Jest is an all-in-one testing framework that provides a test runner, assertion library, and mocking capabilities out of the box. Its "zero-config" approach for many projects, combined with powerful features like snapshot testing and parallel test execution, makes it an excellent choice for writing both unit and integration tests in a TypeScript/Node.js environment.
+---
 
 ## 2. Architectural Patterns
 
-### Clean / Hexagonal Architecture
+### ADR-004: Core Architecture (Clean Architecture)
+-   **Pattern**: The project is structured using the **Clean Architecture**.
+-   **Reasoning**: This pattern decouples the core business logic (domain and use cases) from external concerns like the web framework or database. This is achieved by defining abstract interfaces ("Ports") that are implemented by concrete infrastructure classes ("Adapters").
+-   **Consequences**:
+    -   **Positive**: The application is highly testable and maintainable. The core logic is framework-agnostic, as proven by the ability to swap web frameworks.
+    -   **Negative**: This pattern introduces a higher level of initial complexity and boilerplate compared to simpler monolithic structures.
 
--   **Pattern**: The project is structured following the principles of Clean Architecture (also known as Hexagonal or Ports and Adapters Architecture). This is visible in the separation of code into `domain`, `application`, and `infrastructure` layers.
--   **Why**:
-    -   **Decoupling**: This pattern decouples the core business logic (domain entities and application use cases) from external concerns like the database, web framework, and other services.
-    -   **Testability**: The core logic is independent of any infrastructure, making it easy to test in isolation with mock dependencies.
-    -   **Maintainability & Flexibility**: It allows for swapping out infrastructure components with minimal impact on the core application. For example, the database could be changed from DynamoDB to another provider by simply creating a new repository implementation, without altering the use cases or domain entities.
+### ADR-005: Web Framework Strategy
+-   **Decision**: The architecture is **framework-agnostic**, with interchangeable adapters for both **Fastify** and **Express.js**.
+-   **Reasoning**: By abstracting the web server behind a generic `HttpServer` interface, we are not locked into a single framework. 
+    -   **Fastify** is the recommended default due to its superior performance and modern, hook-based architecture.
+    -   **Express.js** is available as a swappable alternative, demonstrating the flexibility of the design.
+-   **Consequences**: This proves the effectiveness of the Ports and Adapters pattern and makes the application highly flexible for future needs.
 
-### Dependency Injection (DI)
+### ADR-006: Dependency Management Strategy
+-   **Decision**: Use a **Dependency Injection (DI) Container (InversifyJS)**.
+-   **Reasoning**: A DI container automates the process of creating objects and wiring their dependencies together (Inversion of Control). Instead of classes creating their own dependencies, the container injects them.
+-   **Consequences**:
+    -   **Positive**: Dramatically improves testability by making it easy to inject mock dependencies. It promotes loosely coupled components.
+    -   **Negative**: Adds a layer of abstraction and requires familiarity with DI/IoC principles.
 
--   **Pattern**: Dependencies are explicitly "injected" into classes (primarily via constructors) rather than being created internally.
--   **Why**: DI is a core tenet of Clean Architecture. It enables loose coupling between components. By injecting dependencies, we can easily replace them with mock implementations during testing (e.g., injecting an `InMemoryUserRepository` instead of the real `DynamoDBUserRepo`). This is the foundation for the "Dependency Injection Container" task noted in `Todos.txt`, which aims to automate this process.
+---
 
-### Separation of Authorization and Data Access
+## 3. Application Security & API Design
 
--   **Decision**: The responsibility for authorizing data modifications is explicitly separated from the data access layer (repositories).
--   **Why**:
-    -   **Single Responsibility Principle**: The `UserRepository`'s sole responsibility is to interact with the database (the "how"). It should not contain business logic or authorization rules (the "what" and "why").
-    -   **Business Logic in Use Cases**: Authorization logic is a business rule and belongs in the **application (use case) layer**.
-    -   **Maintainability and Testability**: This separation makes the system easier to maintain and test.
+### ADR-007: Input Validation Strategy
+-   **Decision**: Use a **schema-based validation library (Zod)**.
+-   **Reasoning**: All data from external clients must be rigorously validated. Using a library like Zod is more robust, declarative, and maintainable than manual validation logic. It provides clear schemas for our data shapes and detailed error messages.
 
-### API Versioning
-
+### ADR-008: API Versioning
 -   **Decision**: The API will be versioned from the start (e.g., `/api/v1/...`).
--   **Why**: Versioning is crucial for long-term maintainability. It allows for introducing breaking changes in future versions without disrupting existing client integrations.
+-   **Reasoning**: Versioning is crucial for long-term maintainability, allowing for future breaking changes without disrupting existing clients.
 
-## 3. Tooling & Infrastructure
+### ADR-009: Secrets Management
+-   **Decision**: Use `.env` files for local development and a dedicated service (like AWS Secrets Manager) for production.
+-   **Reasoning**: Committing secrets to version control is a major security risk. This approach ensures local development is easy while production is secure and auditable.
 
-### Containerization: Docker
+---
 
+## 4. Production Readiness
+
+### ADR-010: Containerization
 -   **Technology**: Docker and Docker Compose.
--   **Why**: Docker is used to containerize the application, ensuring a consistent and reproducible environment for both development and production. The `docker-compose.yaml` file simplifies the local development setup.
+-   **Reasoning**: To ensure a consistent and reproducible environment for both development and production, simplifying setup and deployment.
 
-### Code Quality & Formatting
+### ADR-011: Observability
+-   **Decision**: Implement a **Health Check Endpoint** (`/health`) and **Structured Request Logging** (Morgan).
+-   **Reasoning**: The health check provides a standard way for monitoring services to verify application status. Structured logging provides essential visibility into application behavior for debugging and analysis.
 
--   **Technology**: ESLint and Prettier.
--   **Why**: Enforcing a consistent code style and automatically catching common errors is non-negotiable for professional development. It improves readability, reduces trivial bugs, and makes collaboration seamless.
-
-## 4. Application Security
-
-### Input Validation
-
--   **Decision**: All data coming from external clients (API requests) will be rigorously validated.
--   **Why**: This is the first and most important line of defense. It prevents a wide range of security vulnerabilities, including injection attacks and malformed data corrupting the system.
-
-### Rate Limiting
-
--   **Decision**: Rate limiting will be applied to sensitive and computationally expensive endpoints.
--   **Why**: This protects the application from denial-of-service (DoS) attacks and general abuse, ensuring the API remains available for legitimate users.
-
-### Secrets Management
-
--   **Decision**: `.env` files are suitable for local development, but a secure secret management solution (like AWS Secrets Manager or HashiCorp Vault) will be planned for production.
--   **Why**: Committing secrets to version control is a major security risk. A dedicated secrets manager provides a secure, auditable way to manage and inject secrets into the production environment.
-
-## 5. Production Readiness
-
-### Health Checks
-
--   **Decision**: A dedicated `/health` endpoint will be implemented.
--   **Why**: This provides a simple, standard way for monitoring services and load balancers to verify that the application is running and able to connect to its dependencies.
-
-### Graceful Shutdown
-
--   **Decision**: The application server will be configured to handle graceful shutdowns.
--   **Why**: In a containerized or serverless environment, instances can be stopped at any time. A graceful shutdown ensures that the server stops accepting new requests but allows ongoing ones to complete, preventing data corruption and client errors during deployments.
+### ADR-012: Error Handling
+-   **Decision**: Implement a **Global Error Handler** in each web framework adapter.
+-   **Reasoning**: This centralizes error-handling logic, preventing crashes from unhandled exceptions and ensuring that clients always receive a consistent, well-formatted error response.
