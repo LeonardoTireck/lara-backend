@@ -1,8 +1,8 @@
-import { UpdateThumbnail } from "../../src/application/usecases/UpdateThumbnail.usecase";
-import { UploadVideo } from "../../src/application/usecases/UploadVideo.usecase";
-import { StorageKeyBuilder } from "../../src/domain/StorageKeyBuilder";
-import { InMemoryVideoRepository } from "../../src/infrastructure/videoRepo/inMemory";
-import { InMemoryVideoStorage } from "../../src/infrastructure/videoStorage/inMemory";
+import { UpdateThumbnail } from "../../../src/application/usecases/UpdateThumbnail.usecase";
+import { UploadVideo } from "../../../src/application/usecases/UploadVideo.usecase";
+import { StorageKeyBuilder } from "../../../src/domain/StorageKeyBuilder";
+import { InMemoryVideoRepository } from "../../../src/infrastructure/videoRepo/inMemory";
+import { InMemoryVideoStorage } from "../../../src/infrastructure/videoStorage/inMemory";
 
 describe("UpdateThumbnail Integration Test", () => {
   let metadataRepo: InMemoryVideoRepository;
@@ -34,23 +34,24 @@ describe("UpdateThumbnail Integration Test", () => {
 
     const outputUpdateThumbnail = await updateThumbnailUseCase.execute(
       inputUpdateThumbnail.videoId,
-      inputUpdateThumbnail.newThumbnail
+      inputUpdateThumbnail.newThumbnail,
     );
 
     const key = StorageKeyBuilder.build(
       "thumbnail",
       outputUploadVideo.name,
-      outputUploadVideo.id
+      outputUploadVideo.id,
     );
 
     const newThumbnail = await storageService.getFileInMemory(key);
 
     expect(newThumbnail!.toString()).toBe(
-      inputUpdateThumbnail.newThumbnail.toString()
+      inputUpdateThumbnail.newThumbnail.toString(),
     );
     expect(outputUpdateThumbnail.id).toBe(outputUploadVideo.id);
     expect(outputUpdateThumbnail.thumbnailUrl).toBe(
-      outputUploadVideo.thumbnailUrl
+      outputUploadVideo.thumbnailUrl,
     );
   });
 });
+

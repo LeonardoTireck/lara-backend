@@ -1,10 +1,10 @@
-import { CreateUser } from "../../src/application/usecases/CreateUser.usecase";
-import { FindUserById } from "../../src/application/usecases/FindUserById.usecase";
-import { UpdateTrainingSessions } from "../../src/application/usecases/UpdateTrainingSessions.usecase";
-import { TrainingPlan } from "../../src/domain/TrainingPlan";
-import { TrainingSession } from "../../src/domain/TrainingSession";
-import BcryptPasswordHasher from "../../src/infrastructure/Hashing/BcryptPasswordHasher";
-import { InMemoryUserRepo } from "../../src/infrastructure/UserRepo/InMemory";
+import { CreateUser } from "../../../src/application/usecases/CreateUser.usecase";
+import { FindUserById } from "../../../src/application/usecases/FindUserById.usecase";
+import { UpdateTrainingSessions } from "../../../src/application/usecases/UpdateTrainingSessions.usecase";
+import { TrainingPlan } from "../../../src/domain/TrainingPlan";
+import { TrainingSession } from "../../../src/domain/TrainingSession";
+import BcryptPasswordHasher from "../../../src/infrastructure/Hashing/BcryptPasswordHasher";
+import { InMemoryUserRepo } from "../../../src/infrastructure/UserRepo/InMemory";
 
 describe("UpdateTrainingSessions Integration Test", () => {
   let repo: InMemoryUserRepo;
@@ -50,7 +50,7 @@ describe("UpdateTrainingSessions Integration Test", () => {
         },
       ],
       ["Array of notes about the training session itself"],
-      60
+      60,
     );
     currentTrainingSessions!.push(newTrainingSession);
 
@@ -58,15 +58,20 @@ describe("UpdateTrainingSessions Integration Test", () => {
 
     const updatedUser = await useCaseUpdateTrainingSessions.execute(
       user.id,
-      currentTrainingSessions!
+      currentTrainingSessions!,
     );
 
     expect(updatedUser.trainingSessions[0].sessionDay).toBe("A");
-    expect(updatedUser.trainingSessions[0].exercises[0].name).toBe("Supino Reto");
-    expect(updatedUser.trainingSessions[0].exercises[0].sets[0].orderNumber).toBe(1);
+    expect(updatedUser.trainingSessions[0].exercises[0].name).toBe(
+      "Supino Reto",
+    );
+    expect(
+      updatedUser.trainingSessions[0].exercises[0].sets[0].orderNumber,
+    ).toBe(1);
     expect(updatedUser.trainingSessions[0].exercises[0].notes).toBe(
-      "notes about the specific exercise"
+      "notes about the specific exercise",
     );
     expect(updatedUser.trainingSessions[0].durationMinutes).toBe(60);
   });
 });
+

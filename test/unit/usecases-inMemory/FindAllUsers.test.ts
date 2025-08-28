@@ -1,8 +1,8 @@
-import { CreateUser } from "../../src/application/usecases/CreateUser.usecase";
-import { FindAllUsers } from "../../src/application/usecases/FindAllUsers.usecase";
-import { TrainingPlan } from "../../src/domain/TrainingPlan";
-import BcryptPasswordHasher from "../../src/infrastructure/Hashing/BcryptPasswordHasher";
-import { InMemoryUserRepo } from "../../src/infrastructure/UserRepo/InMemory";
+import { CreateUser } from "../../../src/application/usecases/CreateUser.usecase";
+import { FindAllUsers } from "../../../src/application/usecases/FindAllUsers.usecase";
+import { TrainingPlan } from "../../../src/domain/TrainingPlan";
+import BcryptPasswordHasher from "../../../src/infrastructure/Hashing/BcryptPasswordHasher";
+import { InMemoryUserRepo } from "../../../src/infrastructure/UserRepo/InMemory";
 
 describe("FindAllUsers Integration Test", () => {
   let repo: InMemoryUserRepo;
@@ -50,3 +50,4 @@ describe("FindAllUsers Integration Test", () => {
     expect(users).toEqual([]);
   });
 });
+

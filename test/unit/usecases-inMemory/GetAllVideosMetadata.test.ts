@@ -1,7 +1,7 @@
-import { GetAllVideosMetadata } from "../../src/application/usecases/GetAllVideosMetadata.usecase";
-import { UploadVideo } from "../../src/application/usecases/UploadVideo.usecase";
-import { InMemoryVideoRepository } from "../../src/infrastructure/videoRepo/inMemory";
-import { InMemoryVideoStorage } from "../../src/infrastructure/videoStorage/inMemory";
+import { GetAllVideosMetadata } from "../../../src/application/usecases/GetAllVideosMetadata.usecase";
+import { UploadVideo } from "../../../src/application/usecases/UploadVideo.usecase";
+import { InMemoryVideoRepository } from "../../../src/infrastructure/videoRepo/inMemory";
+import { InMemoryVideoStorage } from "../../../src/infrastructure/videoStorage/inMemory";
 
 describe("GetAllVideosMetadata Integration Test", () => {
   let useCaseGetAllVideos: GetAllVideosMetadata;
@@ -39,3 +39,4 @@ describe("GetAllVideosMetadata Integration Test", () => {
     expect(videos[1].name).toBe("Second Video");
   });
 });
+

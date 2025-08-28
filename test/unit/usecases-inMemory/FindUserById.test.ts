@@ -1,8 +1,8 @@
-import { CreateUser } from "../../src/application/usecases/CreateUser.usecase";
-import { FindUserById } from "../../src/application/usecases/FindUserById.usecase";
-import { TrainingPlan } from "../../src/domain/TrainingPlan";
-import BcryptPasswordHasher from "../../src/infrastructure/Hashing/BcryptPasswordHasher";
-import { InMemoryUserRepo } from "../../src/infrastructure/UserRepo/InMemory";
+import { CreateUser } from "../../../src/application/usecases/CreateUser.usecase";
+import { FindUserById } from "../../../src/application/usecases/FindUserById.usecase";
+import { TrainingPlan } from "../../../src/domain/TrainingPlan";
+import BcryptPasswordHasher from "../../../src/infrastructure/Hashing/BcryptPasswordHasher";
+import { InMemoryUserRepo } from "../../../src/infrastructure/UserRepo/InMemory";
 
 describe("FindUserById Integration Test", () => {
   let repo: InMemoryUserRepo;
@@ -45,3 +45,4 @@ describe("FindUserById Integration Test", () => {
     await expect(useCaseFind.execute(input)).rejects.toThrow("User not found.");
   });
 });
+

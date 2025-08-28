@@ -9,8 +9,9 @@ describe("DynamoDbUserRepo", () => {
     userRepo = new DynamoDbUserRepo();
   });
 
-  test.skip("should save a user to DynamoDB", async () => {
+  test("should save a user to DynamoDB", async () => {
     const mockTrainingPlan = TrainingPlan.create("silver", "card");
+    console.log(mockTrainingPlan);
 
     const user = User.create(
       "John Doe",
@@ -20,8 +21,11 @@ describe("DynamoDbUserRepo", () => {
       new Date("1990-01-01"),
       "hashedpassword123",
       mockTrainingPlan,
-      "admin",
+      "client",
     );
+
+    console.log(user);
+
+    await userRepo.save(user);
   });
 });
-

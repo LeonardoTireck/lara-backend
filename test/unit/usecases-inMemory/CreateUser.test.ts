@@ -1,8 +1,8 @@
 import "dotenv/config";
-import { CreateUser } from "../../src/application/usecases/CreateUser.usecase";
-import BcryptPasswordHasher from "../../src/infrastructure/Hashing/BcryptPasswordHasher";
-import { InMemoryUserRepo } from "../../src/infrastructure/UserRepo/InMemory";
-import { TrainingPlan } from "../../src/domain/TrainingPlan";
+import { CreateUser } from "../../../src/application/usecases/CreateUser.usecase";
+import { TrainingPlan } from "../../../src/domain/TrainingPlan";
+import BcryptPasswordHasher from "../../../src/infrastructure/Hashing/BcryptPasswordHasher";
+import { InMemoryUserRepo } from "../../../src/infrastructure/UserRepo/InMemory";
 
 describe("CreateUser Integration Test", () => {
   test("Should create a user", async () => {
@@ -26,3 +26,4 @@ describe("CreateUser Integration Test", () => {
     expect(user.email).toBe("leo@test.com");
   });
 });
+

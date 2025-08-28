@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
-import { CreateUser } from "../../src/application/usecases/CreateUser.usecase";
-import { UserLogin } from "../../src/application/usecases/UserLogin.usecase";
-import BcryptPasswordHasher from "../../src/infrastructure/Hashing/BcryptPasswordHasher";
-import { InMemoryUserRepo } from "../../src/infrastructure/UserRepo/InMemory";
-import { TrainingPlan } from "../../src/domain/TrainingPlan";
+import { CreateUser } from "../../../src/application/usecases/CreateUser.usecase";
+import { UserLogin } from "../../../src/application/usecases/UserLogin.usecase";
+import { TrainingPlan } from "../../../src/domain/TrainingPlan";
+import BcryptPasswordHasher from "../../../src/infrastructure/Hashing/BcryptPasswordHasher";
+import { InMemoryUserRepo } from "../../../src/infrastructure/UserRepo/InMemory";
 
 describe("UserLogin Integration Test", () => {
   let repo: InMemoryUserRepo;
@@ -53,7 +53,8 @@ describe("UserLogin Integration Test", () => {
       password: "wrongpassword",
     };
     await expect(useCaseLogin.execute(input)).rejects.toThrow(
-      "Invalid Credentials."
+      "Invalid Credentials.",
     );
   });
 });
+

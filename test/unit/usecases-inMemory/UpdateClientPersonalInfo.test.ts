@@ -1,10 +1,9 @@
-import { CreateUser } from "../../src/application/usecases/CreateUser.usecase";
-import { FindUserById } from "../../src/application/usecases/FindUserById.usecase";
-import { UpdateClientPersonalInfo } from "../../src/application/usecases/UpdateClientPersonalInfo.usecase";
-import { TrainingPlan } from "../../src/domain/TrainingPlan";
-import { User } from "../../src/domain/User";
-import BcryptPasswordHasher from "../../src/infrastructure/Hashing/BcryptPasswordHasher";
-import { InMemoryUserRepo } from "../../src/infrastructure/UserRepo/InMemory";
+import { CreateUser } from "../../../src/application/usecases/CreateUser.usecase";
+import { FindUserById } from "../../../src/application/usecases/FindUserById.usecase";
+import { UpdateClientPersonalInfo } from "../../../src/application/usecases/UpdateClientPersonalInfo.usecase";
+import { TrainingPlan } from "../../../src/domain/TrainingPlan";
+import BcryptPasswordHasher from "../../../src/infrastructure/Hashing/BcryptPasswordHasher";
+import { InMemoryUserRepo } from "../../../src/infrastructure/UserRepo/InMemory";
 
 describe("UpdateClientPersonalInfo Integration Test", () => {
   let repo: InMemoryUserRepo;
@@ -19,7 +18,7 @@ describe("UpdateClientPersonalInfo Integration Test", () => {
     useCaseCreate = new CreateUser(repo, bcryptPasswordHasher);
     useCaseUpdateClientPersonalInfo = new UpdateClientPersonalInfo(
       repo,
-      bcryptPasswordHasher
+      bcryptPasswordHasher,
     );
 
     const input = {
@@ -52,8 +51,8 @@ describe("UpdateClientPersonalInfo Integration Test", () => {
     expect(
       await bcryptPasswordHasher.compare(
         inputForUpdate.plainTextPassword,
-        updatedUser.password
-      )
+        updatedUser.password,
+      ),
     ).toBe(true);
   });
 
@@ -65,7 +64,8 @@ describe("UpdateClientPersonalInfo Integration Test", () => {
       plainTextPassword: "123wrong", // Invalid password
     };
     await expect(
-      useCaseUpdateClientPersonalInfo.execute(inputForUpdate)
+      useCaseUpdateClientPersonalInfo.execute(inputForUpdate),
     ).rejects.toThrow("Email does not meet criteria.");
   });
 });
+

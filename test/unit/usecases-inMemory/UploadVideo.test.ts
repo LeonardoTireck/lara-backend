@@ -1,6 +1,6 @@
-import { UploadVideo } from "../../src/application/usecases/UploadVideo.usecase";
-import { InMemoryVideoRepository } from "../../src/infrastructure/videoRepo/inMemory";
-import { InMemoryVideoStorage } from "../../src/infrastructure/videoStorage/inMemory";
+import { UploadVideo } from "../../../src/application/usecases/UploadVideo.usecase";
+import { InMemoryVideoRepository } from "../../../src/infrastructure/videoRepo/inMemory";
+import { InMemoryVideoStorage } from "../../../src/infrastructure/videoStorage/inMemory";
 
 describe("UploadVideo Integration Test", () => {
   let videoRepo: InMemoryVideoRepository;
@@ -28,11 +28,12 @@ describe("UploadVideo Integration Test", () => {
 
     expect(video).toBeDefined();
     expect(video.thumbnailUrl).toBe(
-      `https://fake-s3.local/thumbnails/${video.id}_${nameWithUnderscore}.jpg`
+      `https://fake-s3.local/thumbnails/${video.id}_${nameWithUnderscore}.jpg`,
     );
     expect(video.videoUrl).toBe(
-      `https://fake-s3.local/videos/${video.id}_${nameWithUnderscore}.mp4`
+      `https://fake-s3.local/videos/${video.id}_${nameWithUnderscore}.mp4`,
     );
     expect(video.category).toBe("Stretching");
   });
 });
+

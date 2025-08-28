@@ -1,7 +1,7 @@
-import { AddCommentToVideo } from "../../src/application/usecases/AddCommentToVideo.usecase";
-import { UploadVideo } from "../../src/application/usecases/UploadVideo.usecase";
-import { InMemoryVideoRepository } from "../../src/infrastructure/videoRepo/inMemory";
-import { InMemoryVideoStorage } from "../../src/infrastructure/videoStorage/inMemory";
+import { AddCommentToVideo } from "../../../src/application/usecases/AddCommentToVideo.usecase";
+import { UploadVideo } from "../../../src/application/usecases/UploadVideo.usecase";
+import { InMemoryVideoRepository } from "../../../src/infrastructure/videoRepo/inMemory";
+import { InMemoryVideoStorage } from "../../../src/infrastructure/videoStorage/inMemory";
 
 describe("AddCommentToVideo Integration Test", () => {
   let videoRepo: InMemoryVideoRepository;
@@ -32,9 +32,8 @@ describe("AddCommentToVideo Integration Test", () => {
       text: "Fake comment",
     };
 
-    const outputAddComment = await useCaseAddCommentToVideo.execute(
-      inputForAddComment
-    );
+    const outputAddComment =
+      await useCaseAddCommentToVideo.execute(inputForAddComment);
 
     expect(outputAddComment.commentId).toBeDefined();
     expect(outputAddComment.videoId).toBe(videoId);
@@ -42,3 +41,4 @@ describe("AddCommentToVideo Integration Test", () => {
     expect(outputAddComment.text).toBe(inputForAddComment.text);
   });
 });
+

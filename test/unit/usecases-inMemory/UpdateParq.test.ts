@@ -1,9 +1,9 @@
-import { CreateUser } from "../../src/application/usecases/CreateUser.usecase";
-import { UpdateParq } from "../../src/application/usecases/UpdateParq.usecase";
-import { Parq } from "../../src/domain/Parq";
-import { TrainingPlan } from "../../src/domain/TrainingPlan";
-import BcryptPasswordHasher from "../../src/infrastructure/Hashing/BcryptPasswordHasher";
-import { InMemoryUserRepo } from "../../src/infrastructure/UserRepo/InMemory";
+import { CreateUser } from "../../../src/application/usecases/CreateUser.usecase";
+import { UpdateParq } from "../../../src/application/usecases/UpdateParq.usecase";
+import { Parq } from "../../../src/domain/Parq";
+import { TrainingPlan } from "../../../src/domain/TrainingPlan";
+import BcryptPasswordHasher from "../../../src/infrastructure/Hashing/BcryptPasswordHasher";
+import { InMemoryUserRepo } from "../../../src/infrastructure/UserRepo/InMemory";
 
 describe("UpdateParq Integration Test", () => {
   let repo: InMemoryUserRepo;
@@ -43,3 +43,4 @@ describe("UpdateParq Integration Test", () => {
     expect(updatedUser.parq.answers[0]).toBe("Answer1");
   });
 });
+
