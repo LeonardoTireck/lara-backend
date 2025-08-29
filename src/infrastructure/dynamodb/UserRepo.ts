@@ -10,7 +10,11 @@ export class DynamoDbUserRepo implements UserRepository {
   private docClient;
 
   constructor() {
-    this.docClient = DynamoDBDocumentClient.from(client);
+    this.docClient = DynamoDBDocumentClient.from(client, {
+      marshallOptions: {
+        convertClassInstanceToMap: true,
+      },
+    });
   }
 
   async save(user: User): Promise<void> {

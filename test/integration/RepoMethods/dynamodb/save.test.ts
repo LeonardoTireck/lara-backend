@@ -11,7 +11,6 @@ describe("DynamoDbUserRepo", () => {
 
   test("should save a user to DynamoDB", async () => {
     const mockTrainingPlan = TrainingPlan.create("silver", "card");
-    console.log(mockTrainingPlan);
 
     const user = User.create(
       "John Doe",
@@ -24,8 +23,6 @@ describe("DynamoDbUserRepo", () => {
       "client",
     );
 
-    console.log(user);
-
-    await userRepo.save(user);
+    expect(await userRepo.save(user)).resolves;
   });
 });
