@@ -3,7 +3,7 @@ import {
   waitUntilTableNotExists,
 } from "@aws-sdk/client-dynamodb";
 import "dotenv/config";
-import { client } from "./DynamoDBClient";
+import { client } from "../DynamoDBClient";
 
 async function dropUsersTable() {
   try {

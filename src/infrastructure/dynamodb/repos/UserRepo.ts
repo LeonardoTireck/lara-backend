@@ -1,10 +1,14 @@
 import { ScanCommand } from "@aws-sdk/client-dynamodb";
-import { client } from "./DynamoDBClient";
-import { UserRepository } from "../../application/ports/UserRepository";
-import { User } from "../../domain/User";
-import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
+import {
+  DynamoDBDocumentClient,
+  PutCommand,
+  GetCommand,
+} from "@aws-sdk/lib-dynamodb";
 import "dotenv/config";
-import { UserType } from "../../domain/UserType";
+import { UserRepository } from "../../../application/ports/UserRepository";
+import { User } from "../../../domain/User";
+import { UserType } from "../../../domain/UserType";
+import { client } from "../DynamoDBClient";
 
 export class DynamoDbUserRepo implements UserRepository {
   private docClient;
@@ -43,8 +47,39 @@ export class DynamoDbUserRepo implements UserRepository {
   update(user: User): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  getById(userId: string): Promise<User | undefined> {
-    throw new Error("Method not implemented.");
+  async getById(userId: string): Promise<User | undefined> {
+    const command = new GetCommand({
+      TableName: "Users",
+      Key: {
+        Id: userId,
+      },
+    });
+
+    const response = await this.docClient.send(command);
+
+    if (!response.Item) {
+      return undefined;
+    }
+
+    const u = response.Item;
+    const user = new User(
+      String(u.Id),
+      u.UserType as UserType,
+      String(u.Name),
+      new Date(u.DateOfFirstPlanIngress),
+      String(u.DocumentCPF),
+      new Date(u.DateOfBirth),
+      String(u.Email),
+      String(u.Phone),
+      String(u.HashedPassword),
+      u.ActivePlan as any,
+      u.PastPlans as any,
+      u.Parq as any,
+      u.LastParqUpdate ? new Date(u.LastParqUpdate) : undefined,
+      u.TrainingSessions as any,
+    );
+
+    return user;
   }
   getByEmail(userEmail: string): Promise<User | undefined> {
     throw new Error("Method not implemented.");

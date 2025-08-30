@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { CreateUser } from "./application/usecases/CreateUser.usecase";
 import "dotenv/config";
 import BcryptPasswordHasher from "./infrastructure/Hashing/BcryptPasswordHasher";
-import { DynamoDbUserRepo } from "./infrastructure/dynamodb/UserRepo";
+import { DynamoDbUserRepo } from "./infrastructure/dynamodb/repos/UserRepo";
 import { FindAllUsers } from "./application/usecases/FindAllUsers.usecase";
 
 const app = express();
@@ -15,7 +15,6 @@ const hasher = new BcryptPasswordHasher(+process.env.BCRYPT_SALTROUNDS!);
 app.get("/users", async (_req: Request, res: Response) => {
   const getAllUsersUseCase = new FindAllUsers(repo);
   const users = await getAllUsersUseCase.execute();
-
   res.json(users);
 });
 

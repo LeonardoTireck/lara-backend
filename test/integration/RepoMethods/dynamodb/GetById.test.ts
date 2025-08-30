@@ -1,6 +1,6 @@
 import { TrainingPlan } from "../../../../src/domain/TrainingPlan";
 import { User } from "../../../../src/domain/User";
-import { DynamoDbUserRepo } from "../../../../src/infrastructure/dynamodb/UserRepo";
+import { DynamoDbUserRepo } from "../../../../src/infrastructure/dynamodb/repos/UserRepo";
 
 describe("DynamoDbUserRepo - GetById", () => {
   let userRepo: DynamoDbUserRepo;
@@ -24,6 +24,7 @@ describe("DynamoDbUserRepo - GetById", () => {
     await userRepo.save(user);
 
     const retrievedUser = await userRepo.getById(user.id);
+    console.log(retrievedUser?.activePlan?.expirationDate);
 
     expect(retrievedUser).toBeDefined();
     expect(retrievedUser?.id).toBe(user.id);
@@ -33,6 +34,7 @@ describe("DynamoDbUserRepo - GetById", () => {
   test("should return undefined if user ID does not exist", async () => {
     const nonExistentId = "non-existent-id";
     const retrievedUser = await userRepo.getById(nonExistentId);
+    console.log(retrievedUser);
     expect(retrievedUser).toBeUndefined();
   });
 });
