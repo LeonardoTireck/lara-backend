@@ -29,4 +29,11 @@ export class TrainingPlan {
   static create(planType: PlanType, paymentMethod: "card" | "PIX") {
     return new TrainingPlan(planType, paymentMethod);
   }
+  static fromRaw(data: any): TrainingPlan {
+    if (!data) return data;
+    const newTrainingPlan = new TrainingPlan(data.planType, data.paymentMethod);
+    newTrainingPlan.startDate = data.startDate;
+    newTrainingPlan.expirationDate = data.expirationDate;
+    return newTrainingPlan;
+  }
 }

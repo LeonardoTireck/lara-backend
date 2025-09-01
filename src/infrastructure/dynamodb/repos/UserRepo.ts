@@ -1,14 +1,16 @@
-import { ScanCommand } from "@aws-sdk/client-dynamodb";
 import {
   DynamoDBDocumentClient,
   PutCommand,
   GetCommand,
+  ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 import "dotenv/config";
 import { UserRepository } from "../../../application/ports/UserRepository";
 import { User } from "../../../domain/User";
 import { UserType } from "../../../domain/UserType";
 import { client } from "../DynamoDBClient";
+import { TrainingSession } from "../../../domain/TrainingSession";
+import { TrainingPlan } from "../../../domain/TrainingPlan";
 
 export class DynamoDbUserRepo implements UserRepository {
   private docClient;
@@ -20,38 +22,57 @@ export class DynamoDbUserRepo implements UserRepository {
       },
     });
   }
-
   async save(user: User): Promise<void> {
     const command = new PutCommand({
       TableName: "Users",
       Item: {
-        Id: user.id,
-        Name: user.name,
-        Email: user.email,
-        DocumentCPF: user.documentCPF,
-        Phone: user.phone,
-        HashedPassword: user.hashedPassword,
-        DateOfBirth: user.dateOfBirth.toISOString(),
-        DateOfFirstPlanIngress: user.dateOfFirstPlanIngress.toISOString(),
-        ActivePlan: user.activePlan,
-        PastPlans: user.pastPlans,
-        Parq: user.parq,
-        LastParqUpdate: user.lastParqUpdate?.toISOString(),
-        TrainingSessions: user.trainingSessions,
-        UserType: user.userType,
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        documentCPF: user.documentCPF,
+        phone: user.phone,
+        hashedPassword: user.hashedPassword,
+        dateOfBirth: user.dateOfBirth.toISOString(),
+        dateOfFirstPlanIngress: user.dateOfFirstPlanIngress.toISOString(),
+        activePlan: user.activePlan
+          ? {
+              planType: user.activePlan.planType,
+              paymentMethod: user.activePlan.paymentMethod,
+              startDate: user.activePlan.startDate,
+              expirationDate: user.activePlan.expirationDate,
+            }
+          : undefined,
+        pastPlans: user.pastPlans
+          ? user.pastPlans.map((plan) => ({
+              planType: plan.planType,
+              paymentMethod: plan.paymentMethod,
+              startDate: plan.startDate,
+              expirationDate: plan.expirationDate,
+            }))
+          : [],
+        parq: user.parq,
+        lastParqUpdate: user.lastParqUpdate?.toISOString(),
+        trainingSessions: user.trainingSessions
+          ? user.trainingSessions.map((session) => ({
+              ...session,
+              createdAt: session.createdAt,
+              updatedAt: session.updatedAt,
+            }))
+          : [],
+        userType: user.userType,
       },
     });
     await this.docClient.send(command);
   }
 
-  update(user: User): Promise<void> {
-    throw new Error("Method not implemented.");
+  async update(user: User): Promise<void> {
+    throw new Error("Method not implemented");
   }
   async getById(userId: string): Promise<User | undefined> {
     const command = new GetCommand({
       TableName: "Users",
       Key: {
-        Id: userId,
+        id: userId,
       },
     });
 
@@ -63,25 +84,25 @@ export class DynamoDbUserRepo implements UserRepository {
 
     const u = response.Item;
     const user = new User(
-      String(u.Id),
-      u.UserType as UserType,
-      String(u.Name),
-      new Date(u.DateOfFirstPlanIngress),
-      String(u.DocumentCPF),
-      new Date(u.DateOfBirth),
-      String(u.Email),
-      String(u.Phone),
-      String(u.HashedPassword),
-      u.ActivePlan as any,
-      u.PastPlans as any,
-      u.Parq as any,
-      u.LastParqUpdate ? new Date(u.LastParqUpdate) : undefined,
-      u.TrainingSessions as any,
+      String(u.id),
+      u.userType as UserType,
+      String(u.name),
+      new Date(u.dateOfFirstPlanIngress),
+      String(u.documentCPF),
+      new Date(u.dateOfBirth),
+      String(u.email),
+      String(u.phone),
+      String(u.hashedPassword),
+      TrainingPlan.fromRaw(u.activePlan),
+      u.pastPlans ? u.pastPlans.map(TrainingPlan.fromRaw) : [],
+      u.parq as any,
+      u.lastParqUpdate ? new Date(u.lastParqUpdate) : undefined,
+      u.trainingSessions ? u.trainingSessions.map(TrainingSession.fromRaw) : [],
     );
 
     return user;
   }
-  getByEmail(userEmail: string): Promise<User | undefined> {
+  async getByEmail(userEmail: string): Promise<User | undefined> {
     throw new Error("Method not implemented.");
   }
 
@@ -94,29 +115,33 @@ export class DynamoDbUserRepo implements UserRepository {
     const response = await this.docClient.send(command);
     if (!response.Items) throw new Error("No users found.");
 
-    response.Items.map((u: any) => {
-      let newUser = new User(
-        String(u.Id.S!),
-        u.UserType.S! as UserType,
-        String(u.Name.S!), // ensure it's a string
-        new Date(u.DateOfFirstPlanIngress.S!),
-        String(u.DocumentCPF.S!),
-        new Date(u.DateOfBirth.S!),
-        String(u.Email.S!),
-        String(u.Phone.S!),
-        String(u.HashedPassword.S!),
-        u.ActivePlan.M! as any,
-        u.PastPlans.L! as any,
-        u.Parq as any,
-        u.LastParqUpdate as any,
-        u.TrainingSessions.L! as any,
+    response.Items.map((u) => {
+      usersArray.push(
+        new User(
+          u.id,
+          u.userType,
+          u.name,
+          new Date(u.dateOfFirstPlanIngress),
+          u.documentCPF,
+          new Date(u.dateOfBirth),
+          u.email,
+          u.phone,
+          u.hashedPassword,
+          TrainingPlan.fromRaw(u.activePlan),
+          u.pastPlans ? u.pastPlans.map(TrainingPlan.fromRaw) : [],
+          u.parq,
+          u.lastParqUpdate ? new Date(u.lastParqUpdate) : undefined,
+          u.trainingSessions
+            ? u.trainingSessions.map(TrainingSession.fromRaw)
+            : [],
+        ),
       );
-      usersArray.push(newUser);
     });
+
     return usersArray;
   }
 
-  delete(userId: string): Promise<User | undefined> {
+  async delete(userId: string): Promise<User | undefined> {
     throw new Error("Method not implemented.");
   }
 }

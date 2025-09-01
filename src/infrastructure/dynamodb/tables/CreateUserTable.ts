@@ -8,13 +8,13 @@ async function createTable() {
       TableName: "Users",
       AttributeDefinitions: [
         {
-          AttributeName: "Id",
+          AttributeName: "id",
           AttributeType: "S",
         },
       ],
       KeySchema: [
         {
-          AttributeName: "Id",
+          AttributeName: "id",
           KeyType: "HASH",
         },
       ],

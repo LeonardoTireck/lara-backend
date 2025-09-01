@@ -45,5 +45,7 @@ describe("DynamoDbUserRepo - GetAll", () => {
 
     expect(foundUser1).toBeDefined();
     expect(foundUser2).toBeDefined();
+
+    console.log(users);
   });
 });

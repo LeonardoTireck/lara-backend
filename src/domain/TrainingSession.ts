@@ -16,6 +16,18 @@ export class TrainingSession {
   ) {
     return new TrainingSession(sessionDay, exercises, notes, durationMinutes);
   }
+
+  static fromRaw(data: any): TrainingSession {
+    const session = new TrainingSession(
+      data.sessionDay,
+      data.exercises,
+      data.notes,
+      data.durationMinutes,
+      new Date(data.createdAt),
+      new Date(data.updatedAt),
+    );
+    return session;
+  }
 }
 
 type Exercise = {

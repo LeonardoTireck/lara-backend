@@ -34,7 +34,6 @@ describe("DynamoDbUserRepo - GetById", () => {
   test("should return undefined if user ID does not exist", async () => {
     const nonExistentId = "non-existent-id";
     const retrievedUser = await userRepo.getById(nonExistentId);
-    console.log(retrievedUser);
     expect(retrievedUser).toBeUndefined();
   });
 });
