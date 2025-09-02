@@ -15,7 +15,7 @@ describe("Create user route Test", () => {
     } as const;
 
     const outputHttpCreateUser = await axios.post(
-      "http://lara_backend:3000/newUser",
+      "http://localhost:3000/newUser",
       input,
     );
 

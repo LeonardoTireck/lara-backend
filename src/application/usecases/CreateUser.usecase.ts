@@ -32,6 +32,7 @@ export class CreateUser {
       id: user.id,
       name: user.name,
       email: user.email,
+      activePlan: user.activePlan,
     };
   }
 }
@@ -50,4 +51,5 @@ type Output = {
   id: string;
   name: string;
   email: string;
+  activePlan?: TrainingPlan;
 };

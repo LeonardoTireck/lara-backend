@@ -32,8 +32,8 @@ export class TrainingPlan {
   static fromRaw(data: any): TrainingPlan {
     if (!data) return data;
     const newTrainingPlan = new TrainingPlan(data.planType, data.paymentMethod);
-    newTrainingPlan.startDate = data.startDate;
-    newTrainingPlan.expirationDate = data.expirationDate;
+    newTrainingPlan.startDate = new Date(data.startDate);
+    newTrainingPlan.expirationDate = new Date(data.expirationDate);
     return newTrainingPlan;
   }
 }

@@ -140,4 +140,43 @@ export class User {
   updateActivePlan(newPlan: TrainingPlan) {
     this._activePlan = newPlan;
   }
+
+  static fromRaw(data: any): User {
+    if (!data) return data;
+    const user = new User(
+      data.id,
+      data.userType,
+      data.name,
+      data.dateOfFirstPlanIngress,
+      data.documentCPF,
+      data.dateOfBirth,
+      data.email,
+      data.phone,
+      data.hashedPassword,
+      data.activePlan
+        ? TrainingPlan.fromRaw({
+            ...data.activePlan,
+            startDate: new Date(data.activePlan.startDate),
+            expirationDate: new Date(data.activePlan.expirationDate),
+          })
+        : undefined,
+      data.pastPlans
+        ? data.pastPlans.map((plan: any) =>
+            TrainingPlan.fromRaw({
+              ...plan,
+              startDate: new Date(plan.startDate),
+              expirationDate: new Date(plan.expirationDate),
+            }),
+          )
+        : [],
+      data.parq ? Parq.fromRaw(data.parq) : undefined,
+      data.lastParqUpdate,
+      data.trainingSessions
+        ? data.trainingSessions.map((session: any) =>
+            TrainingSession.fromRaw(session),
+          )
+        : [],
+    );
+    return user;
+  }
 }

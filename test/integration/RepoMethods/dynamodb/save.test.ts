@@ -11,7 +11,6 @@ describe("DynamoDbUserRepo", () => {
 
   test("should save a user to DynamoDB", async () => {
     const mockTrainingPlan = TrainingPlan.create("silver", "card");
-
     const user = User.create(
       "John Doe",
       "johndoe@example.com",

@@ -11,12 +11,12 @@ describe("DynamoDbUserRepo - GetById", () => {
 
   test("should retrieve a user by ID from DynamoDB", async () => {
     const user = User.create(
-      "Alice Wonderland",
-      "alice@example.com",
+      "User from GetById Test",
+      "user2@example.com",
       "11144477735",
-      "11977776666",
-      new Date("1980-10-10"),
-      "hashedalicepassword",
+      "11922222222",
+      new Date("1991-02-02"),
+      "hashedpass2",
       TrainingPlan.create("gold", "PIX"),
       "client",
     );
@@ -24,7 +24,6 @@ describe("DynamoDbUserRepo - GetById", () => {
     await userRepo.save(user);
 
     const retrievedUser = await userRepo.getById(user.id);
-    console.log(retrievedUser?.activePlan?.expirationDate);
 
     expect(retrievedUser).toBeDefined();
     expect(retrievedUser?.id).toBe(user.id);

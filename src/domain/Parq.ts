@@ -10,6 +10,11 @@ export class Parq {
     return new Parq(questions, answers);
   }
 
+  static fromRaw(data: any): Parq {
+    if (!data) return data;
+    return new Parq(data._questions, data._answers);
+  }
+
   get questions() {
     return [...this._questions];
   }

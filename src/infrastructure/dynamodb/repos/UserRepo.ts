@@ -3,11 +3,11 @@ import {
   PutCommand,
   GetCommand,
   ScanCommand,
+  UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 import "dotenv/config";
 import { UserRepository } from "../../../application/ports/UserRepository";
 import { User } from "../../../domain/User";
-import { UserType } from "../../../domain/UserType";
 import { client } from "../DynamoDBClient";
 import { TrainingSession } from "../../../domain/TrainingSession";
 import { TrainingPlan } from "../../../domain/TrainingPlan";
@@ -38,16 +38,16 @@ export class DynamoDbUserRepo implements UserRepository {
           ? {
               planType: user.activePlan.planType,
               paymentMethod: user.activePlan.paymentMethod,
-              startDate: user.activePlan.startDate,
-              expirationDate: user.activePlan.expirationDate,
+              startDate: user.activePlan.startDate.toISOString(),
+              expirationDate: user.activePlan.expirationDate.toISOString(),
             }
           : undefined,
         pastPlans: user.pastPlans
           ? user.pastPlans.map((plan) => ({
               planType: plan.planType,
               paymentMethod: plan.paymentMethod,
-              startDate: plan.startDate,
-              expirationDate: plan.expirationDate,
+              startDate: plan.startDate.toISOString(),
+              expirationDate: plan.expirationDate.toISOString(),
             }))
           : [],
         parq: user.parq,
@@ -55,18 +55,77 @@ export class DynamoDbUserRepo implements UserRepository {
         trainingSessions: user.trainingSessions
           ? user.trainingSessions.map((session) => ({
               ...session,
-              createdAt: session.createdAt,
-              updatedAt: session.updatedAt,
+              createdAt: session.createdAt.toISOString(),
+              updatedAt: session.updatedAt.toISOString(),
             }))
           : [],
         userType: user.userType,
       },
     });
+
     await this.docClient.send(command);
   }
 
   async update(user: User): Promise<void> {
-    throw new Error("Method not implemented");
+    const command = new UpdateCommand({
+      TableName: "Users",
+      Key: {
+        id: user.id,
+      },
+      UpdateExpression:
+        "set #name = :n, #email = :e, #documentCPF = :d, #phone = :p, #hashedPassword = :h, #dateOfBirth = :db, #dateOfFirstPlanIngress = :dfpi, #activePlan = :ap, #pastPlans = :pp, #parq = :pa, #lastParqUpdate = :lpu, #trainingSessions = :ts, #userType = :ut",
+      ExpressionAttributeNames: {
+        "#name": "name",
+        "#email": "email",
+        "#documentCPF": "documentCPF",
+        "#phone": "phone",
+        "#hashedPassword": "hashedPassword",
+        "#dateOfBirth": "dateOfBirth",
+        "#dateOfFirstPlanIngress": "dateOfFirstPlanIngress",
+        "#activePlan": "activePlan",
+        "#pastPlans": "pastPlans",
+        "#parq": "parq",
+        "#lastParqUpdate": "lastParqUpdate",
+        "#trainingSessions": "trainingSessions",
+        "#userType": "userType",
+      },
+      ExpressionAttributeValues: {
+        ":n": user.name,
+        ":e": user.email,
+        ":d": user.documentCPF,
+        ":p": user.phone,
+        ":h": user.hashedPassword,
+        ":db": user.dateOfBirth.toISOString(),
+        ":dfpi": user.dateOfFirstPlanIngress.toISOString(),
+        ":ap": user.activePlan
+          ? {
+              planType: user.activePlan.planType,
+              paymentMethod: user.activePlan.paymentMethod,
+              startDate: user.activePlan.startDate.toISOString(),
+              expirationDate: user.activePlan.expirationDate.toISOString(),
+            }
+          : null,
+        ":pp": user.pastPlans
+          ? user.pastPlans.map((plan) => ({
+              planType: plan.planType,
+              paymentMethod: plan.paymentMethod,
+              startDate: plan.startDate.toISOString(),
+              expirationDate: plan.expirationDate.toISOString(),
+            }))
+          : [],
+        ":pa": user.parq ?? null,
+        ":lpu": user.lastParqUpdate?.toISOString() ?? null,
+        ":ts": user.trainingSessions
+          ? user.trainingSessions.map((session) => ({
+              ...session,
+              createdAt: session.createdAt.toISOString(),
+              updatedAt: session.updatedAt.toISOString(),
+            }))
+          : [],
+        ":ut": user.userType,
+      },
+    });
+    await this.docClient.send(command);
   }
   async getById(userId: string): Promise<User | undefined> {
     const command = new GetCommand({
@@ -82,25 +141,7 @@ export class DynamoDbUserRepo implements UserRepository {
       return undefined;
     }
 
-    const u = response.Item;
-    const user = new User(
-      String(u.id),
-      u.userType as UserType,
-      String(u.name),
-      new Date(u.dateOfFirstPlanIngress),
-      String(u.documentCPF),
-      new Date(u.dateOfBirth),
-      String(u.email),
-      String(u.phone),
-      String(u.hashedPassword),
-      TrainingPlan.fromRaw(u.activePlan),
-      u.pastPlans ? u.pastPlans.map(TrainingPlan.fromRaw) : [],
-      u.parq as any,
-      u.lastParqUpdate ? new Date(u.lastParqUpdate) : undefined,
-      u.trainingSessions ? u.trainingSessions.map(TrainingSession.fromRaw) : [],
-    );
-
-    return user;
+    return User.fromRaw(response.Item);
   }
   async getByEmail(userEmail: string): Promise<User | undefined> {
     throw new Error("Method not implemented.");

@@ -20,6 +20,9 @@ app.get("/users", async (_req: Request, res: Response) => {
 
 app.post("/newUser", async (req: Request, res: Response) => {
   const body = req.body;
+  body.dateOfBirth = new Date(body.dateOfBirth);
+  body.activePlan.startDate = new Date(body.activePlan.startDate);
+  body.activePlan.expirationDate = new Date(body.activePlan.expirationDate);
   const createUserUseCase = new CreateUser(repo, hasher);
 
   const outputCreateUser = await createUserUseCase.execute(body);
