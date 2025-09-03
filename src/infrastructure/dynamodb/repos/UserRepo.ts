@@ -4,6 +4,7 @@ import {
   GetCommand,
   ScanCommand,
   UpdateCommand,
+  DeleteCommand,
 } from "@aws-sdk/lib-dynamodb";
 import "dotenv/config";
 import { UserRepository } from "../../../application/ports/UserRepository";
@@ -182,7 +183,24 @@ export class DynamoDbUserRepo implements UserRepository {
     return usersArray;
   }
 
-  async delete(userId: string): Promise<User | undefined> {
-    throw new Error("Method not implemented.");
+  async delete(userId: string): Promise<void> {
+    const command = new DeleteCommand({
+      TableName: "Users",
+      Key: {
+        id: userId,
+      },
+      ConditionExpression: "attribute_exists(id)",
+    });
+
+    try {
+      await this.docClient.send(command);
+    } catch (error: any) {
+      if (error.name === "ConditionalCheckFailedException") {
+        throw new Error(
+          `User with ID '${userId}' not found and could not be deleted.`,
+        );
+      }
+      throw error;
+    }
   }
 }

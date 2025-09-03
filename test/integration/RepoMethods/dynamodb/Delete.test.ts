@@ -2,7 +2,7 @@ import { TrainingPlan } from "../../../../src/domain/TrainingPlan";
 import { User } from "../../../../src/domain/User";
 import { DynamoDbUserRepo } from "../../../../src/infrastructure/dynamodb/repos/UserRepo";
 
-describe.skip("DynamoDbUserRepo - Delete", () => {
+describe("DynamoDbUserRepo - Delete", () => {
   let userRepo: DynamoDbUserRepo;
 
   beforeAll(() => {
@@ -22,19 +22,16 @@ describe.skip("DynamoDbUserRepo - Delete", () => {
     );
 
     await userRepo.save(user);
-
-    const deletedUser = await userRepo.delete(user.id);
-
-    expect(deletedUser).toBeDefined();
-    expect(deletedUser?.id).toBe(user.id);
+    await userRepo.delete(user.id);
 
     const retrievedUser = await userRepo.getById(user.id);
     expect(retrievedUser).toBeUndefined();
   });
 
-  test("should return undefined if user ID to delete does not exist", async () => {
+  test("should return an error if user ID to delete does not exist", async () => {
     const nonExistentId = "non-existent-delete-id";
-    const deletedUser = await userRepo.delete(nonExistentId);
-    expect(deletedUser).toBeUndefined();
+    await expect(userRepo.delete(nonExistentId)).rejects.toThrow(
+      `User with ID '${nonExistentId}' not found and could not be deleted.`,
+    );
   });
 });

@@ -41,12 +41,12 @@ export class InMemoryUserRepo implements UserRepository {
     return user;
   }
 
-  async delete(userId: string): Promise<User | undefined> {
+  async delete(userId: string): Promise<void> {
     const user = this.users.find((user) => user.id === userId);
     if (!user) throw new Error("User not found.");
     const userIndex = this.users.findIndex((user) => user.id === userId);
     this.users.splice(userIndex, 1);
-    return user;
+    return;
   }
 
   async getAll(): Promise<User[] | undefined> {
