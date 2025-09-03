@@ -5,7 +5,7 @@ import { TrainingPlan } from "../../../src/domain/TrainingPlan";
 import BcryptPasswordHasher from "../../../src/infrastructure/Hashing/BcryptPasswordHasher";
 import { InMemoryUserRepo } from "../../../src/infrastructure/UserRepo/InMemory";
 
-describe("UpdateParq Integration Test", () => {
+describe("UpdateParq Use Case", () => {
   let repo: InMemoryUserRepo;
   let useCaseUpdateParq: UpdateParq;
   let user: { id: string };
@@ -29,7 +29,7 @@ describe("UpdateParq Integration Test", () => {
     user = await useCaseCreate.execute(input);
   });
 
-  test("Should update a user's Parq", async () => {
+  it("should update a user's Parq", async () => {
     const inputForParq = {
       userId: user.id,
       newParq: Parq.create(["Question1", "Question2"], ["Answer1", "Answer2"]),
@@ -39,8 +39,44 @@ describe("UpdateParq Integration Test", () => {
 
     expect(updatedUser).toBeDefined();
     expect(updatedUser.parq).toBeDefined();
-    expect(updatedUser.parq.questions[0]).toBe("Question1");
-    expect(updatedUser.parq.answers[0]).toBe("Answer1");
+    expect(updatedUser.parq.questions).toEqual(["Question1", "Question2"]);
+    expect(updatedUser.parq.answers).toEqual(["Answer1", "Answer2"]);
+    // Verify that the user object in the repository is also updated
+    const userInRepo = await repo.getById(user.id);
+    expect(userInRepo?.parq).toEqual(inputForParq.newParq);
+    expect(userInRepo?.lastParqUpdate).toBeInstanceOf(Date);
+  });
+
+  it("should throw an error if the user is not found", async () => {
+    const inputForParq = {
+      userId: "non-existent-id",
+      newParq: Parq.create(["Q"], ["A"]),
+    };
+
+    await expect(useCaseUpdateParq.execute(inputForParq)).rejects.toThrow(
+      "User not found.",
+    );
+  });
+
+  it("should throw an error if newParq is null", async () => {
+    const inputForParq = {
+      userId: user.id,
+      newParq: null as any,
+    };
+
+    await expect(useCaseUpdateParq.execute(inputForParq)).rejects.toThrow(
+      "Invalid Parq",
+    );
+  });
+
+  it("should throw an error if newParq is undefined", async () => {
+    const inputForParq = {
+      userId: user.id,
+      newParq: undefined as any,
+    };
+
+    await expect(useCaseUpdateParq.execute(inputForParq)).rejects.toThrow(
+      "Invalid Parq",
+    );
   });
 });
-

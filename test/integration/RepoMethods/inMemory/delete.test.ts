@@ -3,14 +3,14 @@ import { TrainingPlan } from "../../../../src/domain/TrainingPlan";
 import BcryptPasswordHasher from "../../../../src/infrastructure/Hashing/BcryptPasswordHasher";
 import { InMemoryUserRepo } from "../../../../src/infrastructure/UserRepo/InMemory";
 
-describe("InMemoryUserRepo Delete Method Test", () => {
+describe("InMemoryUserRepo Delete Method", () => {
   let repo: InMemoryUserRepo;
 
   beforeEach(() => {
     repo = new InMemoryUserRepo();
   });
 
-  test("Should delete a user", async () => {
+  it("should delete a user successfully", async () => {
     const bcryptPasswordHasher = new BcryptPasswordHasher(1);
     const useCaseCreate = new CreateUser(repo, bcryptPasswordHasher);
     const inputForCreation = {
@@ -28,9 +28,19 @@ describe("InMemoryUserRepo Delete Method Test", () => {
     await repo.delete(userCreated.id);
 
     expect(repo.users).toHaveLength(0);
+    const deletedUser = await repo.getById(userCreated.id);
+    expect(deletedUser).toBeUndefined();
   });
 
-  test("Should fail to delete a user with a non-existent id", async () => {
-    await expect(repo.delete("wrong Id")).rejects.toThrow("User not found.");
+  it("should throw an error if user ID to delete does not exist", async () => {
+    const nonExistentId = "non-existent-delete-id";
+    await expect(repo.delete(nonExistentId)).rejects.toThrow(
+      "User not found.",
+    );
+  });
+
+  it("should throw an error if user ID is empty", async () => {
+    const emptyId = "";
+    await expect(repo.delete(emptyId)).rejects.toThrow("User not found.");
   });
 });

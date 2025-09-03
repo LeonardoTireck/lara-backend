@@ -1,52 +1,39 @@
 import { Phone } from "../../../src/domain/Phone";
 
-describe("Phone", () => {
-  it("should create a valid mobile phone number", () => {
-    const phoneValue = "11987654321";
-    const phone = new Phone(phoneValue);
-    expect(phone.value).toBe(phoneValue);
+describe("Phone Value Object", () => {
+  describe("Valid Phone Numbers", () => {
+    it.each([
+      ["mobile number", "11987654321"],
+      ["landline number", "1143215678"],
+      ["formatted mobile number", "(11) 98765-4321"],
+      ["mobile number with country code", "5511987654321"],
+    ])("should create a valid %s", (_, phoneValue) => {
+      const phone = new Phone(phoneValue);
+      expect(phone.value).toBe(phoneValue);
+    });
   });
 
-  it("should create a valid landline phone number", () => {
-    const phoneValue = "1143215678";
-    const phone = new Phone(phoneValue);
-    expect(phone.value).toBe(phoneValue);
-  });
+  describe("Invalid Phone Numbers", () => {
+    it.each([
+      ["too few digits", "1198765432"],
+      ["too many digits", "119876543210"],
+      ["mobile without leading 9", "1187654321"],
+      ["invalid area code (DDD)", "01987654321"],
+      ["number with letters", "1198765432a"],
+    ])("should throw an error for a number with %s", (_, invalidPhone) => {
+      expect(() => new Phone(invalidPhone)).toThrow(
+        "Phone does not meet criteria.",
+      );
+    });
 
-  it("should create a valid phone number with formatting", () => {
-    const phoneValue = "(11) 98765-4321";
-    const phone = new Phone(phoneValue);
-    expect(phone.value).toBe(phoneValue);
-  });
+    it("should throw an error for a null value", () => {
+      const invalidPhone = null as any;
+      expect(() => new Phone(invalidPhone)).toThrow();
+    });
 
-  it("should create a valid phone number with country code", () => {
-    const phoneValue = "5511987654321";
-    const phone = new Phone(phoneValue);
-    expect(phone.value).toBe(phoneValue);
-  });
-
-  it("should throw an error for a number with too few digits", () => {
-    const invalidPhone = "1198765432";
-    expect(() => new Phone(invalidPhone)).toThrow("Phone does not meet criteria.");
-  });
-
-  it("should throw an error for a number with too many digits", () => {
-    const invalidPhone = "119876543210";
-    expect(() => new Phone(invalidPhone)).toThrow("Phone does not meet criteria.");
-  });
-
-  it("should throw an error for a mobile number without the leading 9", () => {
-    const invalidPhone = "1187654321";
-    expect(() => new Phone(invalidPhone)).toThrow("Phone does not meet criteria.");
-  });
-
-  it("should throw an error for an invalid area code (DDD)", () => {
-    const invalidPhone = "01987654321";
-    expect(() => new Phone(invalidPhone)).toThrow("Phone does not meet criteria.");
-  });
-
-  it("should throw an error for a null value", () => {
-    const invalidPhone = null as any;
-    expect(() => new Phone(invalidPhone)).toThrow();
+    it("should throw an error for an undefined value", () => {
+      const invalidPhone = undefined as any;
+      expect(() => new Phone(invalidPhone)).toThrow();
+    });
   });
 });

@@ -3,7 +3,7 @@ import { UploadVideo } from "../../../src/application/usecases/UploadVideo.useca
 import { InMemoryVideoRepository } from "../../../src/infrastructure/videoRepo/inMemory";
 import { InMemoryVideoStorage } from "../../../src/infrastructure/videoStorage/inMemory";
 
-describe("AddCommentToVideo Integration Test", () => {
+describe("AddCommentToVideo Use Case", () => {
   let videoRepo: InMemoryVideoRepository;
   let useCaseAddCommentToVideo: AddCommentToVideo;
   let videoId: string;
@@ -25,7 +25,7 @@ describe("AddCommentToVideo Integration Test", () => {
     videoId = outputUploadVideo.id;
   });
 
-  test("Should add a comment to a video", async () => {
+  it("should add a comment to a video", async () => {
     const inputForAddComment = {
       videoId: videoId,
       author: "Fake User",
@@ -39,6 +39,21 @@ describe("AddCommentToVideo Integration Test", () => {
     expect(outputAddComment.videoId).toBe(videoId);
     expect(outputAddComment.author).toBe(inputForAddComment.author);
     expect(outputAddComment.text).toBe(inputForAddComment.text);
+
+    const video = await videoRepo.findById(videoId);
+    expect(video?.videoComments.length).toBe(1);
+    expect(video?.videoComments[0].author).toBe(inputForAddComment.author);
+  });
+
+  it("should throw an error if the video is not found", async () => {
+    const inputForAddComment = {
+      videoId: "non-existent-video-id",
+      author: "Fake User",
+      text: "Fake comment",
+    };
+
+    await expect(
+      useCaseAddCommentToVideo.execute(inputForAddComment),
+    ).rejects.toThrow("Video not found.");
   });
 });
-

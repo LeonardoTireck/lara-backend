@@ -1,8 +1,9 @@
 import { UploadVideo } from "../../../src/application/usecases/UploadVideo.usecase";
 import { InMemoryVideoRepository } from "../../../src/infrastructure/videoRepo/inMemory";
 import { InMemoryVideoStorage } from "../../../src/infrastructure/videoStorage/inMemory";
+import { StorageKeyBuilder } from "../../../src/domain/StorageKeyBuilder";
 
-describe("UploadVideo Integration Test", () => {
+describe("UploadVideo Use Case", () => {
   let videoRepo: InMemoryVideoRepository;
   let storageService: InMemoryVideoStorage;
   let useCaseUploadVideo: UploadVideo;
@@ -13,27 +14,71 @@ describe("UploadVideo Integration Test", () => {
     useCaseUploadVideo = new UploadVideo(videoRepo, storageService);
   });
 
-  test("Should upload a new video in memory", async () => {
+  it("should upload a new video and its thumbnail", async () => {
     const input = {
       name: "First Video",
       category: "Stretching",
       description: "Video description",
-      videoBuffer: Buffer.from("fake-content"),
-      thumbnailBuffer: Buffer.from("fake-thumb"),
+      videoBuffer: Buffer.from("fake-video-content"),
+      thumbnailBuffer: Buffer.from("fake-thumbnail-content"),
     };
 
-    const nameWithUnderscore = input.name.replace(" ", "_");
+    const videoOutput = await useCaseUploadVideo.execute(input);
 
-    const video = await useCaseUploadVideo.execute(input);
+    expect(videoOutput).toBeDefined();
+    expect(videoOutput.id).toBeDefined();
+    expect(videoOutput.name).toBe(input.name);
+    expect(videoOutput.category).toBe(input.category);
+    expect(videoOutput.description).toBe(input.description);
+    expect(videoOutput.uploadDate).toBeInstanceOf(Date);
 
-    expect(video).toBeDefined();
-    expect(video.thumbnailUrl).toBe(
-      `https://fake-s3.local/thumbnails/${video.id}_${nameWithUnderscore}.jpg`,
+    const videoKey = StorageKeyBuilder.build("video", input.name, videoOutput.id);
+    const thumbnailKey = StorageKeyBuilder.build("thumbnail", input.name, videoOutput.id);
+
+    expect(videoOutput.videoUrl).toBe(`https://fake-s3.local/${videoKey}`);
+    expect(videoOutput.thumbnailUrl).toBe(`https://fake-s3.local/${thumbnailKey}`);
+
+    // Verify content in storage
+    const storedVideo = await storageService.getFileInMemory(videoKey);
+    expect(storedVideo?.toString()).toBe(input.videoBuffer.toString());
+
+    const storedThumbnail = await storageService.getFileInMemory(thumbnailKey);
+    expect(storedThumbnail?.toString()).toBe(input.thumbnailBuffer.toString());
+
+    // Verify video metadata saved in repository
+    const savedVideoMetadata = await videoRepo.findById(videoOutput.id);
+    expect(savedVideoMetadata).toBeDefined();
+    expect(savedVideoMetadata?.name).toBe(input.name);
+    expect(savedVideoMetadata?.category).toBe(input.category);
+    expect(savedVideoMetadata?.description).toBe(input.description);
+    expect(savedVideoMetadata?.thumbnailUrl).toBe(videoOutput.thumbnailUrl);
+  });
+
+  it("should throw an error if video name is empty", async () => {
+    const input = {
+      name: "", // Invalid name
+      category: "Stretching",
+      description: "Video description",
+      videoBuffer: Buffer.from("fake-video-content"),
+      thumbnailBuffer: Buffer.from("fake-thumbnail-content"),
+    };
+
+    await expect(useCaseUploadVideo.execute(input)).rejects.toThrow(
+      "Video name cannot be empty.",
     );
-    expect(video.videoUrl).toBe(
-      `https://fake-s3.local/videos/${video.id}_${nameWithUnderscore}.mp4`,
+  });
+
+  it("should throw an error if video category is empty", async () => {
+    const input = {
+      name: "Valid Name",
+      category: "", // Invalid category
+      description: "Video description",
+      videoBuffer: Buffer.from("fake-video-content"),
+      thumbnailBuffer: Buffer.from("fake-thumbnail-content"),
+    };
+
+    await expect(useCaseUploadVideo.execute(input)).rejects.toThrow(
+      "Video category cannot be empty.",
     );
-    expect(video.category).toBe("Stretching");
   });
 });
-

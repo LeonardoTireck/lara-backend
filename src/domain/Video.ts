@@ -18,6 +18,8 @@ export class Video {
     category: string,
     description: string,
   ) {
+    if (!name) throw new Error("Video name cannot be empty.");
+    if (!category) throw new Error("Video category cannot be empty.");
     const id = crypto.randomUUID();
     return new Video(id, name, new Date(), thumbnailUrl, category, description);
   }
@@ -41,6 +43,7 @@ export class Video {
   }
 
   updateCategory(category: string) {
+    if (!category) throw new Error("Video category cannot be empty.");
     this._category = category;
   }
 

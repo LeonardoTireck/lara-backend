@@ -18,4 +18,8 @@ export class InMemoryVideoStorage implements VideoStorageService {
   async getFileInMemory(key: string) {
     return this.storage.get(key);
   }
+
+  async fileExists(key: string): Promise<boolean> {
+    return this.storage.has(key);
+  }
 }

@@ -6,6 +6,10 @@ export class InMemoryUserRepo implements UserRepository {
   public users: User[] = [];
 
   async save(user: User) {
+    const existingUser = this.users.find((u) => u.email === user.email);
+    if (existingUser) {
+      throw new Error("User with this email already exists.");
+    }
     this.users.push(user);
   }
 

@@ -14,6 +14,13 @@ export class TrainingSession {
     notes?: string[],
     durationMinutes?: number,
   ) {
+    const validSessionDays = ["A", "B", "C", "D", "E", "F", "G"];
+    if (!validSessionDays.includes(sessionDay)) {
+      throw new Error("Invalid session day.");
+    }
+    if (!exercises || exercises.length === 0) {
+      throw new Error("Exercises array cannot be empty.");
+    }
     return new TrainingSession(sessionDay, exercises, notes, durationMinutes);
   }
 
