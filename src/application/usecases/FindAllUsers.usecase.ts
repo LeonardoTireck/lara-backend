@@ -4,10 +4,14 @@ import { UserRepository } from "../ports/UserRepository";
 export class FindAllUsers {
   constructor(private userRepo: UserRepository) {}
 
-  async execute(): Promise<Output | undefined> {
-    const users = await this.userRepo.getAll();
-    if (!users) throw new Error("No users found.");
-    const output = users.map((user) => {
+  // Updated signature to use the exported types
+  async execute(input: FindAllUsersInput): Promise<FindAllUsersOutput> {
+    const paginatedResult = await this.userRepo.getAll(
+      input.limit,
+      input.exclusiveStartKey,
+    );
+
+    const outputUsers = paginatedResult.users.map((user) => {
       return {
         id: user.id,
         name: user.name,
@@ -15,13 +19,28 @@ export class FindAllUsers {
         activePlan: user.activePlan,
       };
     });
-    return output;
+
+    return {
+      users: outputUsers,
+      lastEvaluatedKey: paginatedResult.lastEvaluatedKey,
+    };
   }
 }
 
-type Output = {
+export type FindAllUsersInput = {
+  limit: number;
+  exclusiveStartKey?: Record<string, any>;
+};
+
+type UserOutput = {
   id: string;
   name: string;
   email: string;
   activePlan?: TrainingPlan;
-}[];
+};
+
+export type FindAllUsersOutput = {
+  users: UserOutput[];
+  lastEvaluatedKey?: Record<string, any>;
+};
+

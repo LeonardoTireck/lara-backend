@@ -11,6 +11,8 @@ import "dotenv/config";
 import { UserRepository } from "../../../application/ports/UserRepository";
 import { User } from "../../../domain/User";
 import { client } from "../DynamoDBClient";
+import { PaginatedUsers } from "../../../application/ports/PaginatedUsers";
+import { response } from "express";
 
 export class DynamoDbUserRepo implements UserRepository {
   private docClient;
@@ -174,18 +176,24 @@ export class DynamoDbUserRepo implements UserRepository {
     return User.fromRaw(response.Items[0]);
   }
 
-  async getAll(): Promise<User[]> {
+  async getAll(
+    limit: number,
+    exclusiveStartKey?: Record<string, any>,
+  ): Promise<PaginatedUsers> {
     const command = new ScanCommand({
       TableName: "Users",
+      Limit: limit,
+      ExclusiveStartKey: exclusiveStartKey,
     });
 
     const response = await this.docClient.send(command);
 
-    if (!response.Items || response.Items.length === 0) {
-      return [];
-    }
+    const users = response.Items ? response.Items.map(User.fromRaw) : [];
 
-    return response.Items.map(User.fromRaw);
+    return {
+      users: users,
+      lastEvaluatedKey: response.LastEvaluatedKey,
+    };
   }
 
   async delete(userId: string): Promise<void> {

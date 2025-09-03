@@ -1,5 +1,6 @@
 import { User } from "../../domain/User";
 import { UserRepository } from "../../application/ports/UserRepository";
+import { PaginatedUsers } from "../../application/ports/PaginatedUsers";
 
 export class InMemoryUserRepo implements UserRepository {
   public users: User[] = [];
@@ -49,7 +50,13 @@ export class InMemoryUserRepo implements UserRepository {
     return;
   }
 
-  async getAll(): Promise<User[] | undefined> {
-    return this.users;
+  async getAll(
+    limit: number,
+    exclusiveStartKey?: Record<string, any>,
+  ): Promise<PaginatedUsers> {
+    return {
+      users: this.users,
+      lastEvaluatedKey: ["mock"],
+    };
   }
 }

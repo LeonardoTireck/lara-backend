@@ -12,10 +12,38 @@ app.use(express.json());
 const repo = new DynamoDbUserRepo();
 const hasher = new BcryptPasswordHasher(+process.env.BCRYPT_SALTROUNDS!);
 
-app.get("/users", async (_req: Request, res: Response) => {
-  const getAllUsersUseCase = new FindAllUsers(repo);
-  const users = await getAllUsersUseCase.execute();
-  res.json(users);
+app.get("/users", async (req: Request, res: Response) => {
+  try {
+    const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 2;
+    const nextKeyQuery = req.query.next_key as string;
+
+    let exclusiveStartKey;
+    if (nextKeyQuery) {
+      const decodedKey = Buffer.from(nextKeyQuery, "base64").toString("utf8");
+      exclusiveStartKey = JSON.parse(decodedKey);
+    }
+
+    const getAllUsersUseCase = new FindAllUsers(repo);
+
+    const paginatedOutput = await getAllUsersUseCase.execute({
+      limit,
+      exclusiveStartKey,
+    });
+
+    let nextKeyForClient;
+    if (paginatedOutput.lastEvaluatedKey) {
+      nextKeyForClient = Buffer.from(
+        JSON.stringify(paginatedOutput.lastEvaluatedKey),
+      ).toString();
+    }
+    res.json({
+      users: paginatedOutput.users,
+      next_key: nextKeyForClient,
+    });
+  } catch (error) {
+    console.log("Error fetching users:", error);
+    res.status(500).json({ message: "An error occurred." });
+  }
 });
 
 app.post("/newUser", async (req: Request, res: Response) => {

@@ -4,48 +4,60 @@ import { DynamoDbUserRepo } from "../../../../src/infrastructure/dynamodb/repos/
 
 describe("DynamoDbUserRepo - GetAll", () => {
   let userRepo: DynamoDbUserRepo;
+  const createdUsers: User[] = [];
 
-  beforeAll(() => {
+  // Using a new, programmatically verified set of valid test data
+  const testUsersData = [
+    { name: "User Alpha", cpf: "11144477735", phone: "11987654321" },
+    { name: "User Beta",  cpf: "98765432100", phone: "11912345678" },
+    { name: "User Gamma", cpf: "12345678909", phone: "11988887777" },
+  ];
+
+  beforeAll(async () => {
     userRepo = new DynamoDbUserRepo();
+    for (let i = 0; i < testUsersData.length; i++) {
+      const userData = testUsersData[i];
+      const user = User.create(
+        userData.name,
+        `testuser${i}@example.com`,
+        userData.cpf,
+        userData.phone,
+        new Date(`1990-01-0${i + 1}`),
+        `hashedpass${i}`,
+        TrainingPlan.create("silver", "card"),
+        "client"
+      );
+      await userRepo.save(user);
+      createdUsers.push(user);
+    }
   });
 
-  test("should retrieve all users from DynamoDB", async () => {
-    // Save a few users first
-    const user1 = User.create(
-      "User One",
-      "user1@example.com",
-      "11144477735",
-      "11911111111",
-      new Date("1990-01-01"),
-      "hashedpass1",
-      TrainingPlan.create("silver", "card"),
-      "client",
-    );
-    await userRepo.save(user1);
+  test("should retrieve all users in pages", async () => {
+    const allFetchedUsers: User[] = [];
+    let lastKey;
+    const pageSize = 2;
 
-    const user2 = User.create(
-      "User Two",
-      "user2@example.com",
-      "11144477735",
-      "11922222222",
-      new Date("1991-02-02"),
-      "hashedpass2",
-      TrainingPlan.create("gold", "PIX"),
-      "client",
-    );
-    await userRepo.save(user2);
+    do {
+      const result = await userRepo.getAll(pageSize, lastKey);
+      expect(result.users).toBeInstanceOf(Array);
+      allFetchedUsers.push(...result.users);
+      lastKey = result.lastEvaluatedKey;
+    } while (lastKey);
 
-    const users = await userRepo.getAll();
+    expect(allFetchedUsers.length).toBeGreaterThanOrEqual(createdUsers.length);
 
-    expect(users).toBeDefined();
-    expect(users?.length).toBeGreaterThanOrEqual(2); // May contain users from other tests
+    for (const createdUser of createdUsers) {
+      expect(
+        allFetchedUsers.some((fetchedUser) => fetchedUser.id === createdUser.id)
+      ).toBe(true);
+    }
+  });
 
-    const foundUser1 = users?.find((u) => u.id === user1.id);
-    const foundUser2 = users?.find((u) => u.id === user2.id);
+  test("should retrieve the first page correctly", async () => {
+    const pageSize = 1;
+    const result = await userRepo.getAll(pageSize);
 
-    expect(foundUser1).toBeDefined();
-    expect(foundUser2).toBeDefined();
-
-    console.log(users);
+    expect(result.users.length).toBe(pageSize);
+    expect(result.lastEvaluatedKey).toBeDefined();
   });
 });
