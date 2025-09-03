@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/main.ts",
-    "test": "jest",
+    "test": "npm run db:deletetable && npm run db:createtable && jest",
     "docker:build": "docker build -t lara_backend docker",
     "docker:run": "docker run -it -v $(pwd)/.:/app --name lara_container lara_backend bash",
     "docker:start": "docker start -i lara_container",
