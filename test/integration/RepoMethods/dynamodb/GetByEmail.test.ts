@@ -2,7 +2,7 @@ import { TrainingPlan } from "../../../../src/domain/TrainingPlan";
 import { User } from "../../../../src/domain/User";
 import { DynamoDbUserRepo } from "../../../../src/infrastructure/dynamodb/repos/UserRepo";
 
-describe.skip("DynamoDbUserRepo - GetByEmail", () => {
+describe("DynamoDbUserRepo - GetByEmail", () => {
   let userRepo: DynamoDbUserRepo;
 
   beforeAll(() => {

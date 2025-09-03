@@ -11,6 +11,10 @@ async function createTable() {
           AttributeName: "id",
           AttributeType: "S",
         },
+        {
+          AttributeName: "email",
+          AttributeType: "S",
+        },
       ],
       KeySchema: [
         {
@@ -18,15 +22,30 @@ async function createTable() {
           KeyType: "HASH",
         },
       ],
+      GlobalSecondaryIndexes: [
+        {
+          IndexName: "EmailIndex",
+          KeySchema: [
+            {
+              AttributeName: "email",
+              KeyType: "HASH",
+            },
+          ],
+          Projection: {
+            ProjectionType: "ALL",
+          },
+        },
+      ],
       BillingMode: "PAY_PER_REQUEST",
     });
 
     const response = await client.send(command);
-    console.log(response);
+    console.log("Table created successfully:", response);
     return response;
   } catch (error) {
-    console.log(error);
+    console.error("Error creating table:", error);
   }
 }
 
 createTable().catch(console.error);
+
