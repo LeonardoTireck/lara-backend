@@ -6,7 +6,7 @@ describe("Create user route Test", () => {
   test("Should create a user using express and dynamodb", async () => {
     const input = {
       name: "Leonardo Tireck",
-      email: "leo@test.com",
+      email: "leo3@test.com",
       documentCPF: "987.654.321-00",
       phone: "+5547992000622",
       dateOfBirth: new Date(),

@@ -16,7 +16,7 @@ describe("User Login Failure Case Test", () => {
 
     const input = {
       name: "Leonardo Tireck",
-      email: "leo@test.com",
+      email: "leo2@test.com",
       documentCPF: "11144477735",
       password: "Test123@",
       phone: "47992000622",
@@ -37,4 +37,3 @@ describe("User Login Failure Case Test", () => {
     );
   });
 });
-

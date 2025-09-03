@@ -5,13 +5,12 @@ import {
   ScanCommand,
   UpdateCommand,
   DeleteCommand,
+  QueryCommand,
 } from "@aws-sdk/lib-dynamodb";
 import "dotenv/config";
 import { UserRepository } from "../../../application/ports/UserRepository";
 import { User } from "../../../domain/User";
 import { client } from "../DynamoDBClient";
-import { TrainingSession } from "../../../domain/TrainingSession";
-import { TrainingPlan } from "../../../domain/TrainingPlan";
 
 export class DynamoDbUserRepo implements UserRepository {
   private docClient;
@@ -73,6 +72,7 @@ export class DynamoDbUserRepo implements UserRepository {
       Key: {
         id: user.id,
       },
+      ConditionExpression: "attribute_exists(id)",
       UpdateExpression:
         "set #name = :n, #email = :e, #documentCPF = :d, #phone = :p, #hashedPassword = :h, #dateOfBirth = :db, #dateOfFirstPlanIngress = :dfpi, #activePlan = :ap, #pastPlans = :pp, #parq = :pa, #lastParqUpdate = :lpu, #trainingSessions = :ts, #userType = :ut",
       ExpressionAttributeNames: {
@@ -126,7 +126,16 @@ export class DynamoDbUserRepo implements UserRepository {
         ":ut": user.userType,
       },
     });
-    await this.docClient.send(command);
+    try {
+      await this.docClient.send(command);
+    } catch (error: any) {
+      if (error.name === "ConditionalCheckFailedException") {
+        throw new Error(
+          `User with ID '${user.id}' not found and could not be updated.`,
+        );
+      }
+      throw error;
+    }
   }
   async getById(userId: string): Promise<User | undefined> {
     const command = new GetCommand({
@@ -145,42 +154,38 @@ export class DynamoDbUserRepo implements UserRepository {
     return User.fromRaw(response.Item);
   }
   async getByEmail(userEmail: string): Promise<User | undefined> {
-    throw new Error("Method not implemented.");
+    const command = new QueryCommand({
+      TableName: "Users",
+      IndexName: "EmailIndex",
+      KeyConditionExpression: "#email = :emailValue",
+      ExpressionAttributeNames: {
+        "#email": "email",
+      },
+      ExpressionAttributeValues: {
+        ":emailValue": userEmail,
+      },
+    });
+
+    const response = await this.docClient.send(command);
+
+    if (!response.Items || response.Items.length === 0) {
+      return undefined;
+    }
+    return User.fromRaw(response.Items[0]);
   }
 
-  async getAll(): Promise<User[] | undefined> {
-    const usersArray: User[] = [];
+  async getAll(): Promise<User[]> {
     const command = new ScanCommand({
       TableName: "Users",
     });
 
     const response = await this.docClient.send(command);
-    if (!response.Items) throw new Error("No users found.");
 
-    response.Items.map((u) => {
-      usersArray.push(
-        new User(
-          u.id,
-          u.userType,
-          u.name,
-          new Date(u.dateOfFirstPlanIngress),
-          u.documentCPF,
-          new Date(u.dateOfBirth),
-          u.email,
-          u.phone,
-          u.hashedPassword,
-          TrainingPlan.fromRaw(u.activePlan),
-          u.pastPlans ? u.pastPlans.map(TrainingPlan.fromRaw) : [],
-          u.parq,
-          u.lastParqUpdate ? new Date(u.lastParqUpdate) : undefined,
-          u.trainingSessions
-            ? u.trainingSessions.map(TrainingSession.fromRaw)
-            : [],
-        ),
-      );
-    });
+    if (!response.Items || response.Items.length === 0) {
+      return [];
+    }
 
-    return usersArray;
+    return response.Items.map(User.fromRaw);
   }
 
   async delete(userId: string): Promise<void> {
