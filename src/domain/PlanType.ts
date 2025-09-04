@@ -1,1 +1,1 @@
-export type PlanType = "silver" | "gold" | "diamond";
+export type PlanType = 'silver' | 'gold' | 'diamond';

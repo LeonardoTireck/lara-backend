@@ -10,9 +10,9 @@ This project is being developed with a strong emphasis on modern software engine
 
 The architecture of this project is its most important feature. It is built following the principles of **Clean Architecture** (also known as Hexagonal or Ports and Adapters Architecture), which ensures a clear separation of concerns between the core business logic and external infrastructure.
 
--   **Domain Layer:** Contains the core business entities and rules, with no dependencies on any other layer.
--   **Application Layer:** Orchestrates the domain logic through use cases, defining the application's features.
--   **Infrastructure Layer:** Contains all external concerns, such as the web framework (Express), database access (DynamoDB), and other services. Adapters in this layer implement interfaces defined by the application layer.
+- **Domain Layer:** Contains the core business entities and rules, with no dependencies on any other layer.
+- **Application Layer:** Orchestrates the domain logic through use cases, defining the application's features.
+- **Infrastructure Layer:** Contains all external concerns, such as the web framework (Express), database access (DynamoDB), and other services. Adapters in this layer implement interfaces defined by the application layer.
 
 This approach makes the core application independent of external frameworks and tools, highly testable, and easier to maintain and evolve over time. For a detailed explanation of the architectural decisions, please see the [ArchitectureDecisions.txt](ArchitectureDecisions.txt) file.
 
@@ -24,22 +24,22 @@ The platform is designed with a rich feature set, which is detailed in our devel
 
 ### Key Features
 
--   **User Management:** Secure user registration, login, and profile management.
--   **Client & Admin Dashboards:** Separate interfaces for clients to view their plans and for admins to manage clients.
--   **Personalized Training Plans:** Admins can create and assign detailed training sessions to clients.
--   **Video Content Delivery:** Secure upload and streaming of training videos.
--   **Subscription Management:** Integration with a payment gateway to manage user subscriptions.
+- **User Management:** Secure user registration, login, and profile management.
+- **Client & Admin Dashboards:** Separate interfaces for clients to view their plans and for admins to manage clients.
+- **Personalized Training Plans:** Admins can create and assign detailed training sessions to clients.
+- **Video Content Delivery:** Secure upload and streaming of training videos.
+- **Subscription Management:** Integration with a payment gateway to manage user subscriptions.
 
 ---
 
 ## Technologies Used
 
--   **Runtime:** [Node.js](https://nodejs.org/)
--   **Language:** [TypeScript](https://www.typescriptlang.org/)
--   **Framework:** [Express.js](https://expressjs.com/)
--   **Database:** [AWS DynamoDB](https://aws.amazon.com/dynamodb/) (with DynamoDB Local for development)
--   **Testing:** [Jest](https://jestjs.io/)
--   **Containerization:** [Docker](https://www.docker.com/)
+- **Runtime:** [Node.js](https://nodejs.org/)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **Framework:** [Express.js](https://expressjs.com/)
+- **Database:** [AWS DynamoDB](https://aws.amazon.com/dynamodb/) (with DynamoDB Local for development)
+- **Testing:** [Jest](https://jestjs.io/)
+- **Containerization:** [Docker](https://www.docker.com/)
 
 ---
 

@@ -1,63 +1,62 @@
-import { GetAllVideosMetadata } from "../../../src/application/usecases/GetAllVideosMetadata.usecase";
-import { UploadVideo } from "../../../src/application/usecases/UploadVideo.usecase";
-import { InMemoryVideoRepository } from "../../../src/infrastructure/videoRepo/inMemory";
-import { InMemoryVideoStorage } from "../../../src/infrastructure/videoStorage/inMemory";
+import { GetAllVideosMetadata } from '../../../src/application/usecases/GetAllVideosMetadata.usecase';
+import { UploadVideo } from '../../../src/application/usecases/UploadVideo.usecase';
+import { InMemoryVideoRepository } from '../../../src/infrastructure/videoRepo/inMemory';
+import { InMemoryVideoStorage } from '../../../src/infrastructure/videoStorage/inMemory';
 
-describe("GetAllVideosMetadata Use Case", () => {
-  let videoRepo: InMemoryVideoRepository;
-  let useCaseGetAllVideos: GetAllVideosMetadata;
+describe('GetAllVideosMetadata Use Case', () => {
+    let videoRepo: InMemoryVideoRepository;
+    let useCaseGetAllVideos: GetAllVideosMetadata;
 
-  beforeEach(() => {
-    videoRepo = new InMemoryVideoRepository();
-    useCaseGetAllVideos = new GetAllVideosMetadata(videoRepo);
-  });
+    beforeEach(() => {
+        videoRepo = new InMemoryVideoRepository();
+        useCaseGetAllVideos = new GetAllVideosMetadata(videoRepo);
+    });
 
-  it("should return all videos metadata", async () => {
-    const storageService = new InMemoryVideoStorage();
-    const useCaseUploadVideo = new UploadVideo(videoRepo, storageService);
+    it('should return all videos metadata', async () => {
+        const storageService = new InMemoryVideoStorage();
+        const useCaseUploadVideo = new UploadVideo(videoRepo, storageService);
 
-    const input1 = {
-      name: "First Video",
-      category: "Stretching",
-      description: "Video description",
-      videoBuffer: Buffer.from("fake-content-1"),
-      thumbnailBuffer: Buffer.from("fake-thumb-1"),
-    };
-    const video1 = await useCaseUploadVideo.execute(input1);
+        const input1 = {
+            name: 'First Video',
+            category: 'Stretching',
+            description: 'Video description',
+            videoBuffer: Buffer.from('fake-content-1'),
+            thumbnailBuffer: Buffer.from('fake-thumb-1'),
+        };
+        const video1 = await useCaseUploadVideo.execute(input1);
 
-    const input2 = {
-      name: "Second Video",
-      category: "Yoga",
-      description: "Another description",
-      videoBuffer: Buffer.from("fake-content-2"),
-      thumbnailBuffer: Buffer.from("fake-thumb-2"),
-    };
-    const video2 = await useCaseUploadVideo.execute(input2);
+        const input2 = {
+            name: 'Second Video',
+            category: 'Yoga',
+            description: 'Another description',
+            videoBuffer: Buffer.from('fake-content-2'),
+            thumbnailBuffer: Buffer.from('fake-thumb-2'),
+        };
+        const video2 = await useCaseUploadVideo.execute(input2);
 
-    const videos = await useCaseGetAllVideos.execute();
+        const videos = await useCaseGetAllVideos.execute();
 
-    expect(videos).toHaveLength(2);
-    expect(videos[0].id).toBe(video1.id);
-    expect(videos[0].name).toBe(video1.name);
-    expect(videos[0].category).toBe(video1.category);
-    expect(videos[0].description).toBe(video1.description);
-    expect(videos[0].thumbnailUrl).toBe(video1.thumbnailUrl);
-    expect(videos[0].uploadDate).toBeInstanceOf(Date);
-    expect(videos[0].comments).toEqual([]);
+        expect(videos).toHaveLength(2);
+        expect(videos[0].id).toBe(video1.id);
+        expect(videos[0].name).toBe(video1.name);
+        expect(videos[0].category).toBe(video1.category);
+        expect(videos[0].description).toBe(video1.description);
+        expect(videos[0].thumbnailUrl).toBe(video1.thumbnailUrl);
+        expect(videos[0].uploadDate).toBeInstanceOf(Date);
+        expect(videos[0].comments).toEqual([]);
 
-    expect(videos[1].id).toBe(video2.id);
-    expect(videos[1].name).toBe(video2.name);
-    expect(videos[1].category).toBe(video2.category);
-    expect(videos[1].description).toBe(video2.description);
-    expect(videos[1].thumbnailUrl).toBe(video2.thumbnailUrl);
-    expect(videos[1].uploadDate).toBeInstanceOf(Date);
-    expect(videos[1].comments).toEqual([]);
-  });
+        expect(videos[1].id).toBe(video2.id);
+        expect(videos[1].name).toBe(video2.name);
+        expect(videos[1].category).toBe(video2.category);
+        expect(videos[1].description).toBe(video2.description);
+        expect(videos[1].thumbnailUrl).toBe(video2.thumbnailUrl);
+        expect(videos[1].uploadDate).toBeInstanceOf(Date);
+        expect(videos[1].comments).toEqual([]);
+    });
 
-  it("should throw an error if no videos are found", async () => {
-    await expect(useCaseGetAllVideos.execute()).rejects.toThrow(
-      "Video not found.",
-    );
-  });
+    it('should throw an error if no videos are found', async () => {
+        await expect(useCaseGetAllVideos.execute()).rejects.toThrow(
+            'Video not found.',
+        );
+    });
 });
-
