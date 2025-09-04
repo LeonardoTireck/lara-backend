@@ -9,7 +9,6 @@ export class AddCommentToVideo {
         if (!video) throw new Error('Video not found.');
 
         const newComment = VideoComment.create(input.author, input.text);
-        console.log('hey');
         video.addComment(newComment);
 
         await this.videoRepo.save(video);

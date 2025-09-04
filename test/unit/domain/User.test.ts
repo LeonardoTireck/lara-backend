@@ -2,9 +2,31 @@ import { Parq } from '../../../src/domain/Parq';
 import { TrainingPlan } from '../../../src/domain/TrainingPlan';
 import { TrainingSession } from '../../../src/domain/TrainingSession';
 import { User } from '../../../src/domain/User';
+import { UserType } from '../../../src/domain/UserType';
 
 describe('User Entity', () => {
     let activePlan: TrainingPlan;
+
+    const defaultUserName = 'Leonardo Tireck';
+    const defaultUserEmail = 'test@example.com';
+    const defaultUserDocument = '11144477735';
+    const defaultUserPhone = '11987654321';
+    const defaultUserDob = new Date('1990-01-01');
+    const defaultUserPassword = 'hashedPassword123';
+    const defaultUserType: UserType = 'client';
+
+    const createTestUser = (
+        name: string = defaultUserName,
+        email: string = defaultUserEmail,
+        document: string = defaultUserDocument,
+        phone: string = defaultUserPhone,
+        dob: Date = defaultUserDob,
+        password: string = defaultUserPassword,
+        plan: TrainingPlan | undefined = activePlan,
+        userType: UserType = defaultUserType,
+    ) => {
+        return User.create(name, email, document, phone, dob, password, plan, userType);
+    };
 
     beforeEach(() => {
         activePlan = TrainingPlan.create('gold', 'card');
@@ -12,103 +34,41 @@ describe('User Entity', () => {
 
     describe('User Creation', () => {
         it('should create a valid user', () => {
-            const user = User.create(
-                'Leonardo Tireck',
-                'test@example.com',
-                '11144477735',
-                '11987654321',
-                new Date('1990-01-01'),
-                'hashedPassword123',
-                activePlan,
-                'client',
-            );
+            const user = createTestUser();
 
             expect(user.id).toBeDefined();
             expect(typeof user.id).toBe('string');
-            expect(user.name).toBe('Leonardo Tireck');
-            expect(user.email).toBe('test@example.com');
-            expect(user.documentCPF).toBe('11144477735');
-            expect(user.phone).toBe('11987654321');
-            expect(user.hashedPassword).toBe('hashedPassword123');
+            expect(user.name).toBe(defaultUserName);
+            expect(user.email).toBe(defaultUserEmail);
+            expect(user.documentCPF).toBe(defaultUserDocument);
+            expect(user.phone).toBe(defaultUserPhone);
+            expect(user.hashedPassword).toBe(defaultUserPassword);
             expect(user.activePlan).toBe(activePlan);
-            expect(user.userType).toBe('client');
+            expect(user.userType).toBe(defaultUserType);
             expect(user.pastPlans).toEqual([]);
             expect(user.trainingSessions).toEqual([]);
         });
 
         it('should throw an error for an invalid name', () => {
-            expect(() =>
-                User.create(
-                    'Invalid', // Invalid name
-                    'test@example.com',
-                    '11144477735',
-                    '11987654321',
-                    new Date('1990-01-01'),
-                    'hashedPassword123',
-                    activePlan,
-                    'client',
-                ),
-            ).toThrow('Name does not meet criteria.');
+            expect(() => createTestUser('Invalid', undefined, undefined, undefined, undefined, undefined, undefined, undefined)).toThrow('Name does not meet criteria.');
         });
 
         it('should throw an error for an invalid email', () => {
-            expect(() =>
-                User.create(
-                    'Leonardo Tireck',
-                    'invalid-email', // Invalid email
-                    '11144477735',
-                    '11987654321',
-                    new Date('1990-01-01'),
-                    'hashedPassword123',
-                    activePlan,
-                    'client',
-                ),
-            ).toThrow('Email does not meet criteria.');
+            expect(() => createTestUser(undefined, 'invalid-email', undefined, undefined, undefined, undefined, undefined, undefined)).toThrow('Email does not meet criteria.');
         });
 
         it('should throw an error for an invalid document (CPF)', () => {
-            expect(() =>
-                User.create(
-                    'Leonardo Tireck',
-                    'test@example.com',
-                    '12345', // Invalid CPF
-                    '11987654321',
-                    new Date('1990-01-01'),
-                    'hashedPassword123',
-                    activePlan,
-                    'client',
-                ),
-            ).toThrow('Document does not meet criteria.');
+            expect(() => createTestUser(undefined, undefined, '12345', undefined, undefined, undefined, undefined, undefined)).toThrow('Document does not meet criteria.');
         });
 
         it('should throw an error for an invalid phone number', () => {
-            expect(() =>
-                User.create(
-                    'Leonardo Tireck',
-                    'test@example.com',
-                    '11144477735',
-                    '12345', // Invalid phone
-                    new Date('1990-01-01'),
-                    'hashedPassword123',
-                    activePlan,
-                    'client',
-                ),
-            ).toThrow('Phone does not meet criteria.');
+            expect(() => createTestUser(undefined, undefined, undefined, '12345', undefined, undefined, undefined, undefined)).toThrow('Phone does not meet criteria.');
         });
     });
 
     describe('User Updates', () => {
         it('should update email and phone', () => {
-            const user = User.create(
-                'Leo Tireck',
-                'a@a.com',
-                '11144477735',
-                '11987654321',
-                new Date(),
-                'pass',
-                activePlan,
-                'client',
-            );
+            const user = createTestUser();
             const newEmail = 'b@b.com';
             const newPhone = '21987654321';
 
@@ -120,16 +80,7 @@ describe('User Entity', () => {
         });
 
         it('should update PARQ and last update date', () => {
-            const user = User.create(
-                'Leo Tireck',
-                'a@a.com',
-                '11144477735',
-                '11987654321',
-                new Date(),
-                'pass',
-                activePlan,
-                'client',
-            );
+            const user = createTestUser();
             const newParq = Parq.create(['q1'], ['a1']);
 
             user.updateParq(newParq);
@@ -140,32 +91,14 @@ describe('User Entity', () => {
         });
 
         it('should throw an error when updating PARQ with an invalid value', () => {
-            const user = User.create(
-                'Leo Tireck',
-                'a@a.com',
-                '11144477735',
-                '11987654321',
-                new Date(),
-                'pass',
-                activePlan,
-                'client',
-            );
+            const user = createTestUser();
             expect(() => user.updateParq(null as any)).toThrow('Invalid Parq');
         });
     });
 
     describe('Plan Management', () => {
         it('should not move a non-expired plan to past plans', () => {
-            const user = User.create(
-                'Leo Tireck',
-                'a@a.com',
-                '11144477735',
-                '11987654321',
-                new Date(),
-                'pass',
-                activePlan,
-                'client',
-            );
+            const user = createTestUser();
 
             user.refreshPlans();
 
@@ -177,16 +110,7 @@ describe('User Entity', () => {
             const expiredPlan = TrainingPlan.create('silver', 'card');
             expiredPlan.expirationDate = new Date('2020-01-01'); // Expired date
 
-            const user = User.create(
-                'Leo Tireck',
-                'a@a.com',
-                '11144477735',
-                '11987654321',
-                new Date(),
-                'pass',
-                expiredPlan,
-                'client',
-            );
+            const user = createTestUser(undefined, undefined, undefined, undefined, undefined, undefined, expiredPlan);
 
             user.refreshPlans();
 
@@ -215,16 +139,7 @@ describe('User Entity', () => {
         });
 
         it('should update the active plan', () => {
-            const user = User.create(
-                'Leo Tireck',
-                'a@a.com',
-                '11144477735',
-                '11987654321',
-                new Date(),
-                'pass',
-                activePlan,
-                'client',
-            );
+            const user = createTestUser();
             const newPlan = TrainingPlan.create('silver', 'PIX');
 
             user.updateActivePlan(newPlan);
@@ -235,16 +150,7 @@ describe('User Entity', () => {
 
     describe('Training Session Management', () => {
         it('should add a new training session', () => {
-            const user = User.create(
-                'Leo Tireck',
-                'a@a.com',
-                '11144477735',
-                '11987654321',
-                new Date(),
-                'pass',
-                activePlan,
-                'client',
-            );
+            const user = createTestUser();
             const trainingSession = TrainingSession.create('A', [
                 {
                     name: 'Push-ups',
@@ -260,16 +166,7 @@ describe('User Entity', () => {
         });
 
         it('should update training sessions', () => {
-            const user = User.create(
-                'Leo Tireck',
-                'a@a.com',
-                '11144477735',
-                '11987654321',
-                new Date(),
-                'pass',
-                activePlan,
-                'client',
-            );
+            const user = createTestUser();
             const trainingSession1 = TrainingSession.create('A', [
                 {
                     name: 'Push-ups',
