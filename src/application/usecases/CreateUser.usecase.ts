@@ -14,6 +14,9 @@ export class CreateUser {
     async execute(input: Input): Promise<Output> {
         const newPassword = new Password(input.password).value;
         const hashedPassword = await this.passwordHasher.hash(newPassword);
+        if (input.userType !== undefined && input.userType !== 'admin') {
+            throw new Error('Invalid user type.');
+        }
 
         const user = User.create(
             input.name,

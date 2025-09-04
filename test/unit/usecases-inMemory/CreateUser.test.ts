@@ -24,7 +24,6 @@ describe('CreateUser Use Case', () => {
             dateOfBirth: new Date('1990-01-01'),
             password: 'Test123@',
             activePlan: TrainingPlan.create('silver', 'PIX'),
-            userType: 'client' as const,
         };
 
         const user = await useCaseCreate.execute(input);
@@ -46,7 +45,6 @@ describe('CreateUser Use Case', () => {
             dateOfBirth: new Date('1990-01-01'),
             password: 'Test123@',
             activePlan: TrainingPlan.create('silver', 'PIX'),
-            userType: 'client' as const,
         };
 
         await expect(useCaseCreate.execute(input)).rejects.toThrow(
@@ -64,7 +62,6 @@ describe('CreateUser Use Case', () => {
             dateOfBirth: new Date('1990-01-01'),
             password: 'Test123@',
             activePlan: TrainingPlan.create('silver', 'PIX'),
-            userType: 'client' as const,
         };
 
         await useCaseCreate.execute(input);
@@ -84,12 +81,28 @@ describe('CreateUser Use Case', () => {
             dateOfBirth: new Date('1990-01-01'),
             password: 'short', // Invalid password
             activePlan: TrainingPlan.create('silver', 'PIX'),
-            userType: 'client' as const,
         };
 
         await expect(useCaseCreate.execute(input)).rejects.toThrow(
             'Password does not meet criteria.',
         );
         expect(repo.users).toHaveLength(0);
+    });
+
+    it('should throw an error for invalid userType', async () => {
+        const input = {
+            name: 'Leonardo Tireck',
+            email: 'leo@test.com',
+            documentCPF: '11144477735',
+            phone: '47992000622',
+            dateOfBirth: new Date('1990-01-01'),
+            password: 'Test123@',
+            activePlan: TrainingPlan.create('silver', 'PIX'),
+            userType: 'error' as any,
+        };
+
+        await expect(useCaseCreate.execute(input)).rejects.toThrow(
+            'Invalid user type.',
+        );
     });
 });

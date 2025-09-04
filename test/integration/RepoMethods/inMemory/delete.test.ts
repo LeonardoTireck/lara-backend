@@ -21,7 +21,6 @@ describe('InMemoryUserRepo Delete Method', () => {
             phone: '47992000622',
             dateOfBirth: new Date(),
             activePlan: TrainingPlan.create('silver', 'PIX'),
-            userType: 'client' as const,
         };
         const userCreated = await useCaseCreate.execute(inputForCreation);
 

@@ -6,30 +6,8 @@ import { TrainingPlan } from '../../../src/domain/TrainingPlan';
 import { User } from '../../../src/domain/User';
 import { InMemoryUserRepo } from '../../../src/infrastructure/UserRepo/InMemory';
 
-class PaginatedInMemoryUserRepo extends InMemoryUserRepo {
-    async getAll(limit: number, exclusiveStartKey?: Record<string, any>) {
-        if (limit <= 0) {
-            return {
-                users: [],
-                lastEvaluatedKey: undefined,
-            };
-        }
-        const startIndex = exclusiveStartKey ? exclusiveStartKey.index : 0;
-        const endIndex = startIndex + limit;
-        const usersSlice = this.users.slice(startIndex, endIndex);
-        let lastEvaluatedKey;
-        if (endIndex < this.users.length) {
-            lastEvaluatedKey = { index: endIndex };
-        }
-        return {
-            users: usersSlice,
-            lastEvaluatedKey: lastEvaluatedKey,
-        };
-    }
-}
-
 describe('FindAllUsers Use Case Test', () => {
-    let repo: PaginatedInMemoryUserRepo;
+    let repo: InMemoryUserRepo;
     let useCaseFindAllUsers: FindAllUsers;
 
     const testUsersData = [
@@ -39,7 +17,7 @@ describe('FindAllUsers Use Case Test', () => {
     ];
 
     beforeEach(async () => {
-        repo = new PaginatedInMemoryUserRepo();
+        repo = new InMemoryUserRepo();
         useCaseFindAllUsers = new FindAllUsers(repo);
 
         for (let i = 0; i < testUsersData.length; i++) {

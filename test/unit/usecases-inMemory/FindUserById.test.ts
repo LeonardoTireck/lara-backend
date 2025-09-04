@@ -23,7 +23,6 @@ describe('FindUserById Use Case', () => {
             phone: '47992000622',
             dateOfBirth: new Date('1990-01-01'),
             activePlan: TrainingPlan.create('silver', 'PIX'),
-            userType: 'client' as const,
         };
         const userCreated = await useCaseCreate.execute(inputForCreation);
         userCreatedId = userCreated.id;

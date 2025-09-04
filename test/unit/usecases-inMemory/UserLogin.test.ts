@@ -33,7 +33,6 @@ describe('UserLogin Use Case', () => {
             phone: '47992000622',
             dateOfBirth: new Date(),
             activePlan: TrainingPlan.create('silver', 'PIX'),
-            userType: 'client' as const,
         };
         const createdUser = await useCaseCreate.execute(input);
         createdUserId = createdUser.id;

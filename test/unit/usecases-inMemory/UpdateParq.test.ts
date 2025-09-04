@@ -24,7 +24,6 @@ describe('UpdateParq Use Case', () => {
             dateOfBirth: new Date(),
             password: 'Test123@',
             activePlan: TrainingPlan.create('silver', 'PIX'),
-            userType: 'client' as const,
         };
         user = await useCaseCreate.execute(input);
     });
