@@ -55,9 +55,9 @@ describe("GetAllVideosMetadata Use Case", () => {
   });
 
   it("should throw an error if no videos are found", async () => {
-    // videoRepo is empty by default in beforeEach
     await expect(useCaseGetAllVideos.execute()).rejects.toThrow(
       "Video not found.",
     );
   });
 });
+

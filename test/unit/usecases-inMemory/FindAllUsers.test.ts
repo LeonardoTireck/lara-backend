@@ -1,4 +1,7 @@
-import { FindAllUsers, FindAllUsersInput } from "../../../src/application/usecases/FindAllUsers.usecase";
+import {
+  FindAllUsers,
+  FindAllUsersInput,
+} from "../../../src/application/usecases/FindAllUsers.usecase";
 import { TrainingPlan } from "../../../src/domain/TrainingPlan";
 import { User } from "../../../src/domain/User";
 import { InMemoryUserRepo } from "../../../src/infrastructure/UserRepo/InMemory";
@@ -29,10 +32,9 @@ describe("FindAllUsers Use Case Test", () => {
   let repo: PaginatedInMemoryUserRepo;
   let useCaseFindAllUsers: FindAllUsers;
 
-  // Using a new, programmatically verified set of valid test data
   const testUsersData = [
     { name: "User Alpha", cpf: "11144477735", phone: "11987654321" },
-    { name: "User Beta",  cpf: "98765432100", phone: "11912345678" },
+    { name: "User Beta", cpf: "98765432100", phone: "11912345678" },
     { name: "User Gamma", cpf: "12345678909", phone: "11988887777" },
   ];
 
@@ -50,7 +52,7 @@ describe("FindAllUsers Use Case Test", () => {
         new Date(`1990-01-0${i + 1}`),
         `hashedpass${i}`,
         TrainingPlan.create("silver", "card"),
-        "client"
+        "client",
       );
       await repo.save(user);
     }
@@ -69,7 +71,10 @@ describe("FindAllUsers Use Case Test", () => {
   });
 
   it("should return the second page of users", async () => {
-    const input: FindAllUsersInput = { limit: 2, exclusiveStartKey: { index: 2 } };
+    const input: FindAllUsersInput = {
+      limit: 2,
+      exclusiveStartKey: { index: 2 },
+    };
     const output = await useCaseFindAllUsers.execute(input);
 
     expect(output.users).toHaveLength(1);

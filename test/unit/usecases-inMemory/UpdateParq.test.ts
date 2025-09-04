@@ -41,7 +41,6 @@ describe("UpdateParq Use Case", () => {
     expect(updatedUser.parq).toBeDefined();
     expect(updatedUser.parq.questions).toEqual(["Question1", "Question2"]);
     expect(updatedUser.parq.answers).toEqual(["Answer1", "Answer2"]);
-    // Verify that the user object in the repository is also updated
     const userInRepo = await repo.getById(user.id);
     expect(userInRepo?.parq).toEqual(inputForParq.newParq);
     expect(userInRepo?.lastParqUpdate).toBeInstanceOf(Date);
@@ -80,3 +79,4 @@ describe("UpdateParq Use Case", () => {
     );
   });
 });
+

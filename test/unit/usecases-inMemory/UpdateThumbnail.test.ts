@@ -24,7 +24,8 @@ describe("UpdateThumbnail Use Case", () => {
       videoBuffer: Buffer.from("fake-content"),
       thumbnailBuffer: Buffer.from("fake-thumb"),
     };
-    const outputUploadVideo = await uploadVideoUseCase.execute(inputUploadVideo);
+    const outputUploadVideo =
+      await uploadVideoUseCase.execute(inputUploadVideo);
     videoId = outputUploadVideo.id;
     originalThumbnailKey = StorageKeyBuilder.build(
       "thumbnail",
@@ -47,22 +48,23 @@ describe("UpdateThumbnail Use Case", () => {
       videoId,
     );
 
-    // Assert that the new thumbnail is in storage
-    const storedNewThumbnail = await storageService.getFileInMemory(newThumbnailKey);
+    const storedNewThumbnail =
+      await storageService.getFileInMemory(newThumbnailKey);
     expect(storedNewThumbnail?.toString()).toBe(newThumbnailBuffer.toString());
 
-    // Assert that the old thumbnail is deleted (if it was different)
-    // In this setup, the original thumbnail is overwritten, so we check if the content changed.
-    // If the storage service truly deleted and re-uploaded, the old key would be gone.
-    // For InMemory, we check the content of the key.
     expect(await storageService.fileExists(originalThumbnailKey)).toBe(true); // Key still exists
-    expect((await storageService.getFileInMemory(originalThumbnailKey))?.toString()).toBe(newThumbnailBuffer.toString());
+    expect(
+      (await storageService.getFileInMemory(originalThumbnailKey))?.toString(),
+    ).toBe(newThumbnailBuffer.toString());
 
-    // Assert that the video metadata is updated with the new thumbnail URL
     const updatedVideo = await metadataRepo.findById(videoId);
-    expect(updatedVideo?.thumbnailUrl).toBe(`https://fake-s3.local/${newThumbnailKey}`);
+    expect(updatedVideo?.thumbnailUrl).toBe(
+      `https://fake-s3.local/${newThumbnailKey}`,
+    );
     expect(outputUpdateThumbnail.id).toBe(videoId);
-    expect(outputUpdateThumbnail.thumbnailUrl).toBe(`https://fake-s3.local/${newThumbnailKey}`);
+    expect(outputUpdateThumbnail.thumbnailUrl).toBe(
+      `https://fake-s3.local/${newThumbnailKey}`,
+    );
   });
 
   it("should throw an error if the video is not found", async () => {
@@ -74,3 +76,4 @@ describe("UpdateThumbnail Use Case", () => {
     ).rejects.toThrow("Video not found.");
   });
 });
+

@@ -32,20 +32,28 @@ describe("UploadVideo Use Case", () => {
     expect(videoOutput.description).toBe(input.description);
     expect(videoOutput.uploadDate).toBeInstanceOf(Date);
 
-    const videoKey = StorageKeyBuilder.build("video", input.name, videoOutput.id);
-    const thumbnailKey = StorageKeyBuilder.build("thumbnail", input.name, videoOutput.id);
+    const videoKey = StorageKeyBuilder.build(
+      "video",
+      input.name,
+      videoOutput.id,
+    );
+    const thumbnailKey = StorageKeyBuilder.build(
+      "thumbnail",
+      input.name,
+      videoOutput.id,
+    );
 
     expect(videoOutput.videoUrl).toBe(`https://fake-s3.local/${videoKey}`);
-    expect(videoOutput.thumbnailUrl).toBe(`https://fake-s3.local/${thumbnailKey}`);
+    expect(videoOutput.thumbnailUrl).toBe(
+      `https://fake-s3.local/${thumbnailKey}`,
+    );
 
-    // Verify content in storage
     const storedVideo = await storageService.getFileInMemory(videoKey);
     expect(storedVideo?.toString()).toBe(input.videoBuffer.toString());
 
     const storedThumbnail = await storageService.getFileInMemory(thumbnailKey);
     expect(storedThumbnail?.toString()).toBe(input.thumbnailBuffer.toString());
 
-    // Verify video metadata saved in repository
     const savedVideoMetadata = await videoRepo.findById(videoOutput.id);
     expect(savedVideoMetadata).toBeDefined();
     expect(savedVideoMetadata?.name).toBe(input.name);
@@ -56,7 +64,7 @@ describe("UploadVideo Use Case", () => {
 
   it("should throw an error if video name is empty", async () => {
     const input = {
-      name: "", // Invalid name
+      name: "",
       category: "Stretching",
       description: "Video description",
       videoBuffer: Buffer.from("fake-video-content"),
@@ -82,3 +90,4 @@ describe("UploadVideo Use Case", () => {
     );
   });
 });
+

@@ -6,10 +6,9 @@ describe("DynamoDbUserRepo - GetAll", () => {
   let userRepo: DynamoDbUserRepo;
   const createdUsers: User[] = [];
 
-  // Using a new, programmatically verified set of valid test data
   const testUsersData = [
     { name: "User Alpha", cpf: "11144477735", phone: "11987654321" },
-    { name: "User Beta",  cpf: "98765432100", phone: "11912345678" },
+    { name: "User Beta", cpf: "98765432100", phone: "11912345678" },
     { name: "User Gamma", cpf: "12345678909", phone: "11988887777" },
   ];
 
@@ -25,7 +24,7 @@ describe("DynamoDbUserRepo - GetAll", () => {
         new Date(`1990-01-0${i + 1}`),
         `hashedpass${i}`,
         TrainingPlan.create("silver", "card"),
-        "client"
+        "client",
       );
       await userRepo.save(user);
       createdUsers.push(user);
@@ -48,7 +47,9 @@ describe("DynamoDbUserRepo - GetAll", () => {
 
     for (const createdUser of createdUsers) {
       expect(
-        allFetchedUsers.some((fetchedUser) => fetchedUser.id === createdUser.id)
+        allFetchedUsers.some(
+          (fetchedUser) => fetchedUser.id === createdUser.id,
+        ),
       ).toBe(true);
     }
   });
@@ -61,3 +62,4 @@ describe("DynamoDbUserRepo - GetAll", () => {
     expect(result.lastEvaluatedKey).toBeDefined();
   });
 });
+

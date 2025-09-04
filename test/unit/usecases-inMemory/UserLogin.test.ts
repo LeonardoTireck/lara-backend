@@ -16,7 +16,6 @@ describe("UserLogin Use Case", () => {
   const userName = "Leonardo Tireck";
 
   beforeAll(() => {
-    // Set a dummy JWT_SECRET for testing purposes
     process.env.JWT_SECRET = "test_secret";
   });
 
@@ -49,7 +48,10 @@ describe("UserLogin Use Case", () => {
     expect(output).toBeDefined();
     expect(output?.token).toBeDefined();
 
-    const tokenPayload = jwt.verify(output!.token, process.env.JWT_SECRET!) as jwt.JwtPayload;
+    const tokenPayload = jwt.verify(
+      output!.token,
+      process.env.JWT_SECRET!,
+    ) as jwt.JwtPayload;
     expect(tokenPayload.id).toBe(createdUserId);
     expect(tokenPayload.email).toBe(userEmail);
     expect(tokenPayload.name).toBe(userName);
@@ -97,3 +99,4 @@ describe("UserLogin Use Case", () => {
     );
   });
 });
+
