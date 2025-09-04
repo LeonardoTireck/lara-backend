@@ -30,11 +30,11 @@ export class FindUserById {
   }
 }
 
-type Input = {
+interface Input {
   userId: string;
-};
+}
 
-type Output = {
+interface Output {
   id: string;
   name: string;
   email: string;
@@ -49,4 +49,4 @@ type Output = {
   lastParqUpdate?: Date;
   trainingSessions?: TrainingSession[];
   parq?: Parq;
-};
+}

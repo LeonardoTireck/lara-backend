@@ -18,12 +18,12 @@ export class UpdateParq {
   }
 }
 
-type Input = {
+interface Input {
   userId: string;
   newParq: Parq;
-};
+}
 
-type Output = {
+interface Output {
   userId: string;
   parq: Parq;
-};
+}

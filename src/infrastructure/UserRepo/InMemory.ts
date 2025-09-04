@@ -14,7 +14,7 @@ export class InMemoryUserRepo implements UserRepository {
   }
 
   async update(user: User): Promise<void> {
-    let userToBeUpdated = this.users.find((u) => u.id === user.id);
+    const userToBeUpdated = this.users.find((u) => u.id === user.id);
     if (!userToBeUpdated) throw new Error("User not found.");
     if (user.email) {
       userToBeUpdated.updateEmail(user.email);
@@ -60,7 +60,7 @@ export class InMemoryUserRepo implements UserRepository {
   ): Promise<PaginatedUsers> {
     return {
       users: this.users,
-      lastEvaluatedKey: ["mock"],
+      lastEvaluatedKey: { mock: "mock" },
     };
   }
 }

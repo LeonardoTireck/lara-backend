@@ -36,7 +36,7 @@ export class CreateUser {
     };
   }
 }
-type Input = {
+interface Input {
   name: string;
   email: string;
   password: string;
@@ -45,11 +45,11 @@ type Input = {
   dateOfBirth: Date;
   activePlan: TrainingPlan;
   userType?: UserType;
-};
+}
 
-type Output = {
+interface Output {
   id: string;
   name: string;
   email: string;
   activePlan?: TrainingPlan;
-};
+}

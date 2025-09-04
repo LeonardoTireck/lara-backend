@@ -32,11 +32,11 @@ export class UserLogin {
   }
 }
 
-type Input = {
+interface Input {
   email: string;
   password: string;
-};
+}
 
-type Output = {
+interface Output {
   token: string;
-};
+}

@@ -16,7 +16,7 @@ export class InMemoryVideoRepository implements VideoMetadataRepository {
   }
 
   async update(video: Video): Promise<void> {
-    let videoToBeUpdated = this.videos.find((v) => v.id == video.id);
+    const videoToBeUpdated = this.videos.find((v) => v.id == video.id);
     if (!videoToBeUpdated) throw new Error("Video not found.");
 
     videoToBeUpdated.updateCategory(video.category);

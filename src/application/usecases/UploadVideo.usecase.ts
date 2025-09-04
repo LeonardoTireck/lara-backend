@@ -51,15 +51,15 @@ export class UploadVideo {
   }
 }
 
-type Input = {
+interface Input {
   name: string;
   category: string;
   description: string;
   videoBuffer: Buffer;
   thumbnailBuffer: Buffer;
-};
+}
 
-type Output = {
+interface Output {
   id: string;
   name: string;
   uploadDate: Date;
@@ -67,4 +67,4 @@ type Output = {
   videoUrl: string;
   category: string;
   description: string;
-};
+}

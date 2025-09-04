@@ -28,9 +28,9 @@ export class UpdateClientPersonalInfo {
   }
 }
 
-type Input = {
+interface Input {
   id: string;
   email?: string;
   plainTextPassword?: string;
   phone?: string;
-};
+}

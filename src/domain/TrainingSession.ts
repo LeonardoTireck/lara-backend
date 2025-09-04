@@ -37,16 +37,16 @@ export class TrainingSession {
   }
 }
 
-type Exercise = {
+interface Exercise {
   name: string;
   sets: Set[];
   notes: string;
   restInSeconds: number;
   videoUrl: string;
-};
+}
 
-type Set = {
+interface Set {
   orderNumber: number;
   reps: number;
   weight: number;
-};
+}

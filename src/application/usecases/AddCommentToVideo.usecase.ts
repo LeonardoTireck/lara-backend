@@ -22,15 +22,15 @@ export class AddCommentToVideo {
   }
 }
 
-type Input = {
+interface Input {
   videoId: string;
   author: string;
   text: string;
-};
+}
 
-type Output = {
+interface Output {
   videoId: string;
   commentId: string;
   author: string;
   text: string;
-};
+}

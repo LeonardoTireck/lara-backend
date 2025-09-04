@@ -26,19 +26,19 @@ export class FindAllUsers {
   }
 }
 
-export type FindAllUsersInput = {
+export interface FindAllUsersInput {
   limit: number;
   exclusiveStartKey?: Record<string, any>;
-};
+}
 
-type UserOutput = {
+interface UserOutput {
   id: string;
   name: string;
   email: string;
   activePlan?: TrainingPlan;
-};
+}
 
-export type FindAllUsersOutput = {
+export interface FindAllUsersOutput {
   users: UserOutput[];
   lastEvaluatedKey?: Record<string, any>;
-};
+}
