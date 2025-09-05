@@ -18,11 +18,11 @@ This phase is critical for building a professional, maintainable, and testable a
 
 ---
 
-- [ ] **Step 1: Solidify Data Layer & Code Quality**
-    - [ ] **A. TDD:** Finish implementing all methods in `DynamoDbUserRepo` (e.g., `update`, `getById`).
-    - [ ] Create a separate suite of **integration tests** for the `DynamoDbUserRepo` that connect to the local Dockerized DynamoDB.
-    - [ ] Ensure existing use case **unit tests** continue to use the fast `InMemory` repositories.
-    - [ ] **B. Code Quality:** Integrate `ESLint` for linting and `Prettier` for code formatting to ensure a professional and consistent codebase.
+- [X] **Step 1: Solidify Data Layer & Code Quality**
+    - [X] **A. TDD:** Finish implementing all methods in `DynamoDbUserRepo` (e.g., `update`, `getById`).
+    - [X] Create a separate suite of **integration tests** for the `DynamoDbUserRepo` that connect to the local Dockerized DynamoDB.
+    - [X] Ensure existing use case **unit tests** continue to use the fast `InMemory` repositories.
+    - [X] **B. Code Quality:** Integrate `ESLint` for linting and `Prettier` for code formatting to ensure a professional and consistent codebase.
 
 - [ ] **Step 2: Decouple Web Framework (The Port & Adapter Pattern)**
 
