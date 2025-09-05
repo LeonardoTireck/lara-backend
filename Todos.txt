@@ -24,7 +24,7 @@ This phase is critical for building a professional, maintainable, and testable a
     - [X] Ensure existing use case **unit tests** continue to use the fast `InMemory` repositories.
     - [X] **B. Code Quality:** Integrate `ESLint` for linting and `Prettier` for code formatting to ensure a professional and consistent codebase.
 
-- [ ] **Step 2: Decouple Web Framework (The Port & Adapter Pattern)**
+- [X] **Step 2: Decouple Web Framework (The Port & Adapter Pattern)**
 
     > ### HOW-TO GUIDE: Implementing the Port & Adapter
     >
