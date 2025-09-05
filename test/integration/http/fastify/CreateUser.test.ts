@@ -1,6 +1,5 @@
-import 'dotenv/config';
-import { TrainingPlan } from '../../../src/domain/TrainingPlan';
 import axios from 'axios';
+import { TrainingPlan } from '../../../../src/domain/TrainingPlan';
 
 describe('Create user route Test', () => {
     test('Should create a user using express and dynamodb', async () => {
@@ -15,7 +14,7 @@ describe('Create user route Test', () => {
         } as const;
 
         const outputHttpCreateUser = await axios.post(
-            'http://localhost:3000/newUser',
+            'http://localhost:3001/newUser',
             input,
         );
 
