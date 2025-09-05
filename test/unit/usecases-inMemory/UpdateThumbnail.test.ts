@@ -1,8 +1,8 @@
 import { UpdateThumbnail } from '../../../src/application/usecases/UpdateThumbnail.usecase';
 import { UploadVideo } from '../../../src/application/usecases/UploadVideo.usecase';
 import { StorageKeyBuilder } from '../../../src/domain/StorageKeyBuilder';
-import { InMemoryVideoRepository } from '../../../src/infrastructure/videoRepo/inMemory';
-import { InMemoryVideoStorage } from '../../../src/infrastructure/videoStorage/inMemory';
+import { InMemoryVideoRepository } from '../../../src/infrastructure/inMemory/inMemoryVideoRepo';
+import { InMemoryVideoStorage } from '../../../src/infrastructure/inMemory/inMemoryVideoStorage';
 
 describe('UpdateThumbnail Use Case', () => {
     let metadataRepo: InMemoryVideoRepository;

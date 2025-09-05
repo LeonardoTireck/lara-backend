@@ -1,6 +1,5 @@
 import { User } from '../../domain/User';
 import { UserRepository } from '../../application/ports/UserRepository';
-import { PaginatedUsers } from '../../application/ports/PaginatedUsers';
 
 export class InMemoryUserRepo implements UserRepository {
     public users: User[] = [];

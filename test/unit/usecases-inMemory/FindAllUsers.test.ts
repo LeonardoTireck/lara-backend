@@ -4,7 +4,7 @@ import {
 } from '../../../src/application/usecases/FindAllUsers.usecase';
 import { TrainingPlan } from '../../../src/domain/TrainingPlan';
 import { User } from '../../../src/domain/User';
-import { InMemoryUserRepo } from '../../../src/infrastructure/UserRepo/InMemory';
+import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
 
 describe('FindAllUsers Use Case Test', () => {
     let repo: InMemoryUserRepo;

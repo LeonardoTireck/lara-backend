@@ -3,7 +3,7 @@ import { UpdateParq } from '../../../src/application/usecases/UpdateParq.usecase
 import { Parq } from '../../../src/domain/Parq';
 import { TrainingPlan } from '../../../src/domain/TrainingPlan';
 import BcryptPasswordHasher from '../../../src/infrastructure/Hashing/BcryptPasswordHasher';
-import { InMemoryUserRepo } from '../../../src/infrastructure/UserRepo/InMemory';
+import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
 
 describe('UpdateParq Use Case', () => {
     let repo: InMemoryUserRepo;

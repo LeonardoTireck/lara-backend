@@ -1,7 +1,7 @@
 import { UploadVideo } from '../../../src/application/usecases/UploadVideo.usecase';
-import { InMemoryVideoRepository } from '../../../src/infrastructure/videoRepo/inMemory';
-import { InMemoryVideoStorage } from '../../../src/infrastructure/videoStorage/inMemory';
 import { StorageKeyBuilder } from '../../../src/domain/StorageKeyBuilder';
+import { InMemoryVideoRepository } from '../../../src/infrastructure/inMemory/inMemoryVideoRepo';
+import { InMemoryVideoStorage } from '../../../src/infrastructure/inMemory/inMemoryVideoStorage';
 
 describe('UploadVideo Use Case', () => {
     let videoRepo: InMemoryVideoRepository;

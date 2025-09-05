@@ -3,7 +3,7 @@ import { FindUserById } from '../../../src/application/usecases/FindUserById.use
 import { UpdateClientPersonalInfo } from '../../../src/application/usecases/UpdateClientPersonalInfo.usecase';
 import { TrainingPlan } from '../../../src/domain/TrainingPlan';
 import BcryptPasswordHasher from '../../../src/infrastructure/Hashing/BcryptPasswordHasher';
-import { InMemoryUserRepo } from '../../../src/infrastructure/UserRepo/InMemory';
+import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
 
 describe('UpdateClientPersonalInfo Use Case', () => {
     let repo: InMemoryUserRepo;
