@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express';
 import { CreateUser } from './application/usecases/CreateUser.usecase';
 import 'dotenv/config';
-import BcryptPasswordHasher from './infrastructure/Hashing/BcryptPasswordHasher';
 import { DynamoDbUserRepo } from './infrastructure/dynamodb/repos/UserRepo';
 import { FindAllUsers } from './application/usecases/FindAllUsers.usecase';
+import BcryptPasswordHasher from './infrastructure/Hashing/BcryptPasswordHasher';
 
 const app = express();
 const port = process.env.PORT || 3000;
