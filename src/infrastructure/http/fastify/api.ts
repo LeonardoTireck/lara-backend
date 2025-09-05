@@ -10,12 +10,19 @@ import {
     HttpServer,
     Middleware,
 } from '../../../application/ports/HttpServer';
+import { UserControllers } from '../controllers/UserControllers';
 
 export class FastifyAdapter implements HttpServer {
     private app: FastifyInstance;
 
-    constructor() {
+    constructor(private userControllers: UserControllers) {
         this.app = fastify({ logger: true });
+        this.registerRoutes();
+    }
+
+    private registerRoutes(): void {
+        this.on('get', '/users', this.userControllers.getAll, []);
+        this.on('post', '/newUser', this.userControllers.newUser, []);
     }
 
     on(
@@ -51,7 +58,7 @@ export class FastifyAdapter implements HttpServer {
 
     async listen(port: number): Promise<void> {
         try {
-            await this.app.listen({ port });
+            this.app.listen({ port, host: '127.0.0.1' });
         } catch (err) {
             this.app.log.error(err);
             process.exit(1);
