@@ -1,9 +1,9 @@
 import {
     HttpRequest,
     HttpResponse,
-} from '../../../application/ports/HttpServer';
-import { CreateUser } from '../../../application/usecases/CreateUser.usecase';
-import { FindAllUsers } from '../../../application/usecases/FindAllUsers.usecase';
+} from '../../../../application/ports/HttpServer';
+import { CreateUser } from '../../../../application/usecases/CreateUser.usecase';
+import { FindAllUsers } from '../../../../application/usecases/FindAllUsers.usecase';
 
 export class UserControllers {
     constructor(

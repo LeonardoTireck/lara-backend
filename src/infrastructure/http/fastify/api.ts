@@ -10,7 +10,7 @@ import {
     HttpServer,
     Middleware,
 } from '../../../application/ports/HttpServer';
-import { UserControllers } from '../controllers/UserControllers';
+import { UserControllers } from './controllers/UserControllers';
 
 export class FastifyAdapter implements HttpServer {
     private app: FastifyInstance;

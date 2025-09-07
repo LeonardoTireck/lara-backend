@@ -1,7 +1,7 @@
 import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
 import { FindUserById } from '../../../src/application/usecases/FindUserById.usecase';
 import { TrainingPlan } from '../../../src/domain/TrainingPlan';
-import BcryptPasswordHasher from '../../../src/infrastructure/Hashing/BcryptPasswordHasher';
+import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
 
 describe('FindUserById Use Case', () => {

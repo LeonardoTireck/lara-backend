@@ -1,8 +1,8 @@
 import 'dotenv/config';
 import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
 import { TrainingPlan } from '../../../src/domain/TrainingPlan';
-import BcryptPasswordHasher from '../../../src/infrastructure/Hashing/BcryptPasswordHasher';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
+import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
 
 describe('CreateUser Use Case', () => {
     let repo: InMemoryUserRepo;

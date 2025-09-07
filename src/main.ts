@@ -1,10 +1,10 @@
 import { FastifyAdapter } from './infrastructure/http/fastify/api';
-import { UserControllers } from './infrastructure/http/controllers/UserControllers';
 import { FindAllUsers } from './application/usecases/FindAllUsers.usecase';
 import { DynamoDbUserRepo } from './infrastructure/dynamodb/repos/UserRepo';
 import { CreateUser } from './application/usecases/CreateUser.usecase';
-import BcryptPasswordHasher from './infrastructure/Hashing/BcryptPasswordHasher';
 import 'dotenv/config';
+import BcryptPasswordHasher from './infrastructure/hashing/BcryptPasswordHasher';
+import { UserControllers } from './infrastructure/http/fastify/controllers/UserControllers';
 
 async function startServer() {
     const userRepo = new DynamoDbUserRepo();

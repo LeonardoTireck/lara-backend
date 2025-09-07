@@ -3,7 +3,7 @@ import { FindUserById } from '../../../src/application/usecases/FindUserById.use
 import { UpdateTrainingSessions } from '../../../src/application/usecases/UpdateTrainingSessions.usecase';
 import { TrainingPlan } from '../../../src/domain/TrainingPlan';
 import { TrainingSession } from '../../../src/domain/TrainingSession';
-import BcryptPasswordHasher from '../../../src/infrastructure/Hashing/BcryptPasswordHasher';
+import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
 
 describe('UpdateTrainingSessions Use Case', () => {

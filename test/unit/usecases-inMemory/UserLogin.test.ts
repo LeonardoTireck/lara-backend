@@ -2,8 +2,8 @@ import jwt from 'jsonwebtoken';
 import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
 import { UserLogin } from '../../../src/application/usecases/UserLogin.usecase';
 import { TrainingPlan } from '../../../src/domain/TrainingPlan';
-import BcryptPasswordHasher from '../../../src/infrastructure/Hashing/BcryptPasswordHasher';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
+import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
 
 describe('UserLogin Use Case', () => {
     let repo: InMemoryUserRepo;
