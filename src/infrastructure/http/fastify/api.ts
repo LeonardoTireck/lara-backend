@@ -26,7 +26,7 @@ export class FastifyAdapter implements HttpServer {
     }
 
     on(
-        method: 'get' | 'post' | 'put' | 'delete',
+        method: 'get' | 'patch' | 'post' | 'put' | 'delete',
         path: string,
         controller: Controller,
         middlewares: Middleware[],
@@ -43,14 +43,17 @@ export class FastifyAdapter implements HttpServer {
         };
 
         const preHandlers = middlewares.map((middleware) => {
-            return async (req: FastifyRequest, _reply: FastifyReply) => {
+            return async (req: FastifyRequest, reply: FastifyReply) => {
                 const httpRequest: HttpRequest = {
                     body: req.body,
                     params: req.params,
                     headers: req.headers,
                     query: req.query,
                 };
-                await middleware(httpRequest);
+                const response = await middleware(httpRequest);
+                if (response) {
+                    reply.status(response.statusCode).send(response.body);
+                }
             };
         });
         this.app[method](path, { preHandler: preHandlers, handler });
@@ -58,7 +61,7 @@ export class FastifyAdapter implements HttpServer {
 
     async listen(port: number): Promise<void> {
         try {
-            this.app.listen({ port, host: '127.0.0.1' });
+            await this.app.listen({ port, host: '127.0.0.1' });
         } catch (err) {
             this.app.log.error(err);
             process.exit(1);

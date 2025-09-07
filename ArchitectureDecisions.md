@@ -26,18 +26,20 @@ This document records the key technology and architectural decisions for this pr
 -   **Pattern**: The project is structured using the **Clean Architecture**.
 -   **Reasoning**: This pattern decouples the core business logic (domain and use cases) from external concerns like the web framework or database. This is achieved by defining abstract interfaces ("Ports") that are implemented by concrete infrastructure classes ("Adapters").
 -   **Consequences**:
-    -   **Positive**: The application is highly testable and maintainable. The core logic is framework-agnostic, as proven by the ability to swap web frameworks.
-    -   **Negative**: This pattern introduces a higher level of initial complexity and boilerplate compared to simpler monolithic structures.
+    -   **Positive**: The application is highly testable and maintainable.
+    -   **Negative**: This pattern introduces a higher level of initial complexity.
 
-### ADR-005: Web Framework Strategy
--   **Decision**: The architecture is **framework-agnostic**, with interchangeable adapters for both **Fastify** and **Express.js**.
--   **Reasoning**: By abstracting the web server behind a generic `HttpServer` interface, we are not locked into a single framework. 
-    -   **Fastify** is the recommended default due to its superior performance and modern, hook-based architecture.
-    -   **Express.js** is available as a swappable alternative, demonstrating the flexibility of the design.
--   **Consequences**: This proves the effectiveness of the Ports and Adapters pattern and makes the application highly flexible for future needs.
+### ADR-005: Web Framework Strategy (Amended)
+-   **Decision**: Adopt a **pragmatic, hybrid approach** to the web layer. The controller layer will be coupled to the chosen web framework (Fastify), while the core business logic (use cases and domain) remains completely framework-agnostic.
+-   **Reasoning**: The initial "pure abstraction" approach, while architecturally clean, is too restrictive. It prevents the use of performance-critical features (e.g., schema-based serialization) and the rich ecosystem of the underlying web framework. This hybrid model offers a better balance.
+-   **Benefits**:
+    -   **Full Framework Power**: Allows the use of all Fastify features.
+    -   **Protected Core Logic**: The business rules remain pure, portable, and easy to test in isolation.
+    -   **Improved Developer Experience**: Controller code is more idiomatic to the framework.
 
 ### ADR-006: Dependency Management Strategy
--   **Decision**: Use a **Dependency Injection (DI) Container (InversifyJS)**.
+-   **Status**: **Planned**
+-   **Decision**: Use a **Dependency Injection (DI) Container (e.g., InversifyJS)**.
 -   **Reasoning**: A DI container automates the process of creating objects and wiring their dependencies together (Inversion of Control). Instead of classes creating their own dependencies, the container injects them.
 -   **Consequences**:
     -   **Positive**: Dramatically improves testability by making it easy to inject mock dependencies. It promotes loosely coupled components.
@@ -48,10 +50,12 @@ This document records the key technology and architectural decisions for this pr
 ## 3. Application Security & API Design
 
 ### ADR-007: Input Validation Strategy
--   **Decision**: Use a **schema-based validation library (Zod)**.
--   **Reasoning**: All data from external clients must be rigorously validated. Using a library like Zod is more robust, declarative, and maintainable than manual validation logic. It provides clear schemas for our data shapes and detailed error messages.
+-   **Status**: **Planned**
+-   **Decision**: Use a **schema-based validation library (e.g., Zod)**.
+-   **Reasoning**: All data from external clients must be rigorously validated. Using a library like Zod is more robust, declarative, and maintainable than manual validation logic.
 
 ### ADR-008: API Versioning
+-   **Status**: **Planned**
 -   **Decision**: The API will be versioned from the start (e.g., `/api/v1/...`).
 -   **Reasoning**: Versioning is crucial for long-term maintainability, allowing for future breaking changes without disrupting existing clients.
 
@@ -68,9 +72,9 @@ This document records the key technology and architectural decisions for this pr
 -   **Reasoning**: To ensure a consistent and reproducible environment for both development and production, simplifying setup and deployment.
 
 ### ADR-011: Observability
--   **Decision**: Implement a **Health Check Endpoint** (`/health`) and **Structured Request Logging** (Morgan).
+-   **Decision**: Implement a **Health Check Endpoint** (`/health`) and **Structured Request Logging**.
 -   **Reasoning**: The health check provides a standard way for monitoring services to verify application status. Structured logging provides essential visibility into application behavior for debugging and analysis.
-
+	
 ### ADR-012: Error Handling
--   **Decision**: Implement a **Global Error Handler** in each web framework adapter.
+-   **Decision**: Implement a **Global Error Handler** in the web framework adapter.
 -   **Reasoning**: This centralizes error-handling logic, preventing crashes from unhandled exceptions and ensuring that clients always receive a consistent, well-formatted error response.

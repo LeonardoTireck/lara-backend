@@ -3,7 +3,6 @@ export interface HttpRequest {
     params?: any;
     headers?: any;
     query?: any;
-    cookies?: any;
 }
 
 export interface HttpResponse {
@@ -13,7 +12,7 @@ export interface HttpResponse {
 
 export type Controller = (request: HttpRequest) => Promise<HttpResponse>;
 
-export type Middleware = (request: HttpRequest) => Promise<void>;
+export type Middleware = (request: HttpRequest) => Promise<HttpResponse> | void;
 
 export interface HttpServer {
     on(
