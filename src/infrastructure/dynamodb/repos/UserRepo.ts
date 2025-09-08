@@ -10,16 +10,20 @@ import {
 import 'dotenv/config';
 import { UserRepository } from '../../../application/ports/UserRepository';
 import { User } from '../../../domain/User';
-import { client } from '../DynamoDBClient';
 import { PaginatedUsers } from '../../../application/ports/PaginatedUsers';
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
+import { TYPES } from '../../../di/Types';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
 @injectable()
 export class DynamoDbUserRepo implements UserRepository {
     private docClient;
 
-    constructor() {
-        this.docClient = DynamoDBDocumentClient.from(client, {
+    constructor(
+        @inject(TYPES.DynamoDBClient)
+        private readonly client: DynamoDBClient,
+    ) {
+        this.docClient = DynamoDBDocumentClient.from(this.client, {
             marshallOptions: {
                 convertClassInstanceToMap: true,
             },

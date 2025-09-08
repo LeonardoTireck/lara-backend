@@ -6,4 +6,6 @@ export const TYPES = {
     FindAllUsersUseCase: Symbol.for('FindAllUsersUseCase'),
     CreateUserUseCase: Symbol.for('CreateUserUseCase'),
     UserControllers: Symbol.for('UserControllers'),
+    ConfigService: Symbol.for('ConfigService'),
+    DynamoDBClient: Symbol.for('DynamoDBClient'),
 };

@@ -1,8 +1,9 @@
-import { CreateTableCommand } from '@aws-sdk/client-dynamodb';
-import 'dotenv/config';
-import { client } from '../DynamoDBClient';
+import { CreateTableCommand, DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { container } from '../../../di/Inversify.config';
+import { TYPES } from '../../../di/Types';
 
 async function createTable() {
+    const client = container.get<DynamoDBClient>(TYPES.DynamoDBClient);
     try {
         const command = new CreateTableCommand({
             TableName: 'Users',

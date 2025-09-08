@@ -1,11 +1,14 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import 'dotenv/config';
+import { ConfigService } from '../config/ConfigService';
 
-export const client = new DynamoDBClient({
-    region: process.env.AWS_REGION,
-    endpoint: process.env.DDB_ENDPOINT,
-    credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-    },
-});
+export function createDynamoDBClient(config: ConfigService): DynamoDBClient {
+    return new DynamoDBClient({
+        region: config.awsRegion,
+        endpoint: config.ddbEndpoint,
+        credentials: {
+            accessKeyId: config.awsAccessKeyId,
+            secretAccessKey: config.awsSecretAccessKey,
+        },
+    });
+}

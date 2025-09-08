@@ -1,9 +1,11 @@
+import { UserRepository } from '../../../../src/application/ports/UserRepository';
+import { container } from '../../../../src/di/Inversify.config';
+import { TYPES } from '../../../../src/di/Types';
 import { TrainingPlan } from '../../../../src/domain/TrainingPlan';
 import { User } from '../../../../src/domain/User';
-import { DynamoDbUserRepo } from '../../../../src/infrastructure/dynamodb/repos/UserRepo';
 
 describe('DynamoDbUserRepo - GetAll', () => {
-    let userRepo: DynamoDbUserRepo;
+    let userRepo: UserRepository;
     const createdUsers: User[] = [];
 
     const testUsersData = [
@@ -13,7 +15,8 @@ describe('DynamoDbUserRepo - GetAll', () => {
     ];
 
     beforeAll(async () => {
-        userRepo = new DynamoDbUserRepo();
+        userRepo = container.get<UserRepository>(TYPES.UserRepository);
+
         for (let i = 0; i < testUsersData.length; i++) {
             const userData = testUsersData[i];
             const user = User.create(

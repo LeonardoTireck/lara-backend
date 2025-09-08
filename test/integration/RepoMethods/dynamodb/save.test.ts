@@ -1,12 +1,14 @@
+import { UserRepository } from '../../../../src/application/ports/UserRepository';
+import { container } from '../../../../src/di/Inversify.config';
+import { TYPES } from '../../../../src/di/Types';
 import { TrainingPlan } from '../../../../src/domain/TrainingPlan';
 import { User } from '../../../../src/domain/User';
-import { DynamoDbUserRepo } from '../../../../src/infrastructure/dynamodb/repos/UserRepo';
 
 describe('DynamoDbUserRepo', () => {
-    let userRepo: DynamoDbUserRepo;
+    let userRepo: UserRepository;
 
     beforeAll(() => {
-        userRepo = new DynamoDbUserRepo();
+        userRepo = container.get<UserRepository>(TYPES.UserRepository);
     });
 
     test('should save a user to DynamoDB', async () => {

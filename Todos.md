@@ -21,9 +21,9 @@ This phase establishes a professional, maintainable, and testable application fo
 -   [X] **Integration Testing:** Create a separate suite of integration tests for the database repository.
 -   [X] **Code Quality:** Integrate `ESLint` and `Prettier` to enforce a consistent and professional codebase.
 
-### Step 2: Refactor HTTP Layer & Implement Dependency Injection (In Progress)
+### Step 2: Refactor HTTP Layer & Implement Dependency Injection (Completed)
 
-This is the **current major task**. The application is still using a pure, framework-agnostic adapter and manual dependency instantiation. The next steps are to refactor the HTTP layer to the hybrid model and introduce a Dependency Injection container.
+This major architectural task is now complete. The application has been refactored to use a hybrid model that leverages Fastify's native features while keeping business logic pure. A full Dependency Injection container (`InversifyJS`) has been implemented to manage object lifecycles and dependencies, significantly improving modularity and testability.
 
 > #### HOW-TO GUIDE: Implementing the Hybrid Architecture
 >

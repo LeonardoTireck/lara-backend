@@ -1,11 +1,13 @@
 import {
     DeleteTableCommand,
     waitUntilTableNotExists,
+    DynamoDBClient,
 } from '@aws-sdk/client-dynamodb';
-import 'dotenv/config';
-import { client } from '../DynamoDBClient';
+import { container } from '../../../di/Inversify.config';
+import { TYPES } from '../../../di/Types';
 
 async function dropUsersTable() {
+    const client = container.get<DynamoDBClient>(TYPES.DynamoDBClient);
     try {
         console.log('Deleting Users table...');
         await client.send(new DeleteTableCommand({ TableName: 'Users' }));
