@@ -4,21 +4,26 @@ import { FastifyRoute } from '../../../application/ports/FastifyRoute';
 export class FastifyAdapter {
     private app: FastifyInstance;
 
-    constructor(private routes: FastifyRoute[]) {
+    constructor() {
         this.app = fastify({ logger: true });
-        this.registerRoutes();
     }
 
-    private registerRoutes(): void {
-        for (const route of this.routes) {
-            this.app.route({
-                method: route.method,
-                url: route.path,
-                schema: route.schema,
-                preHandler: route.preHandlers,
-                handler: route.handler,
-            });
-        }
+    public register(routes: FastifyRoute[], prefix: string): void {
+        this.app.register(
+            (instance, opts, done) => {
+                for (const route of routes) {
+                    instance.route({
+                        method: route.method,
+                        url: route.path,
+                        schema: route.schema,
+                        preHandler: route.preHandlers,
+                        handler: route.handler,
+                    });
+                }
+                done();
+            },
+            { prefix },
+        );
     }
 
     async listen(port: number): Promise<void> {

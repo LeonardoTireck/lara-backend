@@ -14,7 +14,7 @@ describe('Create user route Test', () => {
         } as const;
 
         const outputHttpCreateUser = await axios.post(
-            'http://localhost:3001/newUser',
+            'http://localhost:3001/v1/newUser',
             input,
         );
 
