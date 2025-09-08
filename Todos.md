@@ -47,9 +47,9 @@ This major architectural task is now complete. The application has been refactor
 >    -   Create `inversify.config.ts` to define all dependency bindings.
 >    -   Update `main.ts` to be the **Composition Root**: it should get the main server instance from the container and start it.
 
-### Step 3: Implement Foundational Services (Planned)
+### Step 3: Implement Foundational Services (In Progress)
 
--   [ ] **Centralized Configuration:** Create an injectable `ConfigService`.
+-   [X] **Centralized Configuration:** Create an injectable `ConfigService`.
 -   [ ] **Input Validation:** Create a reusable validation middleware using Zod.
 -   [ ] **Health Check:** Add a `/health` endpoint.
 -   [ ] **Global Error Handling:** Implement a global error handler in the `FastifyAdapter`.
