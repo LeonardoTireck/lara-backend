@@ -4,7 +4,7 @@ import { CreateUser } from './application/usecases/CreateUser.usecase';
 import 'dotenv/config';
 import BcryptPasswordHasher from './infrastructure/hashing/BcryptPasswordHasher';
 import { UserControllers } from './infrastructure/http/fastify/controllers/UserControllers';
-import { FastifyAdapter } from './infrastructure/http/fastify/Api';
+import { FastifyAdapter } from './infrastructure/http/fastify/Adapter';
 import { createRoutes } from './infrastructure/http/fastify/Routes';
 
 async function startServer() {
