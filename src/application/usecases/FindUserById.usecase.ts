@@ -3,9 +3,15 @@ import { TrainingPlan } from '../../domain/TrainingPlan';
 import { TrainingSession } from '../../domain/TrainingSession';
 import { UserRepository } from '../ports/UserRepository';
 import { UserType } from '../../domain/UserType';
+import { injectable, inject } from 'inversify';
+import { TYPES } from '../../di/Types';
 
+@injectable()
 export class FindUserById {
-    constructor(private userRepo: UserRepository) {}
+    constructor(
+        @inject(TYPES.UserRepository)
+        private readonly userRepo: UserRepository,
+    ) {}
 
     async execute(input: Input): Promise<Output> {
         const user = await this.userRepo.getById(input.userId);

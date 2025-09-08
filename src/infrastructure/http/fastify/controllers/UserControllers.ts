@@ -2,10 +2,15 @@ import { FastifyReply } from 'fastify';
 import { CreateUser } from '../../../../application/usecases/CreateUser.usecase';
 import { FindAllUsers } from '../../../../application/usecases/FindAllUsers.usecase';
 import { GetAllUsersRequest, NewUserRequest } from './RequestTypes';
+import { TYPES } from '../../../../di/Types';
+import { injectable, inject } from 'inversify';
 
+@injectable()
 export class UserControllers {
     constructor(
+        @inject(TYPES.FindAllUsersUseCase)
         private findAllUsersUseCase: FindAllUsers,
+        @inject(TYPES.CreateUserUseCase)
         private createUserUseCase: CreateUser,
     ) {}
 
@@ -15,7 +20,6 @@ export class UserControllers {
             limit: Number(limit) || 10,
             exclusiveStartKey,
         });
-
         return reply.status(200).send({ paginatedOutput });
     };
 

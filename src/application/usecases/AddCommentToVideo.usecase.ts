@@ -1,8 +1,14 @@
+import { inject, injectable } from 'inversify';
 import { VideoComment } from '../../domain/VideoComment';
 import { VideoMetadataRepository } from '../ports/VideoMetadataRepository';
+import { TYPES } from '../../di/Types';
 
+@injectable()
 export class AddCommentToVideo {
-    constructor(private videoRepo: VideoMetadataRepository) {}
+    constructor(
+        @inject(TYPES.VideoMetadataRepository)
+        private readonly videoRepo: VideoMetadataRepository,
+    ) {}
 
     async execute(input: Input): Promise<Output> {
         const video = await this.videoRepo.findById(input.videoId);

@@ -1,8 +1,14 @@
+import { injectable, inject } from 'inversify';
+import { TYPES } from '../../di/Types';
 import { Parq } from '../../domain/Parq';
 import { UserRepository } from '../ports/UserRepository';
 
+@injectable()
 export class UpdateParq {
-    constructor(private userRepo: UserRepository) {}
+    constructor(
+        @inject(TYPES.UserRepository)
+        private readonly userRepo: UserRepository,
+    ) {}
 
     async execute(input: Input): Promise<Output> {
         const user = await this.userRepo.getById(input.userId);

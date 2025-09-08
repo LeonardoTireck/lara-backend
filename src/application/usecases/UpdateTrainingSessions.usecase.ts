@@ -1,8 +1,14 @@
+import { injectable, inject } from 'inversify';
+import { TYPES } from '../../di/Types';
 import { TrainingSession } from '../../domain/TrainingSession';
 import { UserRepository } from '../ports/UserRepository';
 
+@injectable()
 export class UpdateTrainingSessions {
-    constructor(private userRepo: UserRepository) {}
+    constructor(
+        @inject(TYPES.UserRepository)
+        private readonly userRepo: UserRepository,
+    ) {}
 
     async execute(userId: string, updatedTrainingSessions: TrainingSession[]) {
         const user = await this.userRepo.getById(userId);

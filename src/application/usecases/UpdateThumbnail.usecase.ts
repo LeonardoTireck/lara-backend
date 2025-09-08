@@ -1,10 +1,15 @@
+import { injectable, inject } from 'inversify';
+import { TYPES } from '../../di/Types';
 import { StorageKeyBuilder } from '../../domain/StorageKeyBuilder';
 import { VideoMetadataRepository } from '../ports/VideoMetadataRepository';
 import { VideoStorageService } from '../ports/VideoStorageService';
 
+@injectable()
 export class UpdateThumbnail {
     constructor(
+        @inject(TYPES.VideoStorage)
         private videoStorage: VideoStorageService,
+        @inject(TYPES.VideoMetadataRepository)
         private videoRepo: VideoMetadataRepository,
     ) {}
     async execute(videoId: string, newThumbnail: Buffer) {

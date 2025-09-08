@@ -4,11 +4,16 @@ import { User } from '../../domain/User';
 import { UserRepository } from '../ports/UserRepository';
 import { UserType } from '../../domain/UserType';
 import { Password } from '../../domain/Password';
+import { inject, injectable } from 'inversify';
+import { TYPES } from '../../di/Types';
 
+@injectable()
 export class CreateUser {
     constructor(
-        private userRepo: UserRepository,
-        private passwordHasher: PasswordHasher,
+        @inject(TYPES.UserRepository)
+        private readonly userRepo: UserRepository,
+        @inject(TYPES.PasswordHasher)
+        private readonly passwordHasher: PasswordHasher,
     ) {}
 
     async execute(input: Input): Promise<Output> {

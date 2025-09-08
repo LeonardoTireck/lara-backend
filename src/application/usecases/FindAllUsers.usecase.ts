@@ -1,8 +1,14 @@
+import { inject, injectable } from 'inversify';
 import { TrainingPlan } from '../../domain/TrainingPlan';
 import { UserRepository } from '../ports/UserRepository';
+import { TYPES } from '../../di/Types';
 
+@injectable()
 export class FindAllUsers {
-    constructor(private userRepo: UserRepository) {}
+    constructor(
+        @inject(TYPES.UserRepository)
+        private readonly userRepo: UserRepository,
+    ) {}
 
     async execute(input: FindAllUsersInput): Promise<FindAllUsersOutput> {
         const paginatedResult = await this.userRepo.getAll(

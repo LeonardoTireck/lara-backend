@@ -1,11 +1,16 @@
 import PasswordHasher from '../ports/PasswordHasher';
 import { UserRepository } from '../ports/UserRepository';
 import { Password } from '../../domain/Password';
+import { TYPES } from '../../di/Types';
+import { injectable, inject } from 'inversify';
 
+@injectable()
 export class UpdateClientPersonalInfo {
     constructor(
-        private userRepo: UserRepository,
-        private passwordHasher: PasswordHasher,
+        @inject(TYPES.UserRepository)
+        private readonly userRepo: UserRepository,
+        @inject(TYPES.PasswordHasher)
+        private readonly passwordHasher: PasswordHasher,
     ) {}
     async execute(input: Input): Promise<void> {
         const user = await this.userRepo.getById(input.id);

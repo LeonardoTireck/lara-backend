@@ -12,7 +12,9 @@ import { UserRepository } from '../../../application/ports/UserRepository';
 import { User } from '../../../domain/User';
 import { client } from '../DynamoDBClient';
 import { PaginatedUsers } from '../../../application/ports/PaginatedUsers';
+import { injectable } from 'inversify';
 
+@injectable()
 export class DynamoDbUserRepo implements UserRepository {
     private docClient;
 

@@ -10,7 +10,7 @@ export class FastifyAdapter {
 
     public register(routes: FastifyRoute[], prefix: string): void {
         this.app.register(
-            (instance, opts, done) => {
+            (instance, _opts, done) => {
                 for (const route of routes) {
                     instance.route({
                         method: route.method,

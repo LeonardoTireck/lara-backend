@@ -2,10 +2,15 @@ import { UserRepository } from '../ports/UserRepository';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 import PasswordHasher from '../ports/PasswordHasher';
+import { injectable, inject } from 'inversify';
+import { TYPES } from '../../di/Types';
 
+@injectable()
 export class UserLogin {
     constructor(
+        @inject(TYPES.UserRepository)
         private userRepo: UserRepository,
+        @inject(TYPES.PasswordHasher)
         private passwordHasher: PasswordHasher,
     ) {}
 

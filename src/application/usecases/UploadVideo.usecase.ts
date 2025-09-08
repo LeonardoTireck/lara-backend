@@ -2,10 +2,15 @@ import { Video } from '../../domain/Video';
 import { VideoStorageService } from '../ports/VideoStorageService';
 import { VideoMetadataRepository } from '../ports/VideoMetadataRepository';
 import { StorageKeyBuilder } from '../../domain/StorageKeyBuilder';
+import { injectable, inject } from 'inversify';
+import { TYPES } from '../../di/Types';
 
+@injectable()
 export class UploadVideo {
     constructor(
+        @inject(TYPES.VideoMetadataRepository)
         private metadataRepo: VideoMetadataRepository,
+        @inject(TYPES.VideoStorage)
         private storageService: VideoStorageService,
     ) {}
 
