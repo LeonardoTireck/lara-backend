@@ -1,62 +1,24 @@
-import fastify, {
-    FastifyInstance,
-    FastifyReply,
-    FastifyRequest,
-} from 'fastify';
-import {
-    Controller,
-    HttpRequest,
-    HttpResponse,
-    HttpServer,
-    Middleware,
-} from '../../../application/ports/HttpServer';
-import { UserControllers } from './controllers/UserControllers';
+import fastify, { FastifyInstance } from 'fastify';
+import { FastifyRoute } from '../../../application/ports/FastifyRoute';
 
-export class FastifyAdapter implements HttpServer {
+export class FastifyAdapter {
     private app: FastifyInstance;
 
-    constructor(private userControllers: UserControllers) {
+    constructor(private routes: FastifyRoute[]) {
         this.app = fastify({ logger: true });
         this.registerRoutes();
     }
 
     private registerRoutes(): void {
-        this.on('get', '/users', this.userControllers.getAll, []);
-        this.on('post', '/newUser', this.userControllers.newUser, []);
-    }
-
-    on(
-        method: 'get' | 'patch' | 'post' | 'put' | 'delete',
-        path: string,
-        controller: Controller,
-        middlewares: Middleware[],
-    ): void {
-        const handler = async (req: FastifyRequest, reply: FastifyReply) => {
-            const httpRequest: HttpRequest = {
-                body: req.body,
-                params: req.params,
-                headers: req.headers,
-                query: req.query,
-            };
-            const httpResponse: HttpResponse = await controller(httpRequest);
-            reply.status(httpResponse.statusCode).send(httpResponse.body);
-        };
-
-        const preHandlers = middlewares.map((middleware) => {
-            return async (req: FastifyRequest, reply: FastifyReply) => {
-                const httpRequest: HttpRequest = {
-                    body: req.body,
-                    params: req.params,
-                    headers: req.headers,
-                    query: req.query,
-                };
-                const response = await middleware(httpRequest);
-                if (response) {
-                    reply.status(response.statusCode).send(response.body);
-                }
-            };
-        });
-        this.app[method](path, { preHandler: preHandlers, handler });
+        for (const route of this.routes) {
+            this.app.route({
+                method: route.method,
+                url: route.path,
+                schema: route.schema,
+                preHandler: route.preHandlers,
+                handler: route.handler,
+            });
+        }
     }
 
     async listen(port: number): Promise<void> {

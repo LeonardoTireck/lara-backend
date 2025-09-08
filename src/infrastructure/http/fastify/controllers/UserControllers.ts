@@ -1,9 +1,7 @@
-import {
-    HttpRequest,
-    HttpResponse,
-} from '../../../../application/ports/HttpServer';
+import { FastifyReply } from 'fastify';
 import { CreateUser } from '../../../../application/usecases/CreateUser.usecase';
 import { FindAllUsers } from '../../../../application/usecases/FindAllUsers.usecase';
+import { GetAllUsersRequest, NewUserRequest } from './RequestTypes';
 
 export class UserControllers {
     constructor(
@@ -11,37 +9,24 @@ export class UserControllers {
         private createUserUseCase: CreateUser,
     ) {}
 
-    getAll = async (request: HttpRequest): Promise<HttpResponse> => {
-        const limit = request.query.limit;
-        const exclusiveStartKey = request.query.exclusiveStartKey;
+    getAll = async (request: GetAllUsersRequest, reply: FastifyReply) => {
+        const { limit, exclusiveStartKey } = request.query;
         const paginatedOutput = await this.findAllUsersUseCase.execute({
-            limit,
+            limit: Number(limit) || 10,
             exclusiveStartKey,
         });
 
-        return {
-            statusCode: 200,
-            body: {
-                paginatedOutput,
-            },
-        };
+        return reply.status(200).send({ paginatedOutput });
     };
-    newUser = async (req: HttpRequest): Promise<HttpResponse> => {
-        const body = req.body;
+
+    newUser = async (request: NewUserRequest, reply: FastifyReply) => {
+        const body = request.body;
         body.dateOfBirth = new Date(body.dateOfBirth);
         body.activePlan.startDate = new Date(body.activePlan.startDate);
         body.activePlan.expirationDate = new Date(
             body.activePlan.expirationDate,
         );
         const outputCreateUser = await this.createUserUseCase.execute(body);
-        return {
-            statusCode: 200,
-            body: {
-                id: outputCreateUser.id,
-                name: outputCreateUser.name,
-                email: outputCreateUser.email,
-                activePlan: outputCreateUser.activePlan,
-            },
-        };
+        return reply.status(201).send(outputCreateUser);
     };
 }
