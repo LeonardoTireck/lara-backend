@@ -1,13 +1,14 @@
 import {
     FastifySchema,
+    HTTPMethods,
     preHandlerHookHandler,
     RouteHandlerMethod,
 } from 'fastify';
 
 export interface FastifyRoute {
-    method: 'get' | 'post' | 'put' | 'delete' | 'patch';
+    method: HTTPMethods;
     path: string;
-    handler: RouteHandlerMethod;
     schema?: FastifySchema;
     preHandlers?: preHandlerHookHandler[];
+    handler: RouteHandlerMethod;
 }

@@ -23,6 +23,11 @@ export class CreateUser {
             throw new Error('Invalid user type.');
         }
 
+        const activePlan = TrainingPlan.create(
+            input.activePlan.planType,
+            input.activePlan.paymentMethod,
+        );
+
         const user = User.create(
             input.name,
             input.email,
@@ -30,7 +35,7 @@ export class CreateUser {
             input.phone,
             new Date(input.dateOfBirth),
             hashedPassword,
-            input.activePlan,
+            activePlan,
             input.userType || 'client',
         );
 
@@ -51,7 +56,10 @@ interface Input {
     documentCPF: string;
     phone: string;
     dateOfBirth: Date;
-    activePlan: TrainingPlan;
+    activePlan: {
+        planType: 'silver' | 'gold' | 'diamond';
+        paymentMethod: 'PIX' | 'card';
+    };
     userType?: UserType;
 }
 

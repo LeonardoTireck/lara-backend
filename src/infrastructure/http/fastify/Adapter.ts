@@ -1,11 +1,20 @@
 import fastify, { FastifyInstance } from 'fastify';
 import { FastifyRoute } from '../../../application/ports/FastifyRoute';
+import {
+    serializerCompiler,
+    validatorCompiler,
+    ZodTypeProvider,
+} from 'fastify-type-provider-zod';
 
 export class FastifyAdapter {
     private app: FastifyInstance;
 
     constructor() {
-        this.app = fastify({ logger: true });
+        this.app = fastify({
+            logger: true,
+        }).withTypeProvider<ZodTypeProvider>();
+        this.app.setValidatorCompiler(validatorCompiler);
+        this.app.setSerializerCompiler(serializerCompiler);
     }
 
     public register(routes: FastifyRoute[], prefix: string): void {

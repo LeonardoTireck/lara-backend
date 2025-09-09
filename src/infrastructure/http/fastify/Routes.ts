@@ -1,6 +1,7 @@
 import { RouteHandlerMethod } from 'fastify';
 import { FastifyRoute } from '../../../application/ports/FastifyRoute';
 import { UserControllers } from './controllers/UserControllers';
+import { createUserSchema } from './schemas/UserSchemas';
 
 export const createRoutes = (
     userControllers: UserControllers,
@@ -14,6 +15,9 @@ export const createRoutes = (
         {
             method: 'post',
             path: '/newUser',
+            schema: {
+                body: createUserSchema,
+            },
             handler: userControllers.newUser as RouteHandlerMethod,
         },
     ];

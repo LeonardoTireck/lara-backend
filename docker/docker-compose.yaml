@@ -7,8 +7,6 @@ services:
     working_dir: /app
     command: sleep infinity
     stop_grace_period: 2s
-    ports:
-      - 3000:3000
 
   dynamodb-local:
     command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"

@@ -34,7 +34,7 @@ container
 //Utils
 container
     .bind<PasswordHasher>(TYPES.PasswordHasher)
-    .toConstantValue(new BcryptPasswordHasher(1));
+    .toConstantValue(new BcryptPasswordHasher(configService.saltrounds));
 
 //UseCases
 container

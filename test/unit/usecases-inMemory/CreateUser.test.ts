@@ -1,8 +1,7 @@
 import 'dotenv/config';
 import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
-import { TrainingPlan } from '../../../src/domain/TrainingPlan';
-import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
 import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
+import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
 
 describe('CreateUser Use Case', () => {
     let repo: InMemoryUserRepo;
@@ -23,15 +22,21 @@ describe('CreateUser Use Case', () => {
             phone: '47992000622',
             dateOfBirth: new Date('1990-01-01'),
             password: 'Test123@',
-            activePlan: TrainingPlan.create('silver', 'PIX'),
-        };
+            activePlan: {
+                planType: 'gold',
+                paymentMethod: 'PIX',
+            },
+        } as const;
 
         const user = await useCaseCreate.execute(input);
 
         expect(user.id).toBeDefined();
         expect(user.name).toBe(input.name);
         expect(user.email).toBe(input.email);
-        expect(user.activePlan).toEqual(input.activePlan);
+        expect(user.activePlan?.planType).toBe(input.activePlan.planType);
+        expect(user.activePlan?.paymentMethod).toBe(
+            input.activePlan.paymentMethod,
+        );
         expect(repo.users).toHaveLength(1);
         expect(repo.users[0].email).toBe(input.email);
     });
@@ -44,8 +49,11 @@ describe('CreateUser Use Case', () => {
             phone: '47992000622',
             dateOfBirth: new Date('1990-01-01'),
             password: 'Test123@',
-            activePlan: TrainingPlan.create('silver', 'PIX'),
-        };
+            activePlan: {
+                planType: 'gold',
+                paymentMethod: 'PIX',
+            },
+        } as const;
 
         await expect(useCaseCreate.execute(input)).rejects.toThrow(
             'Email does not meet criteria.',
@@ -61,8 +69,11 @@ describe('CreateUser Use Case', () => {
             phone: '47992000622',
             dateOfBirth: new Date('1990-01-01'),
             password: 'Test123@',
-            activePlan: TrainingPlan.create('silver', 'PIX'),
-        };
+            activePlan: {
+                planType: 'gold',
+                paymentMethod: 'PIX',
+            },
+        } as const;
 
         await useCaseCreate.execute(input);
 
@@ -80,8 +91,11 @@ describe('CreateUser Use Case', () => {
             phone: '47992000622',
             dateOfBirth: new Date('1990-01-01'),
             password: 'short', // Invalid password
-            activePlan: TrainingPlan.create('silver', 'PIX'),
-        };
+            activePlan: {
+                planType: 'gold',
+                paymentMethod: 'PIX',
+            },
+        } as const;
 
         await expect(useCaseCreate.execute(input)).rejects.toThrow(
             'Password does not meet criteria.',
@@ -97,9 +111,12 @@ describe('CreateUser Use Case', () => {
             phone: '47992000622',
             dateOfBirth: new Date('1990-01-01'),
             password: 'Test123@',
-            activePlan: TrainingPlan.create('silver', 'PIX'),
+            activePlan: {
+                planType: 'gold',
+                paymentMethod: 'PIX',
+            },
             userType: 'error' as any,
-        };
+        } as const;
 
         await expect(useCaseCreate.execute(input)).rejects.toThrow(
             'Invalid user type.',

@@ -1,9 +1,9 @@
 import { FastifyReply } from 'fastify';
+import { inject, injectable } from 'inversify';
 import { CreateUser } from '../../../../application/usecases/CreateUser.usecase';
 import { FindAllUsers } from '../../../../application/usecases/FindAllUsers.usecase';
-import { GetAllUsersRequest, NewUserRequest } from './RequestTypes';
 import { TYPES } from '../../../../di/Types';
-import { injectable, inject } from 'inversify';
+import { GetAllUsersRequest } from './RequestTypes';
 
 @injectable()
 export class UserControllers {
@@ -23,14 +23,10 @@ export class UserControllers {
         return reply.status(200).send({ paginatedOutput });
     };
 
-    newUser = async (request: NewUserRequest, reply: FastifyReply) => {
-        const body = request.body;
-        body.dateOfBirth = new Date(body.dateOfBirth);
-        body.activePlan.startDate = new Date(body.activePlan.startDate);
-        body.activePlan.expirationDate = new Date(
-            body.activePlan.expirationDate,
+    newUser = async (request: any, reply: FastifyReply) => {
+        const outputCreateUser = await this.createUserUseCase.execute(
+            request.body,
         );
-        const outputCreateUser = await this.createUserUseCase.execute(body);
         return reply.status(201).send(outputCreateUser);
     };
 }
