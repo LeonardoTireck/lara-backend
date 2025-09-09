@@ -12,9 +12,10 @@ export class FastifyAdapter {
     constructor() {
         this.app = fastify({
             logger: true,
-        }).withTypeProvider<ZodTypeProvider>();
+        });
         this.app.setValidatorCompiler(validatorCompiler);
         this.app.setSerializerCompiler(serializerCompiler);
+        this.app.withTypeProvider<ZodTypeProvider>();
     }
 
     public register(routes: FastifyRoute[], prefix: string): void {

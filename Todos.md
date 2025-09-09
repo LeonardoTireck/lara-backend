@@ -50,7 +50,7 @@ This major architectural task is now complete. The application has been refactor
 ### Step 3: Implement Foundational Services (In Progress)
 
 - [x] **Centralized Configuration:** Create an injectable `ConfigService`.
-- [ ] **Input Validation:** Create a reusable validation middleware using Zod.
+- [x] **Input Validation:** Create a reusable validation middleware using Zod.
 - [ ] **Health Check:** Add a `/health` endpoint.
 - [ ] **Global Error Handling:** Implement a global error handler in the `FastifyAdapter`.
 - [ ] **Request Logging:** Add a request logging middleware.
@@ -145,4 +145,3 @@ This major architectural task is now complete. The application has been refactor
 
 - [ ] **API Versioning:** Implement an API versioning strategy (e.g., `/api/v1/...`).
 - [ ] **End-to-End (E2E) Testing:** Plan and implement E2E tests.
-

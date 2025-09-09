@@ -1,15 +1,12 @@
 import { container } from '../../../di/Inversify.config';
 import { TYPES } from '../../../di/Types';
 import { FastifyAdapter } from './Adapter';
-import { UserControllers } from './controllers/UserControllers';
-import { createRoutes } from './Routes';
+import { Router } from './Routes';
 
 export function instantiateServer() {
-    const userControllers = container.get<UserControllers>(
-        TYPES.UserControllers,
-    );
+    const router = container.get<Router>(TYPES.Router);
+    const v1Routes = router.createRoutes();
 
-    const v1Routes = createRoutes(userControllers);
     const httpServer = new FastifyAdapter();
 
     httpServer.register(v1Routes, '/v1');

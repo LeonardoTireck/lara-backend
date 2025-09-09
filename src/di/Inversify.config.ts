@@ -10,6 +10,8 @@ import { UserControllers } from '../infrastructure/http/fastify/controllers/User
 import { TYPES } from './Types';
 import { createDynamoDBClient } from '../infrastructure/dynamodb/DynamoDBClient';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { ServerControllers } from '../infrastructure/http/fastify/controllers/ServerController';
+import { Router } from '../infrastructure/http/fastify/Routes';
 
 const container = new Container();
 
@@ -51,5 +53,12 @@ container
     .bind<UserControllers>(TYPES.UserControllers)
     .to(UserControllers)
     .inSingletonScope();
+container
+    .bind<ServerControllers>(TYPES.ServerControllers)
+    .to(ServerControllers)
+    .inSingletonScope();
+
+//Router
+container.bind<Router>(TYPES.Router).to(Router).inSingletonScope();
 
 export { container };
