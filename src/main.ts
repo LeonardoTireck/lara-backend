@@ -5,9 +5,9 @@ import { TYPES } from './di/Types';
 import { ConfigService } from './infrastructure/config/ConfigService';
 
 async function start() {
-    const httpServer = instantiateServer();
-    const configService = container.get<ConfigService>(TYPES.ConfigService);
-    await httpServer.listen(configService.port);
+  const httpServer = instantiateServer();
+  const configService = container.get<ConfigService>(TYPES.ConfigService);
+  await httpServer.listen(configService.port);
 }
 
 start();

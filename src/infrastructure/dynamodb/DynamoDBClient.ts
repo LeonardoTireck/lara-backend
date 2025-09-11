@@ -3,12 +3,12 @@ import 'dotenv/config';
 import { ConfigService } from '../config/ConfigService';
 
 export function createDynamoDBClient(config: ConfigService): DynamoDBClient {
-    return new DynamoDBClient({
-        region: config.awsRegion,
-        endpoint: config.ddbEndpoint,
-        credentials: {
-            accessKeyId: config.awsAccessKeyId,
-            secretAccessKey: config.awsSecretAccessKey,
-        },
-    });
+  return new DynamoDBClient({
+    region: config.awsRegion,
+    endpoint: config.ddbEndpoint,
+    credentials: {
+      accessKeyId: config.awsAccessKeyId,
+      secretAccessKey: config.awsSecretAccessKey,
+    },
+  });
 }

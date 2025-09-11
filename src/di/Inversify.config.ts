@@ -17,46 +17,46 @@ const container = new Container();
 
 //Configurations
 container
-    .bind<ConfigService>(TYPES.ConfigService)
-    .to(ConfigService)
-    .inSingletonScope();
+  .bind<ConfigService>(TYPES.ConfigService)
+  .to(ConfigService)
+  .inSingletonScope();
 
 const configService = container.get<ConfigService>(TYPES.ConfigService);
 const dynamoDbClient = createDynamoDBClient(configService);
 container
-    .bind<DynamoDBClient>(TYPES.DynamoDBClient)
-    .toConstantValue(dynamoDbClient);
+  .bind<DynamoDBClient>(TYPES.DynamoDBClient)
+  .toConstantValue(dynamoDbClient);
 
 //Repos
 container
-    .bind<UserRepository>(TYPES.UserRepository)
-    .to(DynamoDbUserRepo)
-    .inSingletonScope();
+  .bind<UserRepository>(TYPES.UserRepository)
+  .to(DynamoDbUserRepo)
+  .inSingletonScope();
 
 //Utils
 container
-    .bind<PasswordHasher>(TYPES.PasswordHasher)
-    .toConstantValue(new BcryptPasswordHasher(configService.saltrounds));
+  .bind<PasswordHasher>(TYPES.PasswordHasher)
+  .toConstantValue(new BcryptPasswordHasher(configService.saltrounds));
 
 //UseCases
 container
-    .bind<FindAllUsers>(TYPES.FindAllUsersUseCase)
-    .to(FindAllUsers)
-    .inSingletonScope();
+  .bind<FindAllUsers>(TYPES.FindAllUsersUseCase)
+  .to(FindAllUsers)
+  .inSingletonScope();
 container
-    .bind<CreateUser>(TYPES.CreateUserUseCase)
-    .to(CreateUser)
-    .inSingletonScope();
+  .bind<CreateUser>(TYPES.CreateUserUseCase)
+  .to(CreateUser)
+  .inSingletonScope();
 
 //Controllers
 container
-    .bind<UserControllers>(TYPES.UserControllers)
-    .to(UserControllers)
-    .inSingletonScope();
+  .bind<UserControllers>(TYPES.UserControllers)
+  .to(UserControllers)
+  .inSingletonScope();
 container
-    .bind<ServerControllers>(TYPES.ServerControllers)
-    .to(ServerControllers)
-    .inSingletonScope();
+  .bind<ServerControllers>(TYPES.ServerControllers)
+  .to(ServerControllers)
+  .inSingletonScope();
 
 //Router
 container.bind<Router>(TYPES.Router).to(Router).inSingletonScope();

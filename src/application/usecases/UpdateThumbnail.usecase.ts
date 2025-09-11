@@ -6,25 +6,25 @@ import { StorageKeyBuilder } from '../../domain/Services/StorageKeyBuilder';
 
 @injectable()
 export class UpdateThumbnail {
-    constructor(
-        @inject(TYPES.VideoStorage)
-        private videoStorage: VideoStorageService,
-        @inject(TYPES.VideoMetadataRepository)
-        private videoRepo: VideoMetadataRepository,
-    ) {}
-    async execute(videoId: string, newThumbnail: Buffer) {
-        const video = await this.videoRepo.findById(videoId);
-        if (!video) throw new Error('Video not found.');
+  constructor(
+    @inject(TYPES.VideoStorage)
+    private videoStorage: VideoStorageService,
+    @inject(TYPES.VideoMetadataRepository)
+    private videoRepo: VideoMetadataRepository,
+  ) {}
+  async execute(videoId: string, newThumbnail: Buffer) {
+    const video = await this.videoRepo.findById(videoId);
+    if (!video) throw new Error('Video not found.');
 
-        const key = StorageKeyBuilder.build('thumbnail', video.name, video.id);
+    const key = StorageKeyBuilder.build('thumbnail', video.name, video.id);
 
-        await this.videoStorage.delete(key);
+    await this.videoStorage.delete(key);
 
-        await this.videoStorage.upload(newThumbnail, key);
+    await this.videoStorage.upload(newThumbnail, key);
 
-        return {
-            id: video.id,
-            thumbnailUrl: video.thumbnailUrl,
-        };
-    }
+    return {
+      id: video.id,
+      thumbnailUrl: video.thumbnailUrl,
+    };
+  }
 }
