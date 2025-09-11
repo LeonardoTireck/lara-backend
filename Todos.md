@@ -51,7 +51,7 @@ This major architectural task is now complete. The application has been refactor
 
 - [x] **Centralized Configuration:** Create an injectable `ConfigService`.
 - [x] **Input Validation:** Create a reusable validation middleware using Zod.
-- [ ] **Health Check:** Add a `/health` endpoint.
+- [x] **Health Check:** Add a `/health` endpoint.
 - [ ] **Global Error Handling:** Implement a global error handler in the `FastifyAdapter`.
 - [ ] **Request Logging:** Add a request logging middleware.
 
