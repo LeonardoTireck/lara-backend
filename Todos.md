@@ -53,6 +53,11 @@ This major architectural task is now complete. The application has been refactor
 - [x] **Input Validation:** Create a reusable validation middleware using Zod.
 - [x] **Health Check:** Add a `/health` endpoint.
 - [ ] **Global Error Handling:** Implement a global error handler in the `FastifyAdapter`.
+    - **Strategy:** Create a structured error handling system for consistent and clear API error responses.
+        - **1. Custom Error Classes:** Develop a hierarchy of custom error classes (e.g., `AppError`, `NotFoundError`, `ValidationError`) to represent specific failure scenarios.
+        - **2. Global Handler:** Implement a centralized error handler using Fastify's `setErrorHandler` to catch all unhandled exceptions.
+        - **3. Consistent Responses:** The handler will inspect the error type and return a standardized JSON error response with the appropriate HTTP status code.
+        - **4. Refactor:** Update use cases and domain logic to throw these specific, custom errors.
 - [ ] **Request Logging:** Add a request logging middleware.
 
 ### Step 4: Implement Authentication & Authorization (Planned)
