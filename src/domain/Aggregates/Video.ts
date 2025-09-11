@@ -1,4 +1,8 @@
 import crypto from 'crypto';
+import {
+  NotFoundError,
+  ValidationError,
+} from '../../application/errors/AppError';
 import { VideoComment } from '../Entities/VideoComment';
 
 export class Video {
@@ -18,8 +22,8 @@ export class Video {
     category: string,
     description: string,
   ) {
-    if (!name) throw new Error('Video name cannot be empty.');
-    if (!category) throw new Error('Video category cannot be empty.');
+    if (!name) throw new ValidationError('Video name cannot be empty.');
+    if (!category) throw new ValidationError('Video category cannot be empty.');
     const id = crypto.randomUUID();
     return new Video(id, name, new Date(), thumbnailUrl, category, description);
   }
@@ -39,19 +43,23 @@ export class Video {
   }
 
   updateThumbnailUrl(newUrl: string) {
+    if (!newUrl) throw new ValidationError('Url cannot be empty.');
     this._thumbnailUrl = newUrl;
   }
 
   updateCategory(category: string) {
-    if (!category) throw new Error('Video category cannot be empty.');
+    if (!category) throw new ValidationError('Video category cannot be empty.');
     this._category = category;
   }
 
   updateDescription(description: string) {
+    if (!description)
+      throw new ValidationError('Video description cannot be empty.');
     this._description = description;
   }
 
   addComment(comment: VideoComment) {
+    if (!comment) throw new ValidationError('Comment cannot be empty.');
     this._videoComments.push(comment);
   }
 
@@ -59,7 +67,8 @@ export class Video {
     const commentIndex = this._videoComments.findIndex(
       (comment) => comment.id == commentId,
     );
-    if (commentIndex === -1) throw new Error('Comment not found.');
+    if (commentIndex === -1) throw new NotFoundError('Comment');
     this._videoComments.splice(commentIndex, 1);
   }
 }
+

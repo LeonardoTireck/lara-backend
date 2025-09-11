@@ -1,3 +1,7 @@
+import {
+  BadRequestError,
+  ValidationError,
+} from '../../../src/application/errors/AppError';
 import { User } from '../../../src/domain/Aggregates/User';
 import { Parq } from '../../../src/domain/ValueObjects/Parq';
 import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
@@ -32,7 +36,7 @@ describe('User Entity', () => {
       phone,
       dob,
       password,
-      plan,
+      plan!,
       userType,
     );
   };
@@ -70,7 +74,7 @@ describe('User Entity', () => {
           undefined,
           undefined,
         ),
-      ).toThrow('Name does not meet criteria.');
+      ).toThrow(ValidationError);
     });
 
     it('should throw an error for an invalid email', () => {
@@ -85,7 +89,7 @@ describe('User Entity', () => {
           undefined,
           undefined,
         ),
-      ).toThrow('Email does not meet criteria.');
+      ).toThrow(ValidationError);
     });
 
     it('should throw an error for an invalid document (CPF)', () => {
@@ -100,7 +104,7 @@ describe('User Entity', () => {
           undefined,
           undefined,
         ),
-      ).toThrow('Document does not meet criteria.');
+      ).toThrow(ValidationError);
     });
 
     it('should throw an error for an invalid phone number', () => {
@@ -115,7 +119,7 @@ describe('User Entity', () => {
           undefined,
           undefined,
         ),
-      ).toThrow('Phone does not meet criteria.');
+      ).toThrow(ValidationError);
     });
   });
 
@@ -145,7 +149,7 @@ describe('User Entity', () => {
 
     it('should throw an error when updating PARQ with an invalid value', () => {
       const user = createTestUser();
-      expect(() => user.updateParq(null as any)).toThrow('Invalid Parq');
+      expect(() => user.updateParq(null as any)).toThrow(BadRequestError);
     });
   });
 
@@ -194,7 +198,7 @@ describe('User Entity', () => {
         undefined, // explicitly create user with no active plan
       );
 
-      expect(() => user.refreshPlans()).toThrow("There isn't an active plan.");
+      expect(() => user.refreshPlans()).toThrow(BadRequestError);
     });
 
     it('should update the active plan', () => {

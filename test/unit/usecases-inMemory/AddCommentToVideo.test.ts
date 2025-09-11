@@ -1,3 +1,4 @@
+import { NotFoundError } from '../../../src/application/errors/AppError';
 import { AddCommentToVideo } from '../../../src/application/usecases/AddCommentToVideo.usecase';
 import { UploadVideo } from '../../../src/application/usecases/UploadVideo.usecase';
 import { InMemoryVideoRepository } from '../../../src/infrastructure/inMemory/inMemoryVideoRepo';
@@ -54,6 +55,6 @@ describe('AddCommentToVideo Use Case', () => {
 
     await expect(
       useCaseAddCommentToVideo.execute(inputForAddComment),
-    ).rejects.toThrow('Video not found.');
+    ).rejects.toThrow(NotFoundError);
   });
 });

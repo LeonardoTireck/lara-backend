@@ -1,3 +1,7 @@
+import {
+  ConflictError,
+  NotFoundError,
+} from '../../application/errors/AppError';
 import { UserRepository } from '../../application/ports/UserRepository';
 import { User } from '../../domain/Aggregates/User';
 
@@ -7,14 +11,14 @@ export class InMemoryUserRepo implements UserRepository {
   async save(user: User) {
     const existingUser = this.users.find((u) => u.email === user.email);
     if (existingUser) {
-      throw new Error('User with this email already exists.');
+      throw new ConflictError('User with this email already exists.');
     }
     this.users.push(user);
   }
 
   async update(user: User): Promise<void> {
     const userToBeUpdated = this.users.find((u) => u.id === user.id);
-    if (!userToBeUpdated) throw new Error('User not found.');
+    if (!userToBeUpdated) throw new NotFoundError('User');
     if (user.email) {
       userToBeUpdated.updateEmail(user.email);
     }
@@ -47,7 +51,7 @@ export class InMemoryUserRepo implements UserRepository {
 
   async delete(userId: string): Promise<void> {
     const user = this.users.find((user) => user.id === userId);
-    if (!user) throw new Error('User not found.');
+    if (!user) throw new NotFoundError('User');
     const userIndex = this.users.findIndex((user) => user.id === userId);
     this.users.splice(userIndex, 1);
     return;

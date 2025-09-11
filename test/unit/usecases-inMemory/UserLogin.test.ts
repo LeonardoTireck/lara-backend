@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { UnauthorizedError } from '../../../src/application/errors/AppError';
 import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
 import { UserLogin } from '../../../src/application/usecases/UserLogin.usecase';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
@@ -64,7 +65,7 @@ describe('UserLogin Use Case', () => {
       password: 'wrongpassword',
     };
     await expect(useCaseLogin.execute(input)).rejects.toThrow(
-      'Invalid Credentials.',
+      UnauthorizedError,
     );
   });
 
@@ -74,7 +75,7 @@ describe('UserLogin Use Case', () => {
       password: userPassword,
     };
     await expect(useCaseLogin.execute(input)).rejects.toThrow(
-      'Invalid Credentials.',
+      UnauthorizedError,
     );
   });
 
@@ -84,7 +85,7 @@ describe('UserLogin Use Case', () => {
       password: userPassword,
     };
     await expect(useCaseLogin.execute(input)).rejects.toThrow(
-      'Invalid Credentials.',
+      UnauthorizedError,
     );
   });
 
@@ -94,7 +95,7 @@ describe('UserLogin Use Case', () => {
       password: '',
     };
     await expect(useCaseLogin.execute(input)).rejects.toThrow(
-      'Invalid Credentials.',
+      UnauthorizedError,
     );
   });
 });

@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import { BadRequestError } from '../../application/errors/AppError';
 import { Document } from '../ValueObjects/Document';
 import { Email } from '../ValueObjects/Email';
 import { Name } from '../ValueObjects/Name';
@@ -124,13 +125,13 @@ export class User {
   }
 
   updateParq(newParq: Parq) {
-    if (!newParq) throw new Error('Invalid Parq');
+    if (!newParq) throw new BadRequestError('Invalid Parq');
     this._parq = newParq;
     this._lastParqUpdate = new Date();
   }
 
   refreshPlans() {
-    if (!this._activePlan) throw new Error("There isn't an active plan.");
+    if (!this._activePlan) throw new BadRequestError("There isn't an active plan.");
     if (this._activePlan.expirationDate < new Date()) {
       this._pastPlans.push(this._activePlan);
       this._activePlan = undefined;

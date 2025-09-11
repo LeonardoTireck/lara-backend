@@ -1,3 +1,4 @@
+import { NotFoundError } from '../../../src/application/errors/AppError';
 import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
 import { FindUserById } from '../../../src/application/usecases/FindUserById.usecase';
 import { UpdateTrainingSessions } from '../../../src/application/usecases/UpdateTrainingSessions.usecase';
@@ -188,6 +189,6 @@ describe('UpdateTrainingSessions Use Case', () => {
       useCaseUpdateTrainingSessions.execute(nonExistentUserId, [
         trainingSession,
       ]),
-    ).rejects.toThrow('User not found.');
+    ).rejects.toThrow(NotFoundError);
   });
 });

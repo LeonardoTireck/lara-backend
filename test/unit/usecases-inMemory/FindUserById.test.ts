@@ -1,3 +1,4 @@
+import { NotFoundError } from '../../../src/application/errors/AppError';
 import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
 import { FindUserById } from '../../../src/application/usecases/FindUserById.usecase';
 import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
@@ -53,7 +54,7 @@ describe('FindUserById Use Case', () => {
       userId: 'non-existent-id',
     };
 
-    await expect(useCaseFind.execute(input)).rejects.toThrow('User not found.');
+    await expect(useCaseFind.execute(input)).rejects.toThrow(NotFoundError);
   });
 
   it('should throw an error if user ID is empty', async () => {
@@ -61,6 +62,6 @@ describe('FindUserById Use Case', () => {
       userId: '',
     };
 
-    await expect(useCaseFind.execute(input)).rejects.toThrow('User not found.');
+    await expect(useCaseFind.execute(input)).rejects.toThrow(NotFoundError);
   });
 });

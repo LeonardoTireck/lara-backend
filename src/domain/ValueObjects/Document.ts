@@ -1,9 +1,11 @@
+import { ValidationError } from '../../application/errors/AppError';
+
 export class Document {
   private _value: string;
 
   constructor(value: string) {
     if (!this.isValid(value))
-      throw new Error('Document does not meet criteria.');
+      throw new ValidationError('Document does not meet criteria.');
     this._value = value;
   }
 
@@ -24,6 +26,7 @@ export class Document {
     if (check2 !== digits[10]) return false;
     return true;
   }
+
   get value() {
     return this._value;
   }

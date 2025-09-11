@@ -28,3 +28,15 @@ export class ValidationError extends AppError {
     super('Validation failed', 400, details);
   }
 }
+
+export class BadRequestError extends AppError {
+  constructor(message: string, details?: unknown) {
+    super(message, 400, details);
+  }
+}
+
+export class ConflictError extends AppError {
+  constructor(message: string, details?: unknown) {
+    super(message, 409, details);
+  }
+}

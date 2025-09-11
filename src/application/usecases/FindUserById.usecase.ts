@@ -1,4 +1,5 @@
 import { injectable, inject } from 'inversify';
+import { NotFoundError } from '../errors/AppError';
 import { TYPES } from '../../di/Types';
 import { Parq } from '../../domain/ValueObjects/Parq';
 import { TrainingPlan } from '../../domain/ValueObjects/TrainingPlan';
@@ -15,7 +16,7 @@ export class FindUserById {
 
   async execute(input: Input): Promise<Output> {
     const user = await this.userRepo.getById(input.userId);
-    if (!user) throw new Error('User not found.');
+    if (!user) throw new NotFoundError('User');
 
     return {
       id: user.id,

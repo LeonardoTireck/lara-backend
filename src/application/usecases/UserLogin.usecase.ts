@@ -4,6 +4,7 @@ import 'dotenv/config';
 import PasswordHasher from '../ports/PasswordHasher';
 import { injectable, inject } from 'inversify';
 import { TYPES } from '../../di/Types';
+import { UnauthorizedError } from '../errors/AppError';
 
 @injectable()
 export class UserLogin {
@@ -16,12 +17,12 @@ export class UserLogin {
 
   async execute(input: Input): Promise<Output | undefined> {
     const user = await this.userRepo.getByEmail(input.email);
-    if (!user) throw new Error('Invalid Credentials.');
+    if (!user) throw new UnauthorizedError('Invalid Credentials.');
     const passwordMatch = await this.passwordHasher.compare(
       input.password,
       user.hashedPassword,
     );
-    if (!passwordMatch) throw new Error('Invalid Credentials.');
+    if (!passwordMatch) throw new UnauthorizedError('Invalid Credentials.');
 
     const payload = {
       id: user.id,

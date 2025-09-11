@@ -1,3 +1,4 @@
+import { ValidationError } from '../../../src/application/errors/AppError';
 import { TrainingSession } from '../../../src/domain/ValueObjects/TrainingSession';
 
 describe('TrainingSession Entity', () => {
@@ -66,14 +67,12 @@ describe('TrainingSession Entity', () => {
 
     it('should throw an error if sessionDay is invalid', () => {
       expect(() => TrainingSession.create('Z' as any, [])).toThrow(
-        'Invalid session day.',
+        ValidationError,
       );
     });
 
     it('should throw an error if exercises array is empty', () => {
-      expect(() => TrainingSession.create('A', [])).toThrow(
-        'Exercises array cannot be empty.',
-      );
+      expect(() => TrainingSession.create('A', [])).toThrow(ValidationError);
     });
   });
 });

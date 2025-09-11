@@ -1,4 +1,8 @@
 import 'dotenv/config';
+import {
+  ConflictError,
+  ValidationError,
+} from '../../../src/application/errors/AppError';
 import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
 import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
@@ -53,9 +57,7 @@ describe('CreateUser Use Case', () => {
       },
     } as const;
 
-    await expect(useCaseCreate.execute(input)).rejects.toThrow(
-      'Email does not meet criteria.',
-    );
+    await expect(useCaseCreate.execute(input)).rejects.toThrow(ValidationError);
     expect(repo.users).toHaveLength(0);
   });
 
@@ -75,9 +77,7 @@ describe('CreateUser Use Case', () => {
 
     await useCaseCreate.execute(input);
 
-    await expect(useCaseCreate.execute(input)).rejects.toThrow(
-      'User with this email already exists.',
-    );
+    await expect(useCaseCreate.execute(input)).rejects.toThrow(ConflictError);
     expect(repo.users).toHaveLength(1);
   });
 
@@ -95,9 +95,7 @@ describe('CreateUser Use Case', () => {
       },
     } as const;
 
-    await expect(useCaseCreate.execute(input)).rejects.toThrow(
-      'Password does not meet criteria.',
-    );
+    await expect(useCaseCreate.execute(input)).rejects.toThrow(ValidationError);
     expect(repo.users).toHaveLength(0);
   });
 
@@ -116,8 +114,6 @@ describe('CreateUser Use Case', () => {
       userType: 'error' as any,
     } as const;
 
-    await expect(useCaseCreate.execute(input)).rejects.toThrow(
-      'Validation failed',
-    );
+    await expect(useCaseCreate.execute(input)).rejects.toThrow(ValidationError);
   });
 });

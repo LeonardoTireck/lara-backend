@@ -1,3 +1,4 @@
+import { ValidationError } from '../../application/errors/AppError';
 import { PlanType } from './PlanType';
 
 export class TrainingPlan {
@@ -19,7 +20,7 @@ export class TrainingPlan {
         monthsToAdd = 6;
         break;
       default:
-        throw new Error(`Invalid planType: ${planType}.`);
+        throw new ValidationError(`Invalid planType: ${planType}.`);
     }
     this.startDate = new Date();
     this.expirationDate = new Date(this.startDate);

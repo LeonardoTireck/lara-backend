@@ -1,3 +1,7 @@
+import {
+  BadRequestError,
+  NotFoundError,
+} from '../../../src/application/errors/AppError';
 import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
 import { UpdateParq } from '../../../src/application/usecases/UpdateParq.usecase';
 import { Parq } from '../../../src/domain/ValueObjects/Parq';
@@ -52,7 +56,7 @@ describe('UpdateParq Use Case', () => {
     };
 
     await expect(useCaseUpdateParq.execute(inputForParq)).rejects.toThrow(
-      'User not found.',
+      NotFoundError,
     );
   });
 
@@ -63,7 +67,7 @@ describe('UpdateParq Use Case', () => {
     };
 
     await expect(useCaseUpdateParq.execute(inputForParq)).rejects.toThrow(
-      'Invalid Parq',
+      BadRequestError,
     );
   });
 
@@ -74,7 +78,7 @@ describe('UpdateParq Use Case', () => {
     };
 
     await expect(useCaseUpdateParq.execute(inputForParq)).rejects.toThrow(
-      'Invalid Parq',
+      BadRequestError,
     );
   });
 });

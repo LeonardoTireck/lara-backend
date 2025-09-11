@@ -1,3 +1,4 @@
+import { NotFoundError } from '../../../src/application/errors/AppError';
 import { UpdateThumbnail } from '../../../src/application/usecases/UpdateThumbnail.usecase';
 import { UploadVideo } from '../../../src/application/usecases/UploadVideo.usecase';
 import { StorageKeyBuilder } from '../../../src/domain/Services/StorageKeyBuilder';
@@ -73,6 +74,6 @@ describe('UpdateThumbnail Use Case', () => {
 
     await expect(
       updateThumbnailUseCase.execute(nonExistentVideoId, newThumbnailBuffer),
-    ).rejects.toThrow('Video not found.');
+    ).rejects.toThrow(NotFoundError);
   });
 });

@@ -1,7 +1,8 @@
-import { injectable, inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { TYPES } from '../../di/Types';
-import { UserRepository } from '../ports/UserRepository';
 import { Parq } from '../../domain/ValueObjects/Parq';
+import { NotFoundError } from '../errors/AppError';
+import { UserRepository } from '../ports/UserRepository';
 
 @injectable()
 export class UpdateParq {
@@ -12,7 +13,7 @@ export class UpdateParq {
 
   async execute(input: Input): Promise<Output> {
     const user = await this.userRepo.getById(input.userId);
-    if (!user) throw new Error('User not found.');
+    if (!user) throw new NotFoundError('User');
 
     user.updateParq(input.newParq);
     this.userRepo.update(user);
@@ -33,3 +34,4 @@ interface Output {
   userId: string;
   parq: Parq;
 }
+

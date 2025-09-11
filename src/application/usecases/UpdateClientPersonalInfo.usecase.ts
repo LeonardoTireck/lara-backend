@@ -3,6 +3,7 @@ import { UserRepository } from '../ports/UserRepository';
 import { TYPES } from '../../di/Types';
 import { injectable, inject } from 'inversify';
 import { Password } from '../../domain/ValueObjects/Password';
+import { NotFoundError } from '../errors/AppError';
 
 @injectable()
 export class UpdateClientPersonalInfo {
@@ -14,7 +15,7 @@ export class UpdateClientPersonalInfo {
   ) {}
   async execute(input: Input): Promise<void> {
     const user = await this.userRepo.getById(input.id);
-    if (!user) throw new Error('User not found.');
+    if (!user) throw new NotFoundError('User');
 
     if (input.email) {
       user.updateEmail(input.email);

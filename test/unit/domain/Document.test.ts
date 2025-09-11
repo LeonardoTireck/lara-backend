@@ -1,3 +1,4 @@
+import { ValidationError } from '../../../src/application/errors/AppError';
 import { Document } from '../../../src/domain/ValueObjects/Document';
 
 describe('Document (CPF) Value Object', () => {
@@ -18,47 +19,37 @@ describe('Document (CPF) Value Object', () => {
   describe('Invalid CPFs', () => {
     it('should throw an error for a document with incorrect length', () => {
       const invalidDocument = '1234567890';
-      expect(() => new Document(invalidDocument)).toThrow(
-        'Document does not meet criteria.',
-      );
+      expect(() => new Document(invalidDocument)).toThrow(ValidationError);
     });
 
     it('should throw an error for a document with all same digits', () => {
       const invalidDocument = '11111111111';
-      expect(() => new Document(invalidDocument)).toThrow(
-        'Document does not meet criteria.',
-      );
+      expect(() => new Document(invalidDocument)).toThrow(ValidationError);
     });
 
     it('should throw an error for a document with an invalid first verification digit', () => {
       const invalidDocument = '11144477745'; // Correct digit is 3
-      expect(() => new Document(invalidDocument)).toThrow(
-        'Document does not meet criteria.',
-      );
+      expect(() => new Document(invalidDocument)).toThrow(ValidationError);
     });
 
     it('should throw an error for a document with an invalid second verification digit', () => {
       const invalidDocument = '11144477736'; // Correct digit is 5
-      expect(() => new Document(invalidDocument)).toThrow(
-        'Document does not meet criteria.',
-      );
+      expect(() => new Document(invalidDocument)).toThrow(ValidationError);
     });
 
     it('should throw an error for a document containing non-digit characters', () => {
       const invalidDocument = '111.444.777-3a';
-      expect(() => new Document(invalidDocument)).toThrow(
-        'Document does not meet criteria.',
-      );
+      expect(() => new Document(invalidDocument)).toThrow(ValidationError);
     });
 
-    it('should throw an error for a null value', () => {
+    it('should throw a TypeError for a null value', () => {
       const invalidDocument = null as any;
-      expect(() => new Document(invalidDocument)).toThrow();
+      expect(() => new Document(invalidDocument)).toThrow(TypeError);
     });
 
-    it('should throw an error for an undefined value', () => {
+    it('should throw a TypeError for an undefined value', () => {
       const invalidDocument = undefined as any;
-      expect(() => new Document(invalidDocument)).toThrow();
+      expect(() => new Document(invalidDocument)).toThrow(TypeError);
     });
   });
 });

@@ -1,3 +1,7 @@
+import {
+  NotFoundError,
+  ValidationError,
+} from '../../../src/application/errors/AppError';
 import { Video } from '../../../src/domain/Aggregates/Video';
 import { VideoComment } from '../../../src/domain/Entities/VideoComment';
 
@@ -25,17 +29,15 @@ describe('Video Entity', () => {
       expect(video.videoComments).toEqual([]);
     });
 
-    // Assuming name, category, and description should not be empty.
-    // These tests will fail initially, prompting the addition of validation in the Video entity.
     it('should throw an error if name is empty', () => {
       expect(() => Video.create('', 'thumb.jpg', 'cat', 'desc')).toThrow(
-        'Video name cannot be empty.',
+        ValidationError,
       );
     });
 
     it('should throw an error if category is empty', () => {
       expect(() => Video.create('A Video', 'thumb.jpg', '', 'desc')).toThrow(
-        'Video category cannot be empty.',
+        ValidationError,
       );
     });
   });
@@ -54,9 +56,7 @@ describe('Video Entity', () => {
     });
 
     it('should throw an error if updating with an empty category', () => {
-      expect(() => video.updateCategory('')).toThrow(
-        'Video category cannot be empty.',
-      );
+      expect(() => video.updateCategory('')).toThrow(ValidationError);
     });
 
     it('should update the description', () => {
@@ -91,7 +91,7 @@ describe('Video Entity', () => {
       video.addComment(comment);
 
       expect(() => video.deleteComment('non-existent-id')).toThrow(
-        'Comment not found.',
+        NotFoundError,
       );
       expect(video.videoComments.length).toBe(1);
     });

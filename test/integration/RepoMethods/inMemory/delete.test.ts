@@ -1,3 +1,4 @@
+import { NotFoundError } from '../../../../src/application/errors/AppError';
 import { CreateUser } from '../../../../src/application/usecases/CreateUser.usecase';
 import { TrainingPlan } from '../../../../src/domain/ValueObjects/TrainingPlan';
 import BcryptPasswordHasher from '../../../../src/infrastructure/hashing/BcryptPasswordHasher';
@@ -33,11 +34,11 @@ describe('InMemoryUserRepo Delete Method', () => {
 
   it('should throw an error if user ID to delete does not exist', async () => {
     const nonExistentId = 'non-existent-delete-id';
-    await expect(repo.delete(nonExistentId)).rejects.toThrow('User not found.');
+    await expect(repo.delete(nonExistentId)).rejects.toThrow(NotFoundError);
   });
 
   it('should throw an error if user ID is empty', async () => {
     const emptyId = '';
-    await expect(repo.delete(emptyId)).rejects.toThrow('User not found.');
+    await expect(repo.delete(emptyId)).rejects.toThrow(NotFoundError);
   });
 });

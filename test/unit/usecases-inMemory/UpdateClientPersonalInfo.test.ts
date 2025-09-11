@@ -1,3 +1,7 @@
+import {
+  NotFoundError,
+  ValidationError,
+} from '../../../src/application/errors/AppError';
 import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
 import { FindUserById } from '../../../src/application/usecases/FindUserById.usecase';
 import { UpdateClientPersonalInfo } from '../../../src/application/usecases/UpdateClientPersonalInfo.usecase';
@@ -140,7 +144,7 @@ describe('UpdateClientPersonalInfo Use Case', () => {
     };
     await expect(
       useCaseUpdateClientPersonalInfo.execute(inputForUpdate),
-    ).rejects.toThrow('User not found.');
+    ).rejects.toThrow(NotFoundError);
   });
 
   it('should throw an error for invalid email format', async () => {
@@ -150,7 +154,7 @@ describe('UpdateClientPersonalInfo Use Case', () => {
     };
     await expect(
       useCaseUpdateClientPersonalInfo.execute(inputForUpdate),
-    ).rejects.toThrow('Email does not meet criteria.');
+    ).rejects.toThrow(ValidationError);
   });
 
   it('should throw an error for invalid phone format', async () => {
@@ -160,7 +164,7 @@ describe('UpdateClientPersonalInfo Use Case', () => {
     };
     await expect(
       useCaseUpdateClientPersonalInfo.execute(inputForUpdate),
-    ).rejects.toThrow('Phone does not meet criteria.');
+    ).rejects.toThrow(ValidationError);
   });
 
   it('should throw an error for invalid password format', async () => {
@@ -170,6 +174,6 @@ describe('UpdateClientPersonalInfo Use Case', () => {
     };
     await expect(
       useCaseUpdateClientPersonalInfo.execute(inputForUpdate),
-    ).rejects.toThrow('Password does not meet criteria.');
+    ).rejects.toThrow(ValidationError);
   });
 });

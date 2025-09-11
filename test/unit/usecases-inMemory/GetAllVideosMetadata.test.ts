@@ -54,9 +54,8 @@ describe('GetAllVideosMetadata Use Case', () => {
     expect(videos[1].comments).toEqual([]);
   });
 
-  it('should throw an error if no videos are found', async () => {
-    await expect(useCaseGetAllVideos.execute()).rejects.toThrow(
-      'Video not found.',
-    );
+  it('should return an empty array if no videos are found', async () => {
+    const result = await useCaseGetAllVideos.execute();
+    expect(result).toEqual([]);
   });
 });

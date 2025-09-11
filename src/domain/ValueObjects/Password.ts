@@ -1,9 +1,11 @@
+import { ValidationError } from '../../application/errors/AppError';
+
 export class Password {
   private _value: string;
 
   constructor(value: string) {
     if (!this.isValid(value))
-      throw new Error('Password does not meet criteria.');
+      throw new ValidationError('Password does not meet criteria.');
     this._value = value;
   }
 

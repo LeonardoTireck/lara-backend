@@ -1,4 +1,5 @@
 import { injectable, inject } from 'inversify';
+import { NotFoundError } from '../errors/AppError';
 import { TYPES } from '../../di/Types';
 import { VideoMetadataRepository } from '../ports/VideoMetadataRepository';
 import { VideoStorageService } from '../ports/VideoStorageService';
@@ -14,7 +15,7 @@ export class UpdateThumbnail {
   ) {}
   async execute(videoId: string, newThumbnail: Buffer) {
     const video = await this.videoRepo.findById(videoId);
-    if (!video) throw new Error('Video not found.');
+    if (!video) throw new NotFoundError('Video');
 
     const key = StorageKeyBuilder.build('thumbnail', video.name, video.id);
 

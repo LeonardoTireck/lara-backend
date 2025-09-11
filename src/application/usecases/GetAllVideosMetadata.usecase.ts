@@ -12,7 +12,7 @@ export class GetAllVideosMetadata {
 
   async execute(): Promise<Output> {
     const videos = await this.videoMetaDataRepo.findAll();
-    if (!videos || videos.length === 0) throw new Error('Video not found.');
+    if (!videos || videos.length === 0) return [];
 
     return videos.map((v) => ({
       id: v.id,

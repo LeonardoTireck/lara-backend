@@ -1,3 +1,4 @@
+import { ValidationError } from '../../../src/application/errors/AppError';
 import { Email } from '../../../src/domain/ValueObjects/Email';
 
 describe('Email Value Object', () => {
@@ -30,54 +31,42 @@ describe('Email Value Object', () => {
   describe('Invalid Emails', () => {
     it('should throw an error for an email without an @ symbol', () => {
       const invalidEmail = 'testexample.com';
-      expect(() => new Email(invalidEmail)).toThrow(
-        'Email does not meet criteria.',
-      );
+      expect(() => new Email(invalidEmail)).toThrow(ValidationError);
     });
 
     it('should throw an error for an email with multiple @ symbols', () => {
       const invalidEmail = 'test@exa@mple.com';
-      expect(() => new Email(invalidEmail)).toThrow(
-        'Email does not meet criteria.',
-      );
+      expect(() => new Email(invalidEmail)).toThrow(ValidationError);
     });
 
     it('should throw an error for an email without a domain', () => {
       const invalidEmail = 'test@';
-      expect(() => new Email(invalidEmail)).toThrow(
-        'Email does not meet criteria.',
-      );
+      expect(() => new Email(invalidEmail)).toThrow(ValidationError);
     });
 
     it('should throw an error for an email without a top-level domain', () => {
       const invalidEmail = 'test@example';
-      expect(() => new Email(invalidEmail)).toThrow(
-        'Email does not meet criteria.',
-      );
+      expect(() => new Email(invalidEmail)).toThrow(ValidationError);
     });
 
     it('should throw an error for an email with invalid characters in the domain', () => {
       const invalidEmail = 'test@exa_mple.com';
-      expect(() => new Email(invalidEmail)).toThrow(
-        'Email does not meet criteria.',
-      );
+      expect(() => new Email(invalidEmail)).toThrow(ValidationError);
     });
 
     it('should throw an error for an empty string', () => {
       const invalidEmail = '';
-      expect(() => new Email(invalidEmail)).toThrow(
-        'Email does not meet criteria.',
-      );
+      expect(() => new Email(invalidEmail)).toThrow(ValidationError);
     });
 
     it('should throw an error for a null value', () => {
       const invalidEmail = null as any;
-      expect(() => new Email(invalidEmail)).toThrow();
+      expect(() => new Email(invalidEmail)).toThrow(ValidationError);
     });
 
     it('should throw an error for an undefined value', () => {
       const invalidEmail = undefined as any;
-      expect(() => new Email(invalidEmail)).toThrow();
+      expect(() => new Email(invalidEmail)).toThrow(ValidationError);
     });
   });
 });

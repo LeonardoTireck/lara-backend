@@ -1,3 +1,4 @@
+import { ValidationError } from '../../../src/application/errors/AppError';
 import { UploadVideo } from '../../../src/application/usecases/UploadVideo.usecase';
 import { StorageKeyBuilder } from '../../../src/domain/Services/StorageKeyBuilder';
 import { InMemoryVideoRepository } from '../../../src/infrastructure/inMemory/inMemoryVideoRepo';
@@ -72,7 +73,7 @@ describe('UploadVideo Use Case', () => {
     };
 
     await expect(useCaseUploadVideo.execute(input)).rejects.toThrow(
-      'Video name cannot be empty.',
+      ValidationError,
     );
   });
 
@@ -86,7 +87,7 @@ describe('UploadVideo Use Case', () => {
     };
 
     await expect(useCaseUploadVideo.execute(input)).rejects.toThrow(
-      'Video category cannot be empty.',
+      ValidationError,
     );
   });
 });

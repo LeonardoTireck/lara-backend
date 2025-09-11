@@ -1,3 +1,4 @@
+import { ValidationError } from '../../../src/application/errors/AppError';
 import { Phone } from '../../../src/domain/ValueObjects/Phone';
 
 describe('Phone Value Object', () => {
@@ -21,19 +22,17 @@ describe('Phone Value Object', () => {
       ['invalid area code (DDD)', '01987654321'],
       ['number with letters', '1198765432a'],
     ])('should throw an error for a number with %s', (_, invalidPhone) => {
-      expect(() => new Phone(invalidPhone)).toThrow(
-        'Phone does not meet criteria.',
-      );
+      expect(() => new Phone(invalidPhone)).toThrow(ValidationError);
     });
 
-    it('should throw an error for a null value', () => {
+    it('should throw a TypeError for a null value', () => {
       const invalidPhone = null as any;
-      expect(() => new Phone(invalidPhone)).toThrow();
+      expect(() => new Phone(invalidPhone)).toThrow(TypeError);
     });
 
-    it('should throw an error for an undefined value', () => {
+    it('should throw a TypeError for an undefined value', () => {
       const invalidPhone = undefined as any;
-      expect(() => new Phone(invalidPhone)).toThrow();
+      expect(() => new Phone(invalidPhone)).toThrow(TypeError);
     });
   });
 });

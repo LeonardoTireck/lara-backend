@@ -1,3 +1,5 @@
+import { ValidationError } from '../../application/errors/AppError';
+
 export class TrainingSession {
   private constructor(
     readonly sessionDay: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G',
@@ -16,10 +18,10 @@ export class TrainingSession {
   ) {
     const validSessionDays = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
     if (!validSessionDays.includes(sessionDay)) {
-      throw new Error('Invalid session day.');
+      throw new ValidationError('Invalid session day.');
     }
     if (!exercises || exercises.length === 0) {
-      throw new Error('Exercises array cannot be empty.');
+      throw new ValidationError('Exercises array cannot be empty.');
     }
     return new TrainingSession(sessionDay, exercises, notes, durationMinutes);
   }

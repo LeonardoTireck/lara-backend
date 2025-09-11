@@ -1,4 +1,5 @@
 import { inject, injectable } from 'inversify';
+import { NotFoundError } from '../errors/AppError';
 import { VideoMetadataRepository } from '../ports/VideoMetadataRepository';
 import { TYPES } from '../../di/Types';
 import { VideoComment } from '../../domain/Entities/VideoComment';
@@ -12,7 +13,7 @@ export class AddCommentToVideo {
 
   async execute(input: Input): Promise<Output> {
     const video = await this.videoRepo.findById(input.videoId);
-    if (!video) throw new Error('Video not found.');
+    if (!video) throw new NotFoundError('Video');
 
     const newComment = VideoComment.create(input.author, input.text);
     video.addComment(newComment);
