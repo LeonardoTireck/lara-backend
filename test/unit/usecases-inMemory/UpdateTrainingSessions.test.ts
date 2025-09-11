@@ -1,8 +1,8 @@
 import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
 import { FindUserById } from '../../../src/application/usecases/FindUserById.usecase';
 import { UpdateTrainingSessions } from '../../../src/application/usecases/UpdateTrainingSessions.usecase';
-import { TrainingPlan } from '../../../src/domain/TrainingPlan';
-import { TrainingSession } from '../../../src/domain/TrainingSession';
+import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
+import { TrainingSession } from '../../../src/domain/ValueObjects/TrainingSession';
 import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
 

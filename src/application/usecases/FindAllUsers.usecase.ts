@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
-import { TrainingPlan } from '../../domain/TrainingPlan';
 import { UserRepository } from '../ports/UserRepository';
 import { TYPES } from '../../di/Types';
+import { TrainingPlan } from '../../domain/ValueObjects/TrainingPlan';
 
 @injectable()
 export class FindAllUsers {

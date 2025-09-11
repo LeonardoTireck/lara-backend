@@ -1,5 +1,5 @@
 import { VideoMetadataRepository } from '../../application/ports/VideoMetadataRepository';
-import { Video } from '../../domain/Video';
+import { Video } from '../../domain/Aggregates/Video';
 
 export class InMemoryVideoRepository implements VideoMetadataRepository {
     public videos: Video[] = [];

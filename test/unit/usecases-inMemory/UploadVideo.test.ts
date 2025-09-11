@@ -1,5 +1,5 @@
 import { UploadVideo } from '../../../src/application/usecases/UploadVideo.usecase';
-import { StorageKeyBuilder } from '../../../src/domain/StorageKeyBuilder';
+import { StorageKeyBuilder } from '../../../src/domain/Services/StorageKeyBuilder';
 import { InMemoryVideoRepository } from '../../../src/infrastructure/inMemory/inMemoryVideoRepo';
 import { InMemoryVideoStorage } from '../../../src/infrastructure/inMemory/inMemoryVideoStorage';
 

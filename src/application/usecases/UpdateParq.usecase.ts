@@ -1,7 +1,7 @@
 import { injectable, inject } from 'inversify';
 import { TYPES } from '../../di/Types';
-import { Parq } from '../../domain/Parq';
 import { UserRepository } from '../ports/UserRepository';
+import { Parq } from '../../domain/ValueObjects/Parq';
 
 @injectable()
 export class UpdateParq {

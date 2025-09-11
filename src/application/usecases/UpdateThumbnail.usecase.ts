@@ -1,8 +1,8 @@
 import { injectable, inject } from 'inversify';
 import { TYPES } from '../../di/Types';
-import { StorageKeyBuilder } from '../../domain/StorageKeyBuilder';
 import { VideoMetadataRepository } from '../ports/VideoMetadataRepository';
 import { VideoStorageService } from '../ports/VideoStorageService';
+import { StorageKeyBuilder } from '../../domain/Services/StorageKeyBuilder';
 
 @injectable()
 export class UpdateThumbnail {

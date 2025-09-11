@@ -1,8 +1,8 @@
-import { Parq } from '../../../src/domain/Parq';
-import { TrainingPlan } from '../../../src/domain/TrainingPlan';
-import { TrainingSession } from '../../../src/domain/TrainingSession';
-import { User } from '../../../src/domain/User';
-import { UserType } from '../../../src/domain/UserType';
+import { User } from '../../../src/domain/Aggregates/User';
+import { Parq } from '../../../src/domain/ValueObjects/Parq';
+import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
+import { TrainingSession } from '../../../src/domain/ValueObjects/TrainingSession';
+import { UserType } from '../../../src/domain/ValueObjects/UserType';
 
 describe('User Entity', () => {
     let activePlan: TrainingPlan;
@@ -25,7 +25,16 @@ describe('User Entity', () => {
         plan: TrainingPlan | undefined = activePlan,
         userType: UserType = defaultUserType,
     ) => {
-        return User.create(name, email, document, phone, dob, password, plan, userType);
+        return User.create(
+            name,
+            email,
+            document,
+            phone,
+            dob,
+            password,
+            plan,
+            userType,
+        );
     };
 
     beforeEach(() => {
@@ -50,19 +59,63 @@ describe('User Entity', () => {
         });
 
         it('should throw an error for an invalid name', () => {
-            expect(() => createTestUser('Invalid', undefined, undefined, undefined, undefined, undefined, undefined, undefined)).toThrow('Name does not meet criteria.');
+            expect(() =>
+                createTestUser(
+                    'Invalid',
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                ),
+            ).toThrow('Name does not meet criteria.');
         });
 
         it('should throw an error for an invalid email', () => {
-            expect(() => createTestUser(undefined, 'invalid-email', undefined, undefined, undefined, undefined, undefined, undefined)).toThrow('Email does not meet criteria.');
+            expect(() =>
+                createTestUser(
+                    undefined,
+                    'invalid-email',
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                ),
+            ).toThrow('Email does not meet criteria.');
         });
 
         it('should throw an error for an invalid document (CPF)', () => {
-            expect(() => createTestUser(undefined, undefined, '12345', undefined, undefined, undefined, undefined, undefined)).toThrow('Document does not meet criteria.');
+            expect(() =>
+                createTestUser(
+                    undefined,
+                    undefined,
+                    '12345',
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                ),
+            ).toThrow('Document does not meet criteria.');
         });
 
         it('should throw an error for an invalid phone number', () => {
-            expect(() => createTestUser(undefined, undefined, undefined, '12345', undefined, undefined, undefined, undefined)).toThrow('Phone does not meet criteria.');
+            expect(() =>
+                createTestUser(
+                    undefined,
+                    undefined,
+                    undefined,
+                    '12345',
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                ),
+            ).toThrow('Phone does not meet criteria.');
         });
     });
 
@@ -110,7 +163,15 @@ describe('User Entity', () => {
             const expiredPlan = TrainingPlan.create('silver', 'card');
             expiredPlan.expirationDate = new Date('2020-01-01'); // Expired date
 
-            const user = createTestUser(undefined, undefined, undefined, undefined, undefined, undefined, expiredPlan);
+            const user = createTestUser(
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                expiredPlan,
+            );
 
             user.refreshPlans();
 

@@ -2,8 +2,8 @@ import {
     FindAllUsers,
     FindAllUsersInput,
 } from '../../../src/application/usecases/FindAllUsers.usecase';
-import { TrainingPlan } from '../../../src/domain/TrainingPlan';
-import { User } from '../../../src/domain/User';
+import { User } from '../../../src/domain/Aggregates/User';
+import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
 
 describe('FindAllUsers Use Case Test', () => {

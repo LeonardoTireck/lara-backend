@@ -1,4 +1,4 @@
-import { Document } from '../../../src/domain/Document';
+import { Document } from '../../../src/domain/ValueObjects/Document';
 
 describe('Document (CPF) Value Object', () => {
     describe('Valid CPFs', () => {

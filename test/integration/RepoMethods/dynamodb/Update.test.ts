@@ -1,9 +1,9 @@
 import { UserRepository } from '../../../../src/application/ports/UserRepository';
 import { container } from '../../../../src/di/Inversify.config';
 import { TYPES } from '../../../../src/di/Types';
-import { Parq } from '../../../../src/domain/Parq';
-import { TrainingPlan } from '../../../../src/domain/TrainingPlan';
-import { User } from '../../../../src/domain/User';
+import { User } from '../../../../src/domain/Aggregates/User';
+import { Parq } from '../../../../src/domain/ValueObjects/Parq';
+import { TrainingPlan } from '../../../../src/domain/ValueObjects/TrainingPlan';
 
 describe('DynamoDbUserRepo - Update', () => {
     let userRepo: UserRepository;

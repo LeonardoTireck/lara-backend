@@ -1,5 +1,5 @@
-import { Video } from '../../../src/domain/Video';
-import { VideoComment } from '../../../src/domain/VideoComment';
+import { Video } from '../../../src/domain/Aggregates/Video';
+import { VideoComment } from '../../../src/domain/Entities/VideoComment';
 
 describe('Video Entity', () => {
     let video: Video;

@@ -1,8 +1,8 @@
 import PasswordHasher from '../ports/PasswordHasher';
 import { UserRepository } from '../ports/UserRepository';
-import { Password } from '../../domain/Password';
 import { TYPES } from '../../di/Types';
 import { injectable, inject } from 'inversify';
+import { Password } from '../../domain/ValueObjects/Password';
 
 @injectable()
 export class UpdateClientPersonalInfo {

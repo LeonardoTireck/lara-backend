@@ -1,4 +1,4 @@
-import { TrainingSession } from '../../../src/domain/TrainingSession';
+import { TrainingSession } from '../../../src/domain/ValueObjects/TrainingSession';
 
 describe('TrainingSession Entity', () => {
     describe('TrainingSession Creation', () => {

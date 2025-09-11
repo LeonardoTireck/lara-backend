@@ -1,4 +1,4 @@
-import { Video } from '../../domain/Video';
+import { Video } from '../../domain/Aggregates/Video';
 
 export interface VideoMetadataRepository {
     findAll(): Promise<Video[] | undefined>;

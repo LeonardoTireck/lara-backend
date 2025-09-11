@@ -1,5 +1,5 @@
-import { VideoComment } from './VideoComment';
 import crypto from 'crypto';
+import { VideoComment } from '../Entities/VideoComment';
 
 export class Video {
     private constructor(

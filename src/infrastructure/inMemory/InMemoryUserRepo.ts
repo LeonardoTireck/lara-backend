@@ -1,5 +1,5 @@
-import { User } from '../../domain/User';
 import { UserRepository } from '../../application/ports/UserRepository';
+import { User } from '../../domain/Aggregates/User';
 
 export class InMemoryUserRepo implements UserRepository {
     public users: User[] = [];

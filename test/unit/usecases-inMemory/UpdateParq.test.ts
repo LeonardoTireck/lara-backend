@@ -1,7 +1,7 @@
 import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
 import { UpdateParq } from '../../../src/application/usecases/UpdateParq.usecase';
-import { Parq } from '../../../src/domain/Parq';
-import { TrainingPlan } from '../../../src/domain/TrainingPlan';
+import { Parq } from '../../../src/domain/ValueObjects/Parq';
+import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
 import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
 

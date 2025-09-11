@@ -1,4 +1,4 @@
-import { Name } from '../../../src/domain/Name';
+import { Name } from '../../../src/domain/ValueObjects/Name';
 
 describe('Name Value Object', () => {
     describe('Valid Names', () => {

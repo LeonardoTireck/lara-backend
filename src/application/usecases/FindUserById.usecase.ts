@@ -1,10 +1,10 @@
-import { Parq } from '../../domain/Parq';
-import { TrainingPlan } from '../../domain/TrainingPlan';
-import { TrainingSession } from '../../domain/TrainingSession';
-import { UserRepository } from '../ports/UserRepository';
-import { UserType } from '../../domain/UserType';
 import { injectable, inject } from 'inversify';
 import { TYPES } from '../../di/Types';
+import { Parq } from '../../domain/ValueObjects/Parq';
+import { TrainingPlan } from '../../domain/ValueObjects/TrainingPlan';
+import { TrainingSession } from '../../domain/ValueObjects/TrainingSession';
+import { UserType } from '../../domain/ValueObjects/UserType';
+import { UserRepository } from '../ports/UserRepository';
 
 @injectable()
 export class FindUserById {

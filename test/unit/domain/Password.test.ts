@@ -1,4 +1,4 @@
-import { Password } from '../../../src/domain/Password';
+import { Password } from '../../../src/domain/ValueObjects/Password';
 
 describe('Password Value Object', () => {
     describe('Valid Passwords', () => {

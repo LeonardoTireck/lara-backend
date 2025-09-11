@@ -1,11 +1,11 @@
 import PasswordHasher from '../ports/PasswordHasher';
-import { TrainingPlan } from '../../domain/TrainingPlan';
-import { User } from '../../domain/User';
-import { UserRepository } from '../ports/UserRepository';
-import { UserType } from '../../domain/UserType';
-import { Password } from '../../domain/Password';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../../di/Types';
+import { User } from '../../domain/Aggregates/User';
+import { Password } from '../../domain/ValueObjects/Password';
+import { TrainingPlan } from '../../domain/ValueObjects/TrainingPlan';
+import { UserType } from '../../domain/ValueObjects/UserType';
+import { UserRepository } from '../ports/UserRepository';
 
 @injectable()
 export class CreateUser {

@@ -1,4 +1,4 @@
-import { Phone } from '../../../src/domain/Phone';
+import { Phone } from '../../../src/domain/ValueObjects/Phone';
 
 describe('Phone Value Object', () => {
     describe('Valid Phone Numbers', () => {

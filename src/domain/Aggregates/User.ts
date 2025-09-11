@@ -1,12 +1,12 @@
 import crypto from 'crypto';
-import { Parq } from './Parq';
-import { TrainingPlan } from './TrainingPlan';
-import { TrainingSession } from './TrainingSession';
-import { UserType } from './UserType';
-import { Name } from './Name';
-import { Email } from './Email';
-import { Document } from './Document';
-import { Phone } from './Phone';
+import { Document } from '../ValueObjects/Document';
+import { Email } from '../ValueObjects/Email';
+import { Name } from '../ValueObjects/Name';
+import { Parq } from '../ValueObjects/Parq';
+import { Phone } from '../ValueObjects/Phone';
+import { TrainingPlan } from '../ValueObjects/TrainingPlan';
+import { TrainingSession } from '../ValueObjects/TrainingSession';
+import { UserType } from '../ValueObjects/UserType';
 
 export class User {
     private _name: Name;

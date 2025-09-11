@@ -1,7 +1,7 @@
 import { injectable, inject } from 'inversify';
 import { TYPES } from '../../di/Types';
-import { TrainingSession } from '../../domain/TrainingSession';
 import { UserRepository } from '../ports/UserRepository';
+import { TrainingSession } from '../../domain/ValueObjects/TrainingSession';
 
 @injectable()
 export class UpdateTrainingSessions {

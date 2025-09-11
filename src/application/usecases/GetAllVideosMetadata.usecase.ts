@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
-import { VideoComment } from '../../domain/VideoComment';
 import { VideoMetadataRepository } from '../ports/VideoMetadataRepository';
 import { TYPES } from '../../di/Types';
+import { VideoComment } from '../../domain/Entities/VideoComment';
 
 @injectable()
 export class GetAllVideosMetadata {
