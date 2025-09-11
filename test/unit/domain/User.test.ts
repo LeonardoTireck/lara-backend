@@ -136,6 +136,13 @@ describe('User Entity', () => {
       expect(user.phone).toBe(newPhone);
     });
 
+    it('should update the password', () => {
+      const user = createTestUser();
+      const newPassword = 'newHashedPassword';
+      user.updatePassword(newPassword);
+      expect(user.hashedPassword).toBe(newPassword);
+    });
+
     it('should update PARQ and last update date', () => {
       const user = createTestUser();
       const newParq = Parq.create(['q1'], ['a1']);
@@ -252,6 +259,74 @@ describe('User Entity', () => {
       expect(user.trainingSessions.length).toBe(2);
       expect(user.trainingSessions[0]).toBe(trainingSession1);
       expect(user.trainingSessions[1]).toBe(trainingSession2);
+    });
+  });
+
+  describe('User.fromRaw', () => {
+    let rawData: any;
+
+    beforeEach(() => {
+      const plan = TrainingPlan.create('gold', 'card');
+      const session = TrainingSession.create('A', [
+        {
+          name: 'Push-ups',
+          sets: [],
+          notes: '',
+          restInSeconds: 60,
+          videoUrl: '',
+        },
+      ]);
+      rawData = {
+        id: 'user-123',
+        userType: 'client',
+        name: 'Raw User',
+        dateOfFirstPlanIngress: new Date(),
+        documentCPF: '11144477735',
+        dateOfBirth: new Date('1985-08-15'),
+        email: 'raw@user.com',
+        phone: '11999998888',
+        hashedPassword: 'rawPassword',
+        activePlan: {
+          ...plan,
+          startDate: plan.startDate.toISOString(),
+          expirationDate: plan.expirationDate.toISOString(),
+        },
+        pastPlans: [],
+        parq: { _questions: ['q1'], _answers: ['a1'] },
+        lastParqUpdate: new Date(),
+        trainingSessions: [session],
+      };
+    });
+
+    it('should create a User instance from raw data', () => {
+      const user = User.fromRaw(rawData);
+      expect(user).toBeInstanceOf(User);
+      expect(user.id).toBe(rawData.id);
+      expect(user.name).toBe(rawData.name);
+      expect(user.email).toBe(rawData.email);
+      expect(user.activePlan).toBeInstanceOf(TrainingPlan);
+      expect(user.parq).toBeInstanceOf(Parq);
+      expect(user.trainingSessions[0]).toBeInstanceOf(TrainingSession);
+    });
+
+    it('should handle missing optional data', () => {
+      delete rawData.activePlan;
+      delete rawData.pastPlans;
+      delete rawData.parq;
+      delete rawData.lastParqUpdate;
+      delete rawData.trainingSessions;
+
+      const user = User.fromRaw(rawData);
+      expect(user).toBeInstanceOf(User);
+      expect(user.activePlan).toBeUndefined();
+      expect(user.pastPlans).toEqual([]);
+      expect(user.parq).toBeUndefined();
+      expect(user.trainingSessions).toEqual([]);
+    });
+
+    it('should return the input if it is falsy', () => {
+      expect(User.fromRaw(null)).toBeNull();
+      expect(User.fromRaw(undefined)).toBeUndefined();
     });
   });
 });

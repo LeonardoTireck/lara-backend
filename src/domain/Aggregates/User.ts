@@ -131,7 +131,8 @@ export class User {
   }
 
   refreshPlans() {
-    if (!this._activePlan) throw new BadRequestError("There isn't an active plan.");
+    if (!this._activePlan)
+      throw new BadRequestError("There isn't an active plan.");
     if (this._activePlan.expirationDate < new Date()) {
       this._pastPlans.push(this._activePlan);
       this._activePlan = undefined;

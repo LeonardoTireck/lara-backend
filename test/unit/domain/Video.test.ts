@@ -49,6 +49,10 @@ describe('Video Entity', () => {
       expect(video.thumbnailUrl).toBe(newUrl);
     });
 
+    it('should throw an error if updating with an empty thumbnail URL', () => {
+      expect(() => video.updateThumbnailUrl('')).toThrow(ValidationError);
+    });
+
     it('should update the category', () => {
       const newCategory = 'Yoga';
       video.updateCategory(newCategory);
@@ -64,6 +68,10 @@ describe('Video Entity', () => {
       video.updateDescription(newDescription);
       expect(video.description).toBe(newDescription);
     });
+
+    it('should throw an error if updating with an empty description', () => {
+      expect(() => video.updateDescription('')).toThrow(ValidationError);
+    });
   });
 
   describe('Comment Management', () => {
@@ -72,6 +80,10 @@ describe('Video Entity', () => {
       video.addComment(newComment);
       expect(video.videoComments.length).toBe(1);
       expect(video.videoComments[0]).toBe(newComment);
+    });
+
+    it('should throw an error when adding a null comment', () => {
+      expect(() => video.addComment(null as any)).toThrow(ValidationError);
     });
 
     it('should delete a comment from a video', () => {
