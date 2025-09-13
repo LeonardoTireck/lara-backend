@@ -1,18 +1,19 @@
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import {
+  DeleteCommand,
   DynamoDBDocumentClient,
-  PutCommand,
   GetCommand,
+  PutCommand,
+  QueryCommand,
   ScanCommand,
   UpdateCommand,
-  DeleteCommand,
-  QueryCommand,
 } from '@aws-sdk/lib-dynamodb';
 import 'dotenv/config';
-import { UserRepository } from '../../../application/ports/UserRepository';
-import { PaginatedUsers } from '../../../application/ports/PaginatedUsers';
 import { inject, injectable } from 'inversify';
+import { NotFoundError } from '../../../application/errors/AppError';
+import { PaginatedUsers } from '../../../application/ports/PaginatedUsers';
+import { UserRepository } from '../../../application/ports/UserRepository';
 import { TYPES } from '../../../di/Types';
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { User } from '../../../domain/Aggregates/User';
 
 @injectable()
@@ -137,9 +138,7 @@ export class DynamoDbUserRepo implements UserRepository {
       await this.docClient.send(command);
     } catch (error: any) {
       if (error.name === 'ConditionalCheckFailedException') {
-        throw new Error(
-          `User with ID '${user.id}' not found and could not be updated.`,
-        );
+        throw new NotFoundError(user.id);
       }
       throw error;
     }
@@ -214,9 +213,7 @@ export class DynamoDbUserRepo implements UserRepository {
       await this.docClient.send(command);
     } catch (error: any) {
       if (error.name === 'ConditionalCheckFailedException') {
-        throw new Error(
-          `User with ID '${userId}' not found and could not be deleted.`,
-        );
+        throw new NotFoundError(userId);
       }
       throw error;
     }

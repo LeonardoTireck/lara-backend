@@ -18,16 +18,15 @@ export class CreateUser {
   ) {}
 
   async execute(input: Input): Promise<Output> {
+    if (input.userType !== undefined && input.userType !== 'admin') {
+      throw new ValidationError('Invalid user type.');
+    }
     const existingUser = await this.userRepo.getByEmail(input.email);
     if (existingUser) {
       throw new ConflictError('User with this email already exists.');
     }
     const newPassword = new Password(input.password).value;
     const hashedPassword = await this.passwordHasher.hash(newPassword);
-    if (input.userType !== undefined && input.userType !== 'admin') {
-      throw new ValidationError('Invalid user type.');
-    }
-
     const activePlan = TrainingPlan.create(
       input.activePlan.planType,
       input.activePlan.paymentMethod,
@@ -38,7 +37,7 @@ export class CreateUser {
       input.email,
       input.documentCPF,
       input.phone,
-      new Date(input.dateOfBirth),
+      input.dateOfBirth,
       hashedPassword,
       activePlan,
       input.userType || 'client',

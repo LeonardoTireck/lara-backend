@@ -32,8 +32,6 @@ describe('DynamoDbUserRepo - Delete', () => {
 
   test('should return an error if user ID to delete does not exist', async () => {
     const nonExistentId = 'non-existent-delete-id';
-    await expect(userRepo.delete(nonExistentId)).rejects.toThrow(
-      `User with ID '${nonExistentId}' not found and could not be deleted.`,
-    );
+    await expect(userRepo.delete(nonExistentId)).rejects.toThrow(nonExistentId);
   });
 });
