@@ -2,12 +2,16 @@ import jwt from 'jsonwebtoken';
 import { UnauthorizedError } from '../../../src/application/errors/AppError';
 import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
 import { UserLogin } from '../../../src/application/usecases/UserLogin.usecase';
-import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
-import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
 import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
+import { ConfigService } from '../../../src/infrastructure/config/ConfigService';
+import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
+import { InMemoryRefreshTokenRepository } from '../../../src/infrastructure/inMemory/inMemoryRefreshTokenRepo';
+import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
 
 describe('UserLogin Use Case', () => {
-  let repo: InMemoryUserRepo;
+  let userRepo: InMemoryUserRepo;
+  let refreshTokensRepo: InMemoryRefreshTokenRepository;
+  let configService: ConfigService;
   let bcryptPasswordHasher: BcryptPasswordHasher;
   let useCaseLogin: UserLogin;
   let createdUserId: string;
@@ -21,10 +25,18 @@ describe('UserLogin Use Case', () => {
   });
 
   beforeEach(async () => {
-    repo = new InMemoryUserRepo();
+    userRepo = new InMemoryUserRepo();
+    refreshTokensRepo = new InMemoryRefreshTokenRepository();
+    configService = new ConfigService();
     bcryptPasswordHasher = new BcryptPasswordHasher(1);
-    useCaseLogin = new UserLogin(repo, bcryptPasswordHasher);
-    const useCaseCreate = new CreateUser(repo, bcryptPasswordHasher);
+    configService = new ConfigService();
+    useCaseLogin = new UserLogin(
+      userRepo,
+      refreshTokensRepo,
+      bcryptPasswordHasher,
+      configService,
+    );
+    const useCaseCreate = new CreateUser(userRepo, bcryptPasswordHasher);
 
     const input = {
       name: userName,
@@ -46,15 +58,13 @@ describe('UserLogin Use Case', () => {
     };
     const output = await useCaseLogin.execute(input);
     expect(output).toBeDefined();
-    expect(output?.token).toBeDefined();
+    expect(output?.accessToken).toBeDefined();
 
     const tokenPayload = jwt.verify(
-      output!.token,
-      process.env.JWT_SECRET!,
+      output!.accessToken,
+      configService.jwtAccessSecret,
     ) as jwt.JwtPayload;
     expect(tokenPayload.id).toBe(createdUserId);
-    expect(tokenPayload.email).toBe(userEmail);
-    expect(tokenPayload.name).toBe(userName);
     expect(tokenPayload.exp).toBeDefined();
     expect(tokenPayload.iat).toBeDefined();
   });

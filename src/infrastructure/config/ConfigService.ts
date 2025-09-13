@@ -9,6 +9,8 @@ export class ConfigService {
       'AWS_REGION',
       'AWS_ACCESS_KEY_ID',
       'AWS_SECRET_ACCESS_KEY',
+      'JWT_ACCESS_SECRET',
+      'JWT_REFRESH_SECRET',
     ];
     for (const requiredVar of requiredVars) {
       if (!process.env[requiredVar]) {
@@ -29,8 +31,12 @@ export class ConfigService {
     return process.env.DDB_ENDPOINT!;
   }
 
-  get jwtSecret(): string {
-    return process.env.JWT_SECRET!;
+  get jwtAccessSecret(): string {
+    return process.env.JWT_ACCESS_SECRET!;
+  }
+
+  get jwtRefreshSecret(): string {
+    return process.env.JWT_REFRESH_SECRET!;
   }
 
   get awsRegion(): string {

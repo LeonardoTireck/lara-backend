@@ -12,6 +12,8 @@ import { createDynamoDBClient } from '../infrastructure/dynamodb/DynamoDBClient'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { ServerControllers } from '../infrastructure/http/fastify/controllers/ServerController';
 import { Router } from '../infrastructure/http/fastify/Routes';
+import { DynamoDbRefreshTokensRepo } from '../infrastructure/dynamodb/repos/RefreshTokensRepo';
+import { RefreshTokenRepository } from '../application/ports/RefreshTokenRepository';
 
 const container = new Container();
 
@@ -31,6 +33,10 @@ container
 container
   .bind<UserRepository>(TYPES.UserRepository)
   .to(DynamoDbUserRepo)
+  .inSingletonScope();
+container
+  .bind<RefreshTokenRepository>(TYPES.RefreshTokenRepository)
+  .to(DynamoDbRefreshTokensRepo)
   .inSingletonScope();
 
 //Utils

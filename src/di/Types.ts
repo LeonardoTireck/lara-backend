@@ -6,6 +6,7 @@ export const TYPES = {
   PasswordHasher: Symbol.for('PasswordHasher'),
   //repos
   UserRepository: Symbol.for('UserRepository'),
+  RefreshTokenRepository: Symbol.for('RefreshTokenRepository'),
   VideoMetadataRepository: Symbol.for('VideoMetadataRepository'),
   //storage
   VideoStorage: Symbol.for('VideoStorage'),

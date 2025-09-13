@@ -62,9 +62,37 @@ This major architectural task is now complete. The application has been refactor
 
 ### Step 4: Implement Authentication & Authorization (Planned)
 
-- [ ] Create `UserLogin` and `RefreshToken` use cases.
-- [ ] Implement JWT-based authentication middleware.
-- [ ] **Security:** Implement rate limiting.
+Implement a secure, token-based authentication system using an Access/Refresh token pair (Hybrid Approach) to protect against XSS and CSRF.
+
+- [ ] **1. Enhance `UserLogin` Usecase:**
+  - [ ] Generate a short-lived JWT Access Token (for API access).
+  - [ ] Generate a secure, long-lived Refresh Token (as an opaque string).
+  - [ ] Hash the Refresh Token and save it to the `User` record in the database.
+  - [ ] Return both the access and refresh tokens from the use case.
+
+- [ ] **2. Update Login Controller & Route:**
+  - [ ] Send the Access Token in the JSON response body.
+  - [ ] Send the Refresh Token in a secure, `httpOnly`, `SameSite=Strict` cookie.
+
+- [ ] **3. Create `RefreshToken` Usecase & Endpoint:**
+  - [ ] Create a new public endpoint (e.g., `POST /api/v1/auth/refresh-token`).
+  - [ ] Read the refresh token from the cookie.
+  - [ ] Validate the token against the hashed version in the database.
+  - [ ] If valid, issue a new Access Token.
+  - [ ] (Optional but recommended) Implement refresh token rotation.
+
+- [ ] **4. Create `Logout` Usecase & Endpoint:**
+  - [ ] Create an endpoint (e.g., `POST /api/v1/auth/logout`).
+  - [ ] Invalidate the refresh token in the database.
+  - [ ] Instruct the browser to clear the refresh token cookie.
+
+- [ ] **5. Implement JWT Authentication Middleware:**
+  - [ ] Create a Fastify `preHandler` middleware.
+  - [ ] It should verify the Access Token from the `Authorization` header on protected routes.
+  - [ ] If the token is invalid or expired, it should return a `401 Unauthorized` error.
+
+- [ ] **6. Security: Implement Rate Limiting:**
+  - [ ] Add rate limiting to sensitive endpoints like login, refresh token, and user creation to prevent brute-force attacks.
 
 ### Step 5: Enhance Observability and Documentation (Planned)
 

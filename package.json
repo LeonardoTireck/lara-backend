@@ -14,8 +14,8 @@
     "compose:up": "docker compose -f ./docker/docker-compose.yaml up -d --build",
     "compose:down": "docker compose -f ./docker/docker-compose.yaml -v down",
     "compose:exec": "docker compose -f docker/docker-compose.yaml exec -it lara_backend bash",
-    "db:createtable": "npx ts-node src/infrastructure/dynamodb/tables/CreateUsersTable.ts",
-    "db:deletetable": "npx ts-node src/infrastructure/dynamodb/tables/DeleteUsersTable.ts"
+    "db:createtable": "npx ts-node src/infrastructure/dynamodb/tables/CreateUsersTable.ts && npx ts-node src/infrastructure/dynamodb/tables/CreateRefreshTokensTable.ts",
+    "db:deletetable": "npx ts-node src/infrastructure/dynamodb/tables/DeleteUsersTable.ts && npx ts-node src/infrastructure/dynamodb/tables/DeleteRefreshTokensTable.ts"
   },
   "license": "ISC",
   "devDependencies": {

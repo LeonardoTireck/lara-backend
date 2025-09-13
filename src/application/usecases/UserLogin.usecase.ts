@@ -5,14 +5,20 @@ import PasswordHasher from '../ports/PasswordHasher';
 import { injectable, inject } from 'inversify';
 import { TYPES } from '../../di/Types';
 import { UnauthorizedError } from '../errors/AppError';
+import { ConfigService } from '../../infrastructure/config/ConfigService';
+import { RefreshTokenRepository } from '../ports/RefreshTokenRepository';
 
 @injectable()
 export class UserLogin {
   constructor(
     @inject(TYPES.UserRepository)
     private userRepo: UserRepository,
+    @inject(TYPES.RefreshTokenRepository)
+    private refreshTokenRepo: RefreshTokenRepository,
     @inject(TYPES.PasswordHasher)
     private passwordHasher: PasswordHasher,
+    @inject(TYPES.ConfigService)
+    private configService: ConfigService,
   ) {}
 
   async execute(input: Input): Promise<Output | undefined> {
@@ -24,17 +30,20 @@ export class UserLogin {
     );
     if (!passwordMatch) throw new UnauthorizedError('Invalid Credentials.');
 
-    const payload = {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-    };
-
-    const token = jwt.sign(payload, process.env.JWT_SECRET!, {
-      expiresIn: '1h',
+    const accessToken = jwt.sign({ id: user.id }, this.configService.jwtAccessSecret, {
+      expiresIn: 60 * 5,
+      subject: 'accessToken',
     });
 
-    return { token };
+    const refreshToken = jwt.sign(
+      { id: user.id },
+      this.configService.jwtRefreshSecret,
+      { subject: 'refreshToken', expiresIn: '1w' },
+    );
+
+    await this.refreshTokenRepo.save(refreshToken, user.id);
+
+    return { name: user.name, accessToken, refreshToken };
   }
 }
 
@@ -44,5 +53,8 @@ interface Input {
 }
 
 interface Output {
-  token: string;
+  name: string;
+  accessToken: string;
+  refreshToken: string;
 }
+
