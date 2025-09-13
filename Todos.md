@@ -65,10 +65,10 @@ This major architectural task is now complete. The application has been refactor
 Implement a secure, token-based authentication system using an Access/Refresh token pair (Hybrid Approach) to protect against XSS and CSRF.
 
 - [ ] **1. Enhance `UserLogin` Usecase:**
-  - [ ] Generate a short-lived JWT Access Token (for API access).
-  - [ ] Generate a secure, long-lived Refresh Token (as an opaque string).
+  - [x] Generate a short-lived JWT Access Token (for API access).
+  - [x] Generate a secure, long-lived Refresh Token (as an opaque string).
   - [ ] Hash the Refresh Token and save it to the `User` record in the database.
-  - [ ] Return both the access and refresh tokens from the use case.
+  - [x] Return both the access and refresh tokens from the use case.
 
 - [ ] **2. Update Login Controller & Route:**
   - [ ] Send the Access Token in the JSON response body.
