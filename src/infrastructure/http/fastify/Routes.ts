@@ -1,7 +1,7 @@
 import { RouteHandlerMethod } from 'fastify';
 import { FastifyRoute } from '../../../application/ports/FastifyRoute';
 import { UserControllers } from './controllers/UserControllers';
-import { createUserSchema } from './schemas/UserSchemas';
+import { createUserSchema, loginSchema } from './schemas/UserSchemas';
 import { ServerControllers } from './controllers/ServerController';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../../../di/Types';
@@ -34,6 +34,14 @@ export class Router {
         method: 'get',
         path: '/health',
         handler: this.serverControllers.healthCheck as RouteHandlerMethod,
+      },
+      {
+        method: 'post',
+        path: '/login',
+        schema: {
+          body: loginSchema,
+        },
+        handler: this.userControllers.login as RouteHandlerMethod,
       },
     ];
   };

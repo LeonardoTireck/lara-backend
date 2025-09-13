@@ -3,7 +3,8 @@ import { inject, injectable } from 'inversify';
 import { CreateUser } from '../../../../application/usecases/CreateUser.usecase';
 import { FindAllUsers } from '../../../../application/usecases/FindAllUsers.usecase';
 import { TYPES } from '../../../../di/Types';
-import { GetAllUsersRequest } from './RequestTypes';
+import { GetAllUsersRequest, LoginRequest } from './RequestTypes';
+import { Login } from '../../../../application/usecases/Login.usecase';
 
 @injectable()
 export class UserControllers {
@@ -12,6 +13,8 @@ export class UserControllers {
     private findAllUsersUseCase: FindAllUsers,
     @inject(TYPES.CreateUserUseCase)
     private createUserUseCase: CreateUser,
+    @inject(TYPES.LoginUseCase)
+    private loginUseCase: Login,
   ) {}
 
   getAll = async (request: GetAllUsersRequest, reply: FastifyReply) => {
@@ -26,5 +29,11 @@ export class UserControllers {
   newUser = async (request: any, reply: FastifyReply) => {
     const outputCreateUser = await this.createUserUseCase.execute(request.body);
     return reply.status(201).send(outputCreateUser);
+  };
+
+  login = async (request: LoginRequest, reply: FastifyReply) => {
+    const { email, password } = request.body;
+    const outputLogin = await this.loginUseCase.execute({ email, password });
+    return reply.status(200).send(outputLogin);
   };
 }

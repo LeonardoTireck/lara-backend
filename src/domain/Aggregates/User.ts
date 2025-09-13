@@ -166,8 +166,8 @@ export class User {
         ? data.pastPlans.map((plan: any) =>
             TrainingPlan.fromRaw({
               ...plan,
-              startDate: new Date(plan.startDate),
-              expirationDate: new Date(plan.expirationDate),
+              startDate: plan.startDate,
+              expirationDate: plan.expirationDate,
             }),
           )
         : [],

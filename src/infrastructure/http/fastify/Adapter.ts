@@ -40,7 +40,7 @@ export class FastifyAdapter {
 
   async listen(port: number): Promise<void> {
     try {
-      await this.app.listen({ port, host: '127.0.0.1' });
+      await this.app.listen({ port, host: '0.0.0.0' });
     } catch (err) {
       this.app.log.error(err);
       process.exit(1);

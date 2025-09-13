@@ -9,7 +9,7 @@ import { ConfigService } from '../../infrastructure/config/ConfigService';
 import { RefreshTokenRepository } from '../ports/RefreshTokenRepository';
 
 @injectable()
-export class UserLogin {
+export class Login {
   constructor(
     @inject(TYPES.UserRepository)
     private userRepo: UserRepository,
@@ -30,10 +30,14 @@ export class UserLogin {
     );
     if (!passwordMatch) throw new UnauthorizedError('Invalid Credentials.');
 
-    const accessToken = jwt.sign({ id: user.id }, this.configService.jwtAccessSecret, {
-      expiresIn: 60 * 5,
-      subject: 'accessToken',
-    });
+    const accessToken = jwt.sign(
+      { id: user.id },
+      this.configService.jwtAccessSecret,
+      {
+        expiresIn: 60 * 5,
+        subject: 'accessToken',
+      },
+    );
 
     const refreshToken = jwt.sign(
       { id: user.id },
@@ -57,4 +61,3 @@ interface Output {
   accessToken: string;
   refreshToken: string;
 }
-

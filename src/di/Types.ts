@@ -13,6 +13,7 @@ export const TYPES = {
   //useCases
   FindAllUsersUseCase: Symbol.for('FindAllUsersUseCase'),
   CreateUserUseCase: Symbol.for('CreateUserUseCase'),
+  LoginUseCase: Symbol.for('LoginUseCase'),
   //controllers
   UserControllers: Symbol.for('UserControllers'),
   ServerControllers: Symbol.for('ServerControllers'),

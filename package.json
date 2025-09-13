@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "nodemon src/main.ts",
     "test": "npm run db:deletetable && npm run db:createtable && jest",
+    "coverage": "npm run db:deletetable && npm run db:createtable && jest --coverage",
     "lint": "npx eslint .",
     "docker:build": "docker build -t lara_backend docker",
     "docker:run": "docker run -it -v $(pwd)/.:/app --name lara_container lara_backend bash",

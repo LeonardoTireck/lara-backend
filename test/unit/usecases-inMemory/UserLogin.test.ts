@@ -1,19 +1,19 @@
 import jwt from 'jsonwebtoken';
 import { UnauthorizedError } from '../../../src/application/errors/AppError';
 import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
-import { UserLogin } from '../../../src/application/usecases/UserLogin.usecase';
 import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
 import { ConfigService } from '../../../src/infrastructure/config/ConfigService';
 import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
 import { InMemoryRefreshTokenRepository } from '../../../src/infrastructure/inMemory/inMemoryRefreshTokenRepo';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
+import { Login } from '../../../src/application/usecases/Login.usecase';
 
 describe('UserLogin Use Case', () => {
   let userRepo: InMemoryUserRepo;
   let refreshTokensRepo: InMemoryRefreshTokenRepository;
   let configService: ConfigService;
   let bcryptPasswordHasher: BcryptPasswordHasher;
-  let useCaseLogin: UserLogin;
+  let useCaseLogin: Login;
   let createdUserId: string;
 
   const userEmail = 'leo@test.com';
@@ -30,7 +30,7 @@ describe('UserLogin Use Case', () => {
     configService = new ConfigService();
     bcryptPasswordHasher = new BcryptPasswordHasher(1);
     configService = new ConfigService();
-    useCaseLogin = new UserLogin(
+    useCaseLogin = new Login(
       userRepo,
       refreshTokensRepo,
       bcryptPasswordHasher,
@@ -59,14 +59,24 @@ describe('UserLogin Use Case', () => {
     const output = await useCaseLogin.execute(input);
     expect(output).toBeDefined();
     expect(output?.accessToken).toBeDefined();
+    expect(output?.refreshToken).toBeDefined();
 
-    const tokenPayload = jwt.verify(
+    const accessTokenPayload = jwt.verify(
       output!.accessToken,
       configService.jwtAccessSecret,
     ) as jwt.JwtPayload;
-    expect(tokenPayload.id).toBe(createdUserId);
-    expect(tokenPayload.exp).toBeDefined();
-    expect(tokenPayload.iat).toBeDefined();
+
+    const refreshTokenPayload = jwt.verify(
+      output!.refreshToken,
+      configService.jwtRefreshSecret,
+    ) as jwt.JwtPayload;
+
+    expect(accessTokenPayload.id).toBe(createdUserId);
+    expect(accessTokenPayload.exp).toBeDefined();
+    expect(accessTokenPayload.iat).toBeDefined();
+    expect(refreshTokenPayload.id).toBe(createdUserId);
+    expect(refreshTokenPayload.exp).toBeDefined();
+    expect(refreshTokenPayload.iat).toBeDefined();
   });
 
   it('should fail to login with an incorrect password', async () => {

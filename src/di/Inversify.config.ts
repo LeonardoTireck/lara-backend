@@ -14,6 +14,7 @@ import { ServerControllers } from '../infrastructure/http/fastify/controllers/Se
 import { Router } from '../infrastructure/http/fastify/Routes';
 import { DynamoDbRefreshTokensRepo } from '../infrastructure/dynamodb/repos/RefreshTokensRepo';
 import { RefreshTokenRepository } from '../application/ports/RefreshTokenRepository';
+import { Login } from '../application/usecases/Login.usecase';
 
 const container = new Container();
 
@@ -45,6 +46,7 @@ container
   .toConstantValue(new BcryptPasswordHasher(configService.saltrounds));
 
 //UseCases
+container.bind<Login>(TYPES.LoginUseCase).to(Login).inSingletonScope();
 container
   .bind<FindAllUsers>(TYPES.FindAllUsersUseCase)
   .to(FindAllUsers)
