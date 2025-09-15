@@ -35,7 +35,7 @@ describe('Test for the /login route', () => {
     }
   });
 
-  it('Should login using an email and password and return user name, access token and refresh token', async () => {
+  it('Should login and return user name, access token, and a refreshToken cookie', async () => {
     const input = {
       email: testUserEmail,
       password: 'Test123@',
@@ -49,6 +49,11 @@ describe('Test for the /login route', () => {
     expect(outputHttpLogin.data).toBeDefined();
     expect(outputHttpLogin.data.name).toBe('John Doe');
     expect(outputHttpLogin.data.accessToken).toBeDefined();
-    expect(outputHttpLogin.data.refreshToken).toBeDefined();
+    expect(outputHttpLogin.data.refreshToken).toBeUndefined();
+
+    const setCookieHeader = outputHttpLogin.headers['set-cookie'];
+    expect(setCookieHeader).toBeDefined();
+    expect(setCookieHeader![0]).toContain('refreshToken=');
+    expect(setCookieHeader![0]).toContain('HttpOnly');
   });
 });

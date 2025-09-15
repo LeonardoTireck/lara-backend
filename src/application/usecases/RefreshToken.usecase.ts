@@ -18,20 +18,20 @@ export class RefreshToken {
   ) {}
 
   async execute(input: Input): Promise<Output> {
-    const verifiedRefreshToken = jwt.verify(
+    const decodedRefreshToken = jwt.verify(
       input.refreshToken,
       this.configService.jwtRefreshSecret,
     );
     if (
-      !verifiedRefreshToken ||
-      typeof verifiedRefreshToken === 'string' ||
-      !verifiedRefreshToken.id
+      !decodedRefreshToken ||
+      typeof decodedRefreshToken === 'string' ||
+      !decodedRefreshToken.id
     ) {
       throw new UnauthorizedError();
     }
 
     const storedHashedToken = await this.refreshTokenRepo.getById(
-      verifiedRefreshToken.id,
+      decodedRefreshToken.id,
     );
 
     const hashMatch = await this.passwordHasher.compare(
@@ -41,7 +41,7 @@ export class RefreshToken {
     if (!hashMatch) throw new UnauthorizedError('Invalid Credentials.');
 
     const accessToken = jwt.sign(
-      { id: verifiedRefreshToken.id },
+      { id: decodedRefreshToken.id },
       this.configService.jwtAccessSecret,
       {
         expiresIn: 60 * 5,
@@ -50,7 +50,7 @@ export class RefreshToken {
     );
 
     const refreshToken = jwt.sign(
-      { id: verifiedRefreshToken.id },
+      { id: decodedRefreshToken.id },
       this.configService.jwtRefreshSecret,
       { subject: 'refreshToken', expiresIn: '1w' },
     );
@@ -59,7 +59,7 @@ export class RefreshToken {
 
     await this.refreshTokenRepo.save(
       hashedRefreshToken,
-      verifiedRefreshToken.id,
+      decodedRefreshToken.id,
     );
 
     return { accessToken, refreshToken };

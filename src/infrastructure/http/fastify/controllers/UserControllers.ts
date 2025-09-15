@@ -1,3 +1,4 @@
+import '@fastify/cookie';
 import { FastifyReply } from 'fastify';
 import { inject, injectable } from 'inversify';
 import { CreateUser } from '../../../../application/usecases/CreateUser.usecase';
