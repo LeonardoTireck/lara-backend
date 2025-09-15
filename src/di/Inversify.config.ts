@@ -15,6 +15,7 @@ import { Router } from '../infrastructure/http/fastify/Routes';
 import { DynamoDbRefreshTokensRepo } from '../infrastructure/dynamodb/repos/RefreshTokensRepo';
 import { RefreshTokenRepository } from '../application/ports/RefreshTokenRepository';
 import { Login } from '../application/usecases/Login.usecase';
+import { RefreshToken } from '../application/usecases/RefreshToken.usecase';
 
 const container = new Container();
 
@@ -47,6 +48,10 @@ container
 
 //UseCases
 container.bind<Login>(TYPES.LoginUseCase).to(Login).inSingletonScope();
+container
+  .bind<RefreshToken>(TYPES.RefreshTokenUseCase)
+  .to(RefreshToken)
+  .inSingletonScope();
 container
   .bind<FindAllUsers>(TYPES.FindAllUsersUseCase)
   .to(FindAllUsers)

@@ -5,16 +5,22 @@ import { FindAllUsers } from '../../../../application/usecases/FindAllUsers.usec
 import { TYPES } from '../../../../di/Types';
 import { GetAllUsersRequest, LoginRequest } from './RequestTypes';
 import { Login } from '../../../../application/usecases/Login.usecase';
+import { RefreshToken } from '../../../../application/usecases/RefreshToken.usecase';
+import { ConfigService } from '../../../config/ConfigService';
 
 @injectable()
 export class UserControllers {
   constructor(
+    @inject(TYPES.ConfigService)
+    private configService: ConfigService,
     @inject(TYPES.FindAllUsersUseCase)
     private findAllUsersUseCase: FindAllUsers,
     @inject(TYPES.CreateUserUseCase)
     private createUserUseCase: CreateUser,
     @inject(TYPES.LoginUseCase)
     private loginUseCase: Login,
+    @inject(TYPES.RefreshTokenUseCase)
+    private refreshTokenUseCase: RefreshToken,
   ) {}
 
   getAll = async (request: GetAllUsersRequest, reply: FastifyReply) => {
@@ -33,7 +39,38 @@ export class UserControllers {
 
   login = async (request: LoginRequest, reply: FastifyReply) => {
     const { email, password } = request.body;
-    const outputLogin = await this.loginUseCase.execute({ email, password });
-    return reply.status(200).send(outputLogin);
+    const { name, accessToken, refreshToken } = await this.loginUseCase.execute(
+      {
+        email,
+        password,
+      },
+    );
+    return reply
+      .setCookie('refreshToken', refreshToken, {
+        path: '/v1/refresh',
+        httpOnly: true,
+        secure: this.configService.secureCookie,
+        sameSite: 'strict',
+      })
+      .status(200)
+      .send({ name, accessToken });
+  };
+
+  refreshToken = async (request: any, reply: FastifyReply) => {
+    const oldRefreshToken = request.cookies.refreshToken;
+    if (!oldRefreshToken) return reply.status(401).send('Unauthorized');
+    const output = await this.refreshTokenUseCase.execute({
+      refreshToken: oldRefreshToken,
+    });
+    const { accessToken, refreshToken } = output;
+    return reply
+      .setCookie('refreshToken', refreshToken, {
+        path: '/v1/refresh',
+        httpOnly: true,
+        secure: this.configService.secureCookie,
+        sameSite: 'strict',
+      })
+      .status(200)
+      .send({ accessToken });
   };
 }

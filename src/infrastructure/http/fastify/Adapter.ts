@@ -6,6 +6,7 @@ import {
   ZodTypeProvider,
 } from 'fastify-type-provider-zod';
 import { errorHandlerPlugin } from './middlewares/ErrorHandler';
+import cookie from '@fastify/cookie';
 
 export class FastifyAdapter {
   private app: FastifyInstance;
@@ -17,6 +18,7 @@ export class FastifyAdapter {
     this.app.setValidatorCompiler(validatorCompiler);
     this.app.setSerializerCompiler(serializerCompiler);
     this.app.withTypeProvider<ZodTypeProvider>();
+    this.app.register(cookie);
     this.app.register(errorHandlerPlugin);
   }
 

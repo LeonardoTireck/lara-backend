@@ -11,6 +11,7 @@ export class ConfigService {
       'AWS_SECRET_ACCESS_KEY',
       'JWT_ACCESS_SECRET',
       'JWT_REFRESH_SECRET',
+      'SECURE_COOKIE',
     ];
     for (const requiredVar of requiredVars) {
       if (!process.env[requiredVar]) {
@@ -49,5 +50,10 @@ export class ConfigService {
 
   get awsSecretAccessKey(): string {
     return process.env.AWS_SECRET_ACCESS_KEY!;
+  }
+
+  get secureCookie(): boolean {
+    if (process.env.SECURE_COOKIE! == 'true') return true;
+    return false;
   }
 }

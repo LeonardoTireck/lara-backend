@@ -43,6 +43,11 @@ export class Router {
         },
         handler: this.userControllers.login as RouteHandlerMethod,
       },
+      {
+        method: 'post',
+        path: '/refresh',
+        handler: this.userControllers.refreshToken as RouteHandlerMethod,
+      },
     ];
   };
 }

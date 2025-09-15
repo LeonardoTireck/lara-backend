@@ -21,7 +21,7 @@ export class Login {
     private configService: ConfigService,
   ) {}
 
-  async execute(input: Input): Promise<Output | undefined> {
+  async execute(input: Input): Promise<Output> {
     const user = await this.userRepo.getByEmail(input.email);
     if (!user) throw new UnauthorizedError('Invalid Credentials.');
     const passwordMatch = await this.passwordHasher.compare(
@@ -45,7 +45,9 @@ export class Login {
       { subject: 'refreshToken', expiresIn: '1w' },
     );
 
-    await this.refreshTokenRepo.save(refreshToken, user.id);
+    const hashedRefreshToken = await this.passwordHasher.hash(refreshToken);
+
+    await this.refreshTokenRepo.save(hashedRefreshToken, user.id);
 
     return { name: user.name, accessToken, refreshToken };
   }
