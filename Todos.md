@@ -64,22 +64,22 @@ This major architectural task is now complete. The application has been refactor
 
 Implement a secure, token-based authentication system using an Access/Refresh token pair (Hybrid Approach) to protect against XSS and CSRF.
 
-- [ ] **1. Enhance `UserLogin` Usecase:**
+- [x] **1. Enhance `UserLogin` Usecase:**
   - [x] Generate a short-lived JWT Access Token (for API access).
   - [x] Generate a secure, long-lived Refresh Token (as an opaque string).
-  - [ ] Hash the Refresh Token and save it to the `User` record in the database.
+  - [x] Hash the Refresh Token and save it to the `RefreshToken` record in the database.
   - [x] Return both the access and refresh tokens from the use case.
 
-- [ ] **2. Update Login Controller & Route:**
-  - [ ] Send the Access Token in the JSON response body.
-  - [ ] Send the Refresh Token in a secure, `httpOnly`, `SameSite=Strict` cookie.
+- [x] **2. Update Login Controller & Route:**
+  - [x] Send the Access Token in the JSON response body.
+  - [x] Send the Refresh Token in a secure, `httpOnly`, `SameSite=Strict` cookie.
 
-- [ ] **3. Create `RefreshToken` Usecase & Endpoint:**
-  - [ ] Create a new public endpoint (e.g., `POST /api/v1/auth/refresh-token`).
-  - [ ] Read the refresh token from the cookie.
-  - [ ] Validate the token against the hashed version in the database.
-  - [ ] If valid, issue a new Access Token.
-  - [ ] (Optional but recommended) Implement refresh token rotation.
+- [x] **3. Create `RefreshToken` Usecase & Endpoint:**
+  - [x] Create a new public endpoint (e.g., `POST /api/v1/auth/refresh-token`).
+  - [x] Read the refresh token from the cookie.
+  - [x] Validate the token against the hashed version in the database.
+  - [x] If valid, issue a new Access Token.
+  - [x] (Optional but recommended) Implement refresh token rotation.
 
 - [ ] **4. Create `Logout` Usecase & Endpoint:**
   - [ ] Create an endpoint (e.g., `POST /api/v1/auth/logout`).
