@@ -59,7 +59,9 @@ export class DynamoDbUserRepo implements UserRepository {
             }))
           : [],
         parq: user.parq,
-        lastParqUpdate: user.lastParqUpdate?.toISOString(),
+        lastParqUpdate: user.lastParqUpdate
+          ? user.lastParqUpdate.toISOString()
+          : undefined,
         trainingSessions: user.trainingSessions
           ? user.trainingSessions.map((session) => ({
               ...session,
@@ -123,7 +125,9 @@ export class DynamoDbUserRepo implements UserRepository {
             }))
           : [],
         ':pa': user.parq ?? null,
-        ':lpu': user.lastParqUpdate?.toISOString() ?? null,
+        ':lpu': user.lastParqUpdate
+          ? user.lastParqUpdate.toISOString()
+          : null,
         ':ts': user.trainingSessions
           ? user.trainingSessions.map((session) => ({
               ...session,
