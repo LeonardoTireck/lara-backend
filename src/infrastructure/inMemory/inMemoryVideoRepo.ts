@@ -1,3 +1,4 @@
+import { NotFoundError } from '../../application/errors/AppError';
 import { VideoMetadataRepository } from '../../application/ports/VideoMetadataRepository';
 import { Video } from '../../domain/Aggregates/Video';
 
@@ -17,7 +18,7 @@ export class InMemoryVideoRepository implements VideoMetadataRepository {
 
   async update(video: Video): Promise<void> {
     const videoToBeUpdated = this.videos.find((v) => v.id == video.id);
-    if (!videoToBeUpdated) throw new Error('Video not found.');
+    if (!videoToBeUpdated) throw new NotFoundError('Video');
 
     videoToBeUpdated.updateCategory(video.category);
     videoToBeUpdated.updateDescription(video.description);
@@ -27,7 +28,7 @@ export class InMemoryVideoRepository implements VideoMetadataRepository {
     const videoToBeDeletedIndex = this.videos.findIndex(
       (video) => video.id == videoId,
     );
-    if (!videoToBeDeletedIndex) throw new Error('Video not found.');
+    if (videoToBeDeletedIndex === -1) throw new NotFoundError('Video');
     this.videos.splice(videoToBeDeletedIndex, 1);
   }
 }
