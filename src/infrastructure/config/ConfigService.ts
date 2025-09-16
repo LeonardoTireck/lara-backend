@@ -12,6 +12,11 @@ export class ConfigService {
       'JWT_ACCESS_SECRET',
       'JWT_REFRESH_SECRET',
       'SECURE_COOKIE',
+      'S3_ENDPOINT',
+      'S3_ACCESS_KEY',
+      'S3_SECRET_KEY',
+      'BCRYPT_SALTROUNDS',
+      'DDB_ENDPOINT',
     ];
     for (const requiredVar of requiredVars) {
       if (!process.env[requiredVar]) {

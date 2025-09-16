@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import 'reflect-metadata';
 import { instantiateServer } from './infrastructure/http/fastify/Server';
 import { container } from './di/Inversify.config';
