@@ -6,25 +6,27 @@ import { TrainingPlan } from '../../../../../src/domain/ValueObjects/TrainingPla
 
 describe('DynamoDbUserRepo - GetByEmail', () => {
   let userRepo: UserRepository;
+  const user = User.create(
+    'Bob Builder',
+    'bob@example.com',
+    '11144477735',
+    '11912345678',
+    new Date('1975-01-01'),
+    'hashedbobpassword',
+    TrainingPlan.create('silver', 'card'),
+    'client',
+  );
 
-  beforeAll(() => {
+  beforeAll(async () => {
     userRepo = container.get<UserRepository>(TYPES.UserRepository);
+    await userRepo.save(user);
+  });
+
+  afterAll(async () => {
+    await userRepo.delete(user.id);
   });
 
   test('should retrieve a user by email from DynamoDB', async () => {
-    const user = User.create(
-      'Bob Builder',
-      'bob@example.com',
-      '11144477735',
-      '11912345678',
-      new Date('1975-01-01'),
-      'hashedbobpassword',
-      TrainingPlan.create('silver', 'card'),
-      'client',
-    );
-
-    await userRepo.save(user);
-
     const retrievedUser = await userRepo.getByEmail(user.email);
 
     expect(retrievedUser).toBeDefined();

@@ -5,6 +5,7 @@ import { TYPES } from '../../../../../src/di/Types';
 
 describe('DynamoDbRefreshTokensRepo - GetById', () => {
   let refreshTokenRepo: RefreshTokenRepository;
+  const userId = 'user-get-by-id-test';
 
   beforeAll(() => {
     refreshTokenRepo = container.get<RefreshTokenRepository>(
@@ -12,8 +13,15 @@ describe('DynamoDbRefreshTokensRepo - GetById', () => {
     );
   });
 
+  afterAll(async () => {
+    try {
+      await refreshTokenRepo.delete(userId);
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
   test('should retrieve a refresh token by user ID from DynamoDB', async () => {
-    const userId = 'user-get-by-id-test';
     const token = 'token-for-get-by-id-test';
 
     await refreshTokenRepo.save(token, userId);

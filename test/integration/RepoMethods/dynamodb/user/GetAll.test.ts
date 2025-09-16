@@ -34,6 +34,12 @@ describe('DynamoDbUserRepo - GetAll', () => {
     }
   });
 
+  afterAll(async () => {
+    for (const user of createdUsers) {
+      await userRepo.delete(user.id);
+    }
+  });
+
   test('should retrieve all users in pages', async () => {
     const allFetchedUsers: User[] = [];
     let lastKey;

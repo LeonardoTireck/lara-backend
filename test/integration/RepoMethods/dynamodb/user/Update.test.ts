@@ -7,13 +7,24 @@ import { TrainingPlan } from '../../../../../src/domain/ValueObjects/TrainingPla
 
 describe('DynamoDbUserRepo - Update', () => {
   let userRepo: UserRepository;
+  let user: User;
 
   beforeAll(() => {
     userRepo = container.get<UserRepository>(TYPES.UserRepository);
   });
 
+  afterAll(async () => {
+    if (user) {
+      try {
+        await userRepo.delete(user.id);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  });
+
   test('should update all user fields in DynamoDB', async () => {
-    const user = User.create(
+    user = User.create(
       'Jane Doe',
       'janedoe@example.com',
       '11144477735',

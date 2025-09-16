@@ -6,14 +6,12 @@ import { TrainingPlan } from '../../../../../src/domain/ValueObjects/TrainingPla
 
 describe('DynamoDbUserRepo', () => {
   let userRepo: UserRepository;
+  let user: User;
 
   beforeAll(() => {
     userRepo = container.get<UserRepository>(TYPES.UserRepository);
-  });
-
-  test('should save a user to DynamoDB', async () => {
     const mockTrainingPlan = TrainingPlan.create('silver', 'card');
-    const user = User.create(
+    user = User.create(
       'John Doe',
       'johndoe@example.com',
       '11144477735',
@@ -23,7 +21,17 @@ describe('DynamoDbUserRepo', () => {
       mockTrainingPlan,
       'client',
     );
+  });
 
-    expect(await userRepo.save(user)).resolves;
+  afterAll(async () => {
+    if (user) {
+      await userRepo.delete(user.id);
+    }
+  });
+
+  test('should save a user to DynamoDB', async () => {
+    await userRepo.save(user);
+    const retrievedUser = await userRepo.getById(user.id);
+    expect(retrievedUser).toBeDefined();
   });
 });

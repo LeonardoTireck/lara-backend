@@ -5,6 +5,7 @@ import { TYPES } from '../../../../../src/di/Types';
 
 describe('DynamoDbRefreshTokensRepo - Delete', () => {
   let refreshTokenRepo: RefreshTokenRepository;
+  const userId = 'user-delete-test';
 
   beforeAll(() => {
     refreshTokenRepo = container.get<RefreshTokenRepository>(
@@ -12,8 +13,15 @@ describe('DynamoDbRefreshTokensRepo - Delete', () => {
     );
   });
 
+  afterAll(async () => {
+    try {
+      await refreshTokenRepo.delete(userId);
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
   test('should delete a refresh token from DynamoDB', async () => {
-    const userId = 'user-delete-test';
     const token = 'token-for-delete-test';
 
     await refreshTokenRepo.save(token, userId);

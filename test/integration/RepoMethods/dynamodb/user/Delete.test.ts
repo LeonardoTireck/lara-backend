@@ -6,23 +6,30 @@ import { TrainingPlan } from '../../../../../src/domain/ValueObjects/TrainingPla
 
 describe('DynamoDbUserRepo - Delete', () => {
   let userRepo: UserRepository;
+  const user = User.create(
+    'Charlie Chaplin',
+    'charlie@example.com',
+    '11144477735',
+    '11933334444',
+    new Date('1960-03-03'),
+    'hashedcharliepassword',
+    TrainingPlan.create('silver', 'card'),
+    'client',
+  );
 
   beforeAll(() => {
     userRepo = container.get<UserRepository>(TYPES.UserRepository);
   });
 
-  test('should delete a user from DynamoDB', async () => {
-    const user = User.create(
-      'Charlie Chaplin',
-      'charlie@example.com',
-      '11144477735',
-      '11933334444',
-      new Date('1960-03-03'),
-      'hashedcharliepassword',
-      TrainingPlan.create('silver', 'card'),
-      'client',
-    );
+  afterAll(async () => {
+    try {
+      await userRepo.delete(user.id);
+    } catch (error) {
+      console.error(error);
+    }
+  });
 
+  test('should delete a user from DynamoDB', async () => {
     await userRepo.save(user);
     await userRepo.delete(user.id);
 
