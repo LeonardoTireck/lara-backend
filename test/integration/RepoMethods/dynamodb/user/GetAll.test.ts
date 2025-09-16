@@ -43,7 +43,7 @@ describe('DynamoDbUserRepo - GetAll', () => {
       const result = await userRepo.getAll(pageSize, lastKey);
       expect(result.users).toBeInstanceOf(Array);
       allFetchedUsers.push(...result.users);
-      lastKey = result.lastEvaluatedKey;
+      lastKey = result.lastEvaluatedKey?.id;
     } while (lastKey);
 
     expect(allFetchedUsers.length).toBeGreaterThanOrEqual(createdUsers.length);

@@ -57,20 +57,32 @@ export class InMemoryUserRepo implements UserRepository {
     return;
   }
 
-  async getAll(limit: number, exclusiveStartKey?: Record<string, any>) {
+  async getAll(limit: number, exclusiveStartKey?: string) {
     if (limit <= 0) {
       return {
         users: [],
         lastEvaluatedKey: undefined,
       };
     }
-    const startIndex = exclusiveStartKey ? exclusiveStartKey.index : 0;
+
+    let startIndex = 0;
+    if (exclusiveStartKey) {
+      const lastEvaluatedUserIndex = this.users.findIndex(
+        (user) => user.id === exclusiveStartKey,
+      );
+      if (lastEvaluatedUserIndex !== -1) {
+        startIndex = lastEvaluatedUserIndex + 1;
+      }
+    }
+
     const endIndex = startIndex + limit;
     const usersSlice = this.users.slice(startIndex, endIndex);
-    let lastEvaluatedKey;
+
+    let lastEvaluatedKey: { id: string } | undefined;
     if (endIndex < this.users.length) {
-      lastEvaluatedKey = { index: endIndex };
+      lastEvaluatedKey = { id: this.users[endIndex - 1].id };
     }
+
     return {
       users: usersSlice,
       lastEvaluatedKey: lastEvaluatedKey,

@@ -125,9 +125,7 @@ export class DynamoDbUserRepo implements UserRepository {
             }))
           : [],
         ':pa': user.parq ?? null,
-        ':lpu': user.lastParqUpdate
-          ? user.lastParqUpdate.toISOString()
-          : null,
+        ':lpu': user.lastParqUpdate ? user.lastParqUpdate.toISOString() : null,
         ':ts': user.trainingSessions
           ? user.trainingSessions.map((session) => ({
               ...session,
@@ -186,21 +184,27 @@ export class DynamoDbUserRepo implements UserRepository {
 
   async getAll(
     limit: number,
-    exclusiveStartKey?: Record<string, any>,
+    exclusiveStartKey?: string,
   ): Promise<PaginatedUsers> {
     const command = new ScanCommand({
       TableName: 'Users',
       Limit: limit,
-      ExclusiveStartKey: exclusiveStartKey,
+      ExclusiveStartKey: exclusiveStartKey
+        ? { id: exclusiveStartKey }
+        : undefined,
     });
 
     const response = await this.docClient.send(command);
 
     const users = response.Items ? response.Items.map(User.fromRaw) : [];
 
+    const lastEvaluatedKeyOutput = response.LastEvaluatedKey
+      ? { id: response.LastEvaluatedKey.id }
+      : undefined;
+
     return {
       users: users,
-      lastEvaluatedKey: response.LastEvaluatedKey,
+      lastEvaluatedKey: lastEvaluatedKeyOutput,
     };
   }
 

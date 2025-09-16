@@ -34,7 +34,7 @@ export class FindAllUsers {
 
 export interface FindAllUsersInput {
   limit: number;
-  exclusiveStartKey?: Record<string, any>;
+  exclusiveStartKey?: string;
 }
 
 interface UserOutput {
@@ -46,5 +46,5 @@ interface UserOutput {
 
 export interface FindAllUsersOutput {
   users: UserOutput[];
-  lastEvaluatedKey?: Record<string, any>;
+  lastEvaluatedKey?: { id: string };
 }

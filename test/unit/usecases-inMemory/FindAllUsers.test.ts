@@ -49,16 +49,25 @@ describe('FindAllUsers Use Case Test', () => {
   });
 
   it('should return the second page of users', async () => {
-    const input: FindAllUsersInput = {
-      limit: 2,
-      exclusiveStartKey: { index: 2 },
-    };
-    const output = await useCaseFindAllUsers.execute(input);
+    // First, get the first page to obtain the lastEvaluatedKey
+    const firstPageInput: FindAllUsersInput = { limit: 2 };
+    const firstPageOutput = await useCaseFindAllUsers.execute(firstPageInput);
 
-    expect(output.users).toHaveLength(1);
-    expect(output.users[0].name).toBe('User Gamma');
-    expect(output.users[0].email).toBe('testuser2@example.com');
-    expect(output.lastEvaluatedKey).toBeUndefined();
+    expect(firstPageOutput.users).toHaveLength(2);
+    expect(firstPageOutput.lastEvaluatedKey).toBeDefined();
+    const lastEvaluatedId = firstPageOutput.lastEvaluatedKey?.id;
+
+    // Now, request the second page using the lastEvaluatedId
+    const secondPageInput: FindAllUsersInput = {
+      limit: 2,
+      exclusiveStartKey: lastEvaluatedId,
+    };
+    const secondPageOutput = await useCaseFindAllUsers.execute(secondPageInput);
+
+    expect(secondPageOutput.users).toHaveLength(1);
+    expect(secondPageOutput.users[0].name).toBe('User Gamma');
+    expect(secondPageOutput.users[0].email).toBe('testuser2@example.com');
+    expect(secondPageOutput.lastEvaluatedKey).toBeUndefined();
   });
 
   it('should return an empty array when the repository is empty', async () => {

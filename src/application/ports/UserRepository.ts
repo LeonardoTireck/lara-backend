@@ -6,9 +6,6 @@ export interface UserRepository {
   update(user: User): Promise<void>;
   getById(userId: string): Promise<User | undefined>;
   getByEmail(userEmail: string): Promise<User | undefined>;
-  getAll(
-    limit: number,
-    exclusiveStartKey?: Record<string, any>,
-  ): Promise<PaginatedUsers>;
+  getAll(limit: number, exclusiveStartKey?: string): Promise<PaginatedUsers>;
   delete(userId: string): Promise<void>;
 }
