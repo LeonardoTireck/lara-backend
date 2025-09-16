@@ -16,9 +16,7 @@ describe('DynamoDbRefreshTokensRepo - Delete', () => {
   afterAll(async () => {
     try {
       await refreshTokenRepo.delete(userId);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   });
 
   test('should delete a refresh token from DynamoDB', async () => {

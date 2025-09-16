@@ -24,9 +24,7 @@ describe('DynamoDbUserRepo - Delete', () => {
   afterAll(async () => {
     try {
       await userRepo.delete(user.id);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   });
 
   test('should delete a user from DynamoDB', async () => {

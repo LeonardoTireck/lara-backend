@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { ConfigService } from '../../infrastructure/config/ConfigService';
 import { UnauthorizedError } from '../errors/AppError';
 import PasswordHasher from '../ports/PasswordHasher';
+import { randomUUID } from 'crypto';
 
 @injectable()
 export class RefreshToken {
@@ -50,7 +51,7 @@ export class RefreshToken {
     );
 
     const refreshToken = jwt.sign(
-      { id: decodedRefreshToken.id },
+      { id: decodedRefreshToken.id, jti: randomUUID() },
       this.configService.jwtRefreshSecret,
       { subject: 'refreshToken', expiresIn: '1w' },
     );
