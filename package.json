@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/main.ts",
-    "test": "npm run jest",
-    "coverage": "npm run jest --coverage",
+    "test": "jest",
+    "coverage": "jest --coverage",
     "lint": "npx eslint .",
     "docker:build": "docker build -t lara_backend docker",
     "docker:run": "docker run -it -v $(pwd)/.:/app --name lara_container lara_backend bash",
@@ -16,7 +16,8 @@
     "compose:down": "docker compose -f ./docker/docker-compose.yaml -v down",
     "compose:exec": "docker compose -f docker/docker-compose.yaml exec -it lara_backend bash",
     "db:createtable": "npx ts-node src/infrastructure/dynamodb/tables/CreateUsersTable.ts && npx ts-node src/infrastructure/dynamodb/tables/CreateRefreshTokensTable.ts",
-    "db:deletetable": "npx ts-node src/infrastructure/dynamodb/tables/DeleteUsersTable.ts && npx ts-node src/infrastructure/dynamodb/tables/DeleteRefreshTokensTable.ts"
+    "db:deletetable": "npx ts-node src/infrastructure/dynamodb/tables/DeleteUsersTable.ts && npx ts-node src/infrastructure/dynamodb/tables/DeleteRefreshTokensTable.ts",
+    "create:admin": "ts-node --files src/cli/create-admin.ts -- 'John Doe' 'admin@example.com' 'aVeryStrongPassword123' '11144477735' '5511999998888' '1990-01-01'"
   },
   "license": "ISC",
   "devDependencies": {

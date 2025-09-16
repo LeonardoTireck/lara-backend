@@ -64,6 +64,30 @@ export class User {
       activePlan,
     );
   }
+
+  static createAdmin(
+    name: string,
+    email: string,
+    documentCPF: string,
+    phone: string,
+    dateOfBirth: Date,
+    password: string,
+  ) {
+    const id = crypto.randomUUID();
+
+    return new User(
+      id,
+      'admin',
+      name,
+      new Date(),
+      documentCPF,
+      dateOfBirth,
+      email,
+      phone,
+      password,
+    );
+  }
+
   get name() {
     return this._name.value;
   }

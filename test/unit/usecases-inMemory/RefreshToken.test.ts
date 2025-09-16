@@ -6,11 +6,11 @@ import {
 import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
 import { Login } from '../../../src/application/usecases/Login.usecase';
 import { RefreshToken } from '../../../src/application/usecases/RefreshToken.usecase';
+import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
 import { ConfigService } from '../../../src/infrastructure/config/ConfigService';
 import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
 import { InMemoryRefreshTokenRepository } from '../../../src/infrastructure/inMemory/inMemoryRefreshTokenRepo';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
-import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
 
 describe('RefreshToken Use Case', () => {
   let userRepo: InMemoryUserRepo;
@@ -32,10 +32,9 @@ describe('RefreshToken Use Case', () => {
     configService = new ConfigService();
     passwordHasher = new BcryptPasswordHasher(1);
 
-    // Set secrets for testing
     process.env.JWT_SECRET = 'test_access_secret';
     process.env.JWT_REFRESH_SECRET = 'test_refresh_secret';
-    configService = new ConfigService(); // Re-initialize to pick up env vars
+    configService = new ConfigService();
 
     const useCaseCreate = new CreateUser(userRepo, passwordHasher);
     useCaseLogin = new Login(
@@ -55,7 +54,7 @@ describe('RefreshToken Use Case', () => {
       email: userEmail,
       documentCPF: '11144477735',
       password: userPassword,
-      phone: '47992000622',
+      phone: '41992000622',
       dateOfBirth: new Date(),
       activePlan: TrainingPlan.create('silver', 'PIX'),
     };
@@ -79,7 +78,6 @@ describe('RefreshToken Use Case', () => {
     expect(output.accessToken).toBeDefined();
     expect(output.refreshToken).toBeDefined();
 
-    // Verify new access token
     const newAccessTokenPayload = jwt.verify(
       output.accessToken,
       configService.jwtAccessSecret,
@@ -87,7 +85,6 @@ describe('RefreshToken Use Case', () => {
     expect(newAccessTokenPayload.id).toBe(createdUserId);
     expect(newAccessTokenPayload.sub).toBe('accessToken');
 
-    // Verify new refresh token
     const newRefreshTokenPayload = jwt.verify(
       output.refreshToken,
       configService.jwtRefreshSecret,
@@ -95,7 +92,6 @@ describe('RefreshToken Use Case', () => {
     expect(newRefreshTokenPayload.id).toBe(createdUserId);
     expect(newRefreshTokenPayload.sub).toBe('refreshToken');
 
-    // Verify that the new refresh token was saved correctly
     const storedHashedToken = await refreshTokenRepo.getById(createdUserId);
     const isMatch = await passwordHasher.compare(
       output.refreshToken,
@@ -108,7 +104,7 @@ describe('RefreshToken Use Case', () => {
     const invalidToken = 'invalid-token';
     await expect(
       useCaseRefreshToken.execute({ refreshToken: invalidToken }),
-    ).rejects.toThrow(jwt.JsonWebTokenError);
+    ).rejects.toThrow(UnauthorizedError);
   });
 
   it('should throw UnauthorizedError for an expired refresh token', async () => {
@@ -117,12 +113,11 @@ describe('RefreshToken Use Case', () => {
       configService.jwtRefreshSecret,
       { expiresIn: '0s' },
     );
-    // Wait a moment to ensure the token is expired
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     await expect(
       useCaseRefreshToken.execute({ refreshToken: expiredToken }),
-    ).rejects.toThrow(jwt.TokenExpiredError);
+    ).rejects.toThrow(UnauthorizedError);
   });
 
   it('should throw UnauthorizedError if token payload is a string', async () => {

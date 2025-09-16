@@ -18,6 +18,8 @@ export const TYPES = {
   //controllers
   UserControllers: Symbol.for('UserControllers'),
   ServerControllers: Symbol.for('ServerControllers'),
-  //routesr
+  //routes
   Router: Symbol.for('Router'),
+  //middlewares
+  AuthMiddleware: Symbol.for('AuthMiddleware'),
 };

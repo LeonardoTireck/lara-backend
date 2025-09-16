@@ -40,7 +40,7 @@ export class CreateUser {
       input.dateOfBirth,
       hashedPassword,
       activePlan,
-      input.userType || 'client',
+      input.userType ? input.userType : 'client',
     );
 
     await this.userRepo.save(user);

@@ -16,6 +16,7 @@ import { DynamoDbRefreshTokensRepo } from '../infrastructure/dynamodb/repos/Refr
 import { RefreshTokenRepository } from '../application/ports/RefreshTokenRepository';
 import { Login } from '../application/usecases/Login.usecase';
 import { RefreshToken } from '../application/usecases/RefreshToken.usecase';
+import { AuthMiddleware } from '../infrastructure/http/fastify/middlewares/AuthMiddleware';
 
 const container = new Container();
 
@@ -74,4 +75,9 @@ container
 //Router
 container.bind<Router>(TYPES.Router).to(Router).inSingletonScope();
 
+//Middlewares
+container
+  .bind<AuthMiddleware>(TYPES.AuthMiddleware)
+  .to(AuthMiddleware)
+  .inSingletonScope();
 export { container };

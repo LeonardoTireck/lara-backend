@@ -19,10 +19,20 @@ export class RefreshToken {
   ) {}
 
   async execute(input: Input): Promise<Output> {
-    const decodedRefreshToken = jwt.verify(
-      input.refreshToken,
-      this.configService.jwtRefreshSecret,
-    );
+    let decodedRefreshToken;
+    try {
+      decodedRefreshToken = jwt.verify(
+        input.refreshToken,
+        this.configService.jwtRefreshSecret,
+      );
+    } catch (error) {
+      if (
+        error instanceof jwt.TokenExpiredError ||
+        error instanceof jwt.JsonWebTokenError
+      ) {
+        throw new UnauthorizedError('Refresh token expired or invalid');
+      }
+    }
     if (
       !decodedRefreshToken ||
       typeof decodedRefreshToken === 'string' ||

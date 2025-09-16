@@ -31,7 +31,7 @@ export class Login {
     if (!passwordMatch) throw new UnauthorizedError('Invalid Credentials.');
 
     const accessToken = jwt.sign(
-      { id: user.id },
+      { id: user.id, userType: user.userType },
       this.configService.jwtAccessSecret,
       {
         expiresIn: 60 * 5,
@@ -40,7 +40,7 @@ export class Login {
     );
 
     const refreshToken = jwt.sign(
-      { id: user.id },
+      { id: user.id, userType: user.userType },
       this.configService.jwtRefreshSecret,
       { subject: 'refreshToken', expiresIn: '1w' },
     );

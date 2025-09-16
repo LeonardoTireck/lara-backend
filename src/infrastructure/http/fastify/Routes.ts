@@ -5,6 +5,7 @@ import { createUserSchema, loginSchema } from './schemas/UserSchemas';
 import { ServerControllers } from './controllers/ServerController';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../../../di/Types';
+import { AuthMiddleware } from './middlewares/AuthMiddleware';
 
 @injectable()
 export class Router {
@@ -13,6 +14,8 @@ export class Router {
     private readonly userControllers: UserControllers,
     @inject(TYPES.ServerControllers)
     private readonly serverControllers: ServerControllers,
+    @inject(TYPES.AuthMiddleware)
+    private readonly authMiddleware: AuthMiddleware,
   ) {}
 
   createRoutes = (): FastifyRoute[] => {
@@ -20,6 +23,7 @@ export class Router {
       {
         method: 'get',
         path: '/users',
+        preHandlers: [this.authMiddleware.verify(['admin'])],
         handler: this.userControllers.getAll as RouteHandlerMethod,
       },
       {
