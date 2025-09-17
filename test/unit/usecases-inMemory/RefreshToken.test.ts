@@ -1,8 +1,5 @@
 import jwt from 'jsonwebtoken';
-import {
-  NotFoundError,
-  UnauthorizedError,
-} from '../../../src/application/errors/AppError';
+import { UnauthorizedError } from '../../../src/application/errors/AppError';
 import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
 import { Login } from '../../../src/application/usecases/Login.usecase';
 import { RefreshToken } from '../../../src/application/usecases/RefreshToken.usecase';
@@ -37,17 +34,8 @@ describe('RefreshToken Use Case', () => {
     configService = new ConfigService();
 
     const useCaseCreate = new CreateUser(userRepo, passwordHasher);
-    useCaseLogin = new Login(
-      userRepo,
-      refreshTokenRepo,
-      passwordHasher,
-      configService,
-    );
-    useCaseRefreshToken = new RefreshToken(
-      refreshTokenRepo,
-      configService,
-      passwordHasher,
-    );
+    useCaseLogin = new Login(userRepo, passwordHasher, configService);
+    useCaseRefreshToken = new RefreshToken(refreshTokenRepo, configService);
 
     const userInput = {
       name: userName,
@@ -91,13 +79,6 @@ describe('RefreshToken Use Case', () => {
     ) as jwt.JwtPayload;
     expect(newRefreshTokenPayload.id).toBe(createdUserId);
     expect(newRefreshTokenPayload.sub).toBe('refreshToken');
-
-    const storedHashedToken = await refreshTokenRepo.getById(createdUserId);
-    const isMatch = await passwordHasher.compare(
-      output.refreshToken,
-      storedHashedToken,
-    );
-    expect(isMatch).toBe(true);
   });
 
   it('should throw UnauthorizedError for an invalid (malformed) refresh token', async () => {
@@ -138,23 +119,5 @@ describe('RefreshToken Use Case', () => {
     await expect(
       useCaseRefreshToken.execute({ refreshToken: noIdToken }),
     ).rejects.toThrow(UnauthorizedError);
-  });
-
-  it('should throw UnauthorizedError if refresh token does not match stored hash', async () => {
-    // Save a wrong hash for the user
-    await refreshTokenRepo.save('wrong-hash', createdUserId);
-
-    await expect(
-      useCaseRefreshToken.execute({ refreshToken: initialRefreshToken }),
-    ).rejects.toThrow('Invalid Credentials.');
-  });
-
-  it('should throw NotFoundError if no refresh token is stored for the user', async () => {
-    // Delete the stored token
-    await refreshTokenRepo.delete(createdUserId);
-
-    await expect(
-      useCaseRefreshToken.execute({ refreshToken: initialRefreshToken }),
-    ).rejects.toThrow(NotFoundError);
   });
 });

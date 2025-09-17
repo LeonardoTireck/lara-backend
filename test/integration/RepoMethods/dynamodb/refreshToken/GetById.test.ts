@@ -3,9 +3,10 @@ import { RefreshTokenRepository } from '../../../../../src/application/ports/Ref
 import { container } from '../../../../../src/di/Inversify.config';
 import { TYPES } from '../../../../../src/di/Types';
 
-describe('DynamoDbRefreshTokensRepo - GetById', () => {
+describe('DynamoDbRefreshTokensRepo - Exists', () => {
   let refreshTokenRepo: RefreshTokenRepository;
-  const userId = 'user-get-by-id-test';
+  const jti = 'jti-get-by-id-test';
+  const tokenExpiresIn = Math.floor(Date.now() / 1000) + 3600; // 1 hour from now
 
   beforeAll(() => {
     refreshTokenRepo = container.get<RefreshTokenRepository>(
@@ -14,26 +15,19 @@ describe('DynamoDbRefreshTokensRepo - GetById', () => {
   });
 
   afterAll(async () => {
-    try {
-      await refreshTokenRepo.delete(userId);
-    } catch (error) {
-      console.error(error);
-    }
+    // Since there is no delete method, we cannot clean up directly.
+    // This might require manual cleanup or a change in the RefreshTokenRepository interface.
   });
 
-  test('should retrieve a refresh token by user ID from DynamoDB', async () => {
-    const token = 'token-for-get-by-id-test';
-
-    await refreshTokenRepo.save(token, userId);
-    const retrievedToken = await refreshTokenRepo.getById(userId);
-
-    expect(retrievedToken).toBe(token);
+  test('should return true if a refresh token exists in DynamoDB', async () => {
+    await refreshTokenRepo.add(jti, tokenExpiresIn);
+    const exists = await refreshTokenRepo.exists(jti);
+    expect(exists).toBe(true);
   });
 
-  test('should throw NotFoundError if token for user ID does not exist', async () => {
-    const nonExistentUserId = 'non-existent-get-by-id-user';
-    await expect(refreshTokenRepo.getById(nonExistentUserId)).rejects.toThrow(
-      NotFoundError,
-    );
+  test('should return false if a refresh token does not exist', async () => {
+    const nonExistentJti = 'non-existent-jti';
+    const exists = await refreshTokenRepo.exists(nonExistentJti);
+    expect(exists).toBe(false);
   });
 });

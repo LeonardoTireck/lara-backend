@@ -51,11 +51,6 @@ describe('Test for the /refresh route', () => {
     if (user) {
       await userRepo.delete(user.id);
     }
-    if (userId) {
-      try {
-        await refreshTokenRepo.delete(userId);
-      } catch (error) {}
-    }
   });
 
   it('Should send a valid refresh token and retrieve new access and refresh tokens', async () => {
@@ -85,3 +80,4 @@ describe('Test for the /refresh route', () => {
     expect(newRefreshToken).not.toBe(refreshToken);
   });
 });
+

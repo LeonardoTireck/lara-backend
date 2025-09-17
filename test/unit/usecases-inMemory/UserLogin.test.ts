@@ -32,7 +32,6 @@ describe('UserLogin Use Case', () => {
     configService = new ConfigService();
     useCaseLogin = new Login(
       userRepo,
-      refreshTokensRepo,
       bcryptPasswordHasher,
       configService,
     );

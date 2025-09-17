@@ -2,9 +2,10 @@ import { RefreshTokenRepository } from '../../../../../src/application/ports/Ref
 import { container } from '../../../../../src/di/Inversify.config';
 import { TYPES } from '../../../../../src/di/Types';
 
-describe('DynamoDbRefreshTokensRepo - Save', () => {
+describe('DynamoDbRefreshTokensRepo - Add', () => {
   let refreshTokenRepo: RefreshTokenRepository;
-  const userId = 'user-save-test';
+  const jti = 'jti-save-test';
+  const tokenExpiresIn = Math.floor(Date.now() / 1000) + 3600; // 1 hour from now
 
   beforeAll(() => {
     refreshTokenRepo = container.get<RefreshTokenRepository>(
@@ -13,16 +14,13 @@ describe('DynamoDbRefreshTokensRepo - Save', () => {
   });
 
   afterAll(async () => {
-    try {
-      await refreshTokenRepo.delete(userId);
-    } catch (error) {
-      console.error(error);
-    }
+    // Since there is no delete method, we cannot clean up directly.
+    // This might require manual cleanup or a change in the RefreshTokenRepository interface.
   });
 
-  test('should save a refresh token to DynamoDB', async () => {
-    const token = 'token-for-save-test';
-
-    await expect(refreshTokenRepo.save(token, userId)).resolves.not.toThrow();
+  test('should add a refresh token to DynamoDB', async () => {
+    await expect(refreshTokenRepo.add(jti, tokenExpiresIn)).resolves.not.toThrow();
+    const exists = await refreshTokenRepo.exists(jti);
+    expect(exists).toBe(true);
   });
 });
