@@ -11,6 +11,7 @@ describe('ConfigService', () => {
     JWT_ACCESS_SECRET: 'test_jwt_access_secret',
     JWT_REFRESH_SECRET: 'test_jwt_refresh_secret',
     SECURE_COOKIE: 'true',
+    BCRYPT_SALTROUNDS: '1',
   };
 
   beforeEach(() => {
@@ -72,8 +73,8 @@ describe('ConfigService', () => {
       expect(configService.saltrounds).toBe(12);
     });
 
-    it('should return default saltrounds 1 if BCRYPT_SALTROUNDS is not set', () => {
-      delete process.env.BCRYPT_SALTROUNDS;
+    it('should return default saltrounds 1 if BCRYPT_SALTROUNDS is not a valid number', () => {
+      process.env.BCRYPT_SALTROUNDS = 'not-a-number';
       const configService = new ConfigService();
       expect(configService.saltrounds).toBe(1);
     });
