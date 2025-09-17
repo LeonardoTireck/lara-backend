@@ -17,6 +17,7 @@ import { RefreshTokenRepository } from '../application/ports/RefreshTokenReposit
 import { Login } from '../application/usecases/Login.usecase';
 import { RefreshToken } from '../application/usecases/RefreshToken.usecase';
 import { AuthMiddleware } from '../infrastructure/http/fastify/middlewares/AuthMiddleware';
+import { Logout } from '../application/usecases/Logout.usecase';
 
 const container = new Container();
 
@@ -49,6 +50,7 @@ container
 
 //UseCases
 container.bind<Login>(TYPES.LoginUseCase).to(Login).inSingletonScope();
+container.bind<Logout>(TYPES.LogoutUseCase).to(Logout).inSingletonScope();
 container
   .bind<RefreshToken>(TYPES.RefreshTokenUseCase)
   .to(RefreshToken)

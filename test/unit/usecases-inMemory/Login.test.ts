@@ -20,21 +20,13 @@ describe('UserLogin Use Case', () => {
   const userPassword = 'Test123@';
   const userName = 'Leonardo Tireck';
 
-  beforeAll(() => {
-    process.env.JWT_SECRET = 'test_secret';
-  });
-
   beforeEach(async () => {
     userRepo = new InMemoryUserRepo();
     refreshTokensRepo = new InMemoryRefreshTokenRepository();
     configService = new ConfigService();
     bcryptPasswordHasher = new BcryptPasswordHasher(1);
     configService = new ConfigService();
-    useCaseLogin = new Login(
-      userRepo,
-      bcryptPasswordHasher,
-      configService,
-    );
+    useCaseLogin = new Login(userRepo, bcryptPasswordHasher, configService);
     const useCaseCreate = new CreateUser(userRepo, bcryptPasswordHasher);
 
     const input = {

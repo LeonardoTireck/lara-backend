@@ -2,24 +2,13 @@
 
 This document outlines the API endpoints for the application, based on the development roadmap.
 
-## Public Endpoints
-
-| Status    | Method | Endpoint          | Description                    | Relevant Use Case         |
-| :-------- | :----- | :---------------- | :----------------------------- | :------------------------ |
-| `Planned` | `POST` | `/api/v1/login`   | User login.                    | `UserLogin.usecase.ts`    |
-| `Planned` | `POST` | `/api/v1/refresh` | Refresh an expired JWT token.  | `RefreshToken.usecase.ts` |
-| `Planned` | `GET`  | `/api/v1/health`  | Get application health status. | `HealthController.check`  |
-
----
-
 ## Currently Implemented (Internal Routes)
 
 These routes are currently implemented for initial development but do not follow the final API design.
 
-| Status        | Method | Endpoint   | Description                |
-| :------------ | :----- | :--------- | :------------------------- |
-| `Implemented` | `GET`  | `/users`   | Get all users (paginated). |
-| `Implemented` | `POST` | `/newUser` | Create a new user.         |
+| Status        | Method | Endpoint   | Description        |
+| :------------ | :----- | :--------- | :----------------- |
+| `Implemented` | `POST` | `/newUser` | Create a new user. |
 
 ---
 

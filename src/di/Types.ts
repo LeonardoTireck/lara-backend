@@ -15,6 +15,7 @@ export const TYPES = {
   CreateUserUseCase: Symbol.for('CreateUserUseCase'),
   LoginUseCase: Symbol.for('LoginUseCase'),
   RefreshTokenUseCase: Symbol.for('RefreshTokenUseCase'),
+  LogoutUseCase: Symbol.for('LogoutUseCase'),
   //controllers
   UserControllers: Symbol.for('UserControllers'),
   ServerControllers: Symbol.for('ServerControllers'),

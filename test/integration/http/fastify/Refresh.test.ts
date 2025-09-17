@@ -68,8 +68,12 @@ describe('Test for the /refresh route', () => {
     expect(response.data.accessToken).toBeDefined();
 
     const newAccessToken = response.data.accessToken;
-    const decodedToken = jwt.decode(newAccessToken) as { id: string };
+    const decodedToken = jwt.decode(newAccessToken) as {
+      id: string;
+      userType: string;
+    };
     expect(decodedToken.id).toBe(userId);
+    expect(decodedToken.userType).toBe('client');
 
     const setCookieHeader = response.headers['set-cookie'];
     expect(setCookieHeader).toBeDefined();
@@ -80,4 +84,3 @@ describe('Test for the /refresh route', () => {
     expect(newRefreshToken).not.toBe(refreshToken);
   });
 });
-
