@@ -1,11 +1,10 @@
+import crypto from 'crypto';
 import { inject, injectable } from 'inversify';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { TYPES } from '../../di/Types';
-import { RefreshTokenRepository } from '../ports/RefreshTokenRepository';
-import jwt from 'jsonwebtoken';
 import { ConfigService } from '../../infrastructure/config/ConfigService';
 import { UnauthorizedError } from '../errors/AppError';
-import PasswordHasher from '../ports/PasswordHasher';
-import { randomUUID } from 'crypto';
+import { RefreshTokenRepository } from '../ports/RefreshTokenRepository';
 
 @injectable()
 export class RefreshToken {
@@ -14,65 +13,60 @@ export class RefreshToken {
     private refreshTokenRepo: RefreshTokenRepository,
     @inject(TYPES.ConfigService)
     private configService: ConfigService,
-    @inject(TYPES.PasswordHasher)
-    private passwordHasher: PasswordHasher,
   ) {}
 
   async execute(input: Input): Promise<Output> {
-    let decodedRefreshToken;
+    let decodedRefreshToken: JwtPayload;
     try {
-      decodedRefreshToken = jwt.verify(
+      const payload = jwt.verify(
         input.refreshToken,
         this.configService.jwtRefreshSecret,
       );
+      if (typeof payload === 'string') throw new UnauthorizedError();
+      decodedRefreshToken = payload;
     } catch (error) {
-      if (
-        error instanceof jwt.TokenExpiredError ||
-        error instanceof jwt.JsonWebTokenError
-      ) {
-        throw new UnauthorizedError('Refresh token expired or invalid');
-      }
+      throw new UnauthorizedError('Refresh token expired or invalid');
     }
     if (
-      !decodedRefreshToken ||
-      typeof decodedRefreshToken === 'string' ||
+      !decodedRefreshToken.jti ||
+      !decodedRefreshToken.exp ||
       !decodedRefreshToken.id
     ) {
-      throw new UnauthorizedError();
+      throw new UnauthorizedError('Invalid refresh token payload');
     }
-
-    const storedHashedToken = await this.refreshTokenRepo.getById(
-      decodedRefreshToken.id,
+    const isTokenRevoked = await this.refreshTokenRepo.exists(
+      decodedRefreshToken.jti,
     );
-
-    const hashMatch = await this.passwordHasher.compare(
-      input.refreshToken,
-      storedHashedToken,
+    if (isTokenRevoked) {
+      console.log(
+        `Revoked token used. Potential security risk for ${decodedRefreshToken.id} user.`,
+      );
+      throw new UnauthorizedError('Invalid Credentials.');
+    }
+    await this.refreshTokenRepo.add(
+      decodedRefreshToken.jti,
+      decodedRefreshToken.exp,
     );
-    if (!hashMatch) throw new UnauthorizedError('Invalid Credentials.');
-
     const accessToken = jwt.sign(
-      { id: decodedRefreshToken.id },
+      {
+        id: decodedRefreshToken.id,
+        userType: decodedRefreshToken.userType,
+      },
       this.configService.jwtAccessSecret,
       {
         expiresIn: 60 * 5,
         subject: 'accessToken',
+        jwtid: crypto.randomUUID(),
       },
     );
-
     const refreshToken = jwt.sign(
-      { id: decodedRefreshToken.id, jti: randomUUID() },
+      {
+        id: decodedRefreshToken.id,
+        userType: decodedRefreshToken.userType,
+      },
       this.configService.jwtRefreshSecret,
-      { subject: 'refreshToken', expiresIn: '1w' },
+      { subject: 'refreshToken', expiresIn: '1w', jwtid: crypto.randomUUID() },
     );
-
-    const hashedRefreshToken = await this.passwordHasher.hash(refreshToken);
-
-    await this.refreshTokenRepo.save(
-      hashedRefreshToken,
-      decodedRefreshToken.id,
-    );
-
     return { accessToken, refreshToken };
   }
 }

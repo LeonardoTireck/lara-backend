@@ -9,32 +9,14 @@ async function createTable() {
       TableName: 'RefreshTokens',
       AttributeDefinitions: [
         {
-          AttributeName: 'token',
-          AttributeType: 'S',
-        },
-        {
-          AttributeName: 'userId',
+          AttributeName: 'jti',
           AttributeType: 'S',
         },
       ],
       KeySchema: [
         {
-          AttributeName: 'token',
+          AttributeName: 'jti',
           KeyType: 'HASH',
-        },
-      ],
-      GlobalSecondaryIndexes: [
-        {
-          IndexName: 'UserIdIndex',
-          KeySchema: [
-            {
-              AttributeName: 'userId',
-              KeyType: 'HASH',
-            },
-          ],
-          Projection: {
-            ProjectionType: 'ALL',
-          },
         },
       ],
       BillingMode: 'PAY_PER_REQUEST',

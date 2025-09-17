@@ -1,20 +1,18 @@
-import { UserRepository } from '../ports/UserRepository';
-import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 import 'dotenv/config';
-import PasswordHasher from '../ports/PasswordHasher';
-import { injectable, inject } from 'inversify';
+import { inject, injectable } from 'inversify';
+import jwt from 'jsonwebtoken';
 import { TYPES } from '../../di/Types';
-import { UnauthorizedError } from '../errors/AppError';
 import { ConfigService } from '../../infrastructure/config/ConfigService';
-import { RefreshTokenRepository } from '../ports/RefreshTokenRepository';
+import { UnauthorizedError } from '../errors/AppError';
+import PasswordHasher from '../ports/PasswordHasher';
+import { UserRepository } from '../ports/UserRepository';
 
 @injectable()
 export class Login {
   constructor(
     @inject(TYPES.UserRepository)
     private userRepo: UserRepository,
-    @inject(TYPES.RefreshTokenRepository)
-    private refreshTokenRepo: RefreshTokenRepository,
     @inject(TYPES.PasswordHasher)
     private passwordHasher: PasswordHasher,
     @inject(TYPES.ConfigService)
@@ -36,18 +34,15 @@ export class Login {
       {
         expiresIn: 60 * 5,
         subject: 'accessToken',
+        jwtid: crypto.randomUUID(),
       },
     );
 
     const refreshToken = jwt.sign(
       { id: user.id, userType: user.userType },
       this.configService.jwtRefreshSecret,
-      { subject: 'refreshToken', expiresIn: '1w' },
+      { subject: 'refreshToken', expiresIn: '1w', jwtid: crypto.randomUUID() },
     );
-
-    const hashedRefreshToken = await this.passwordHasher.hash(refreshToken);
-
-    await this.refreshTokenRepo.save(hashedRefreshToken, user.id);
 
     return { name: user.name, accessToken, refreshToken };
   }

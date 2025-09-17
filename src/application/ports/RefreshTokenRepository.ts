@@ -1,5 +1,4 @@
 export interface RefreshTokenRepository {
-  save(token: string, userId: string): Promise<void>;
-  getById(userId: string): Promise<string>;
-  delete(userId: string): Promise<void>;
+  add(jti: string, tokenExpiresIn: number): Promise<void>;
+  exists(jti: string): Promise<boolean>;
 }

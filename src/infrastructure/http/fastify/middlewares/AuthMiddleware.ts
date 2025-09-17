@@ -1,3 +1,5 @@
+/// <reference path="../../../../types/fastify.d.ts" />
+
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../../../../di/Types';
 import { ConfigService } from '../../../config/ConfigService';
@@ -12,6 +14,7 @@ import jwt from 'jsonwebtoken';
 interface DecodedToken {
   id: string;
   userType: UserType;
+  jti: string;
 }
 
 @injectable()
@@ -23,7 +26,6 @@ export class AuthMiddleware {
   public verify = (allowedRoles: UserType[]) => {
     return async (request: FastifyRequest, _reply: FastifyReply) => {
       const { authorization } = request.headers;
-
       if (!authorization || !authorization.startsWith('Bearer ')) {
         throw new UnauthorizedError('Missing or invalid token');
       }
@@ -34,7 +36,7 @@ export class AuthMiddleware {
           token,
           this.configService.jwtAccessSecret,
         ) as DecodedToken;
-        if (!decodedToken.id || !decodedToken.userType) {
+        if (!decodedToken.id || !decodedToken.userType || !decodedToken.jti) {
           throw new UnauthorizedError('Invalid token payload');
         }
         if (!allowedRoles.includes(decodedToken.userType)) {
@@ -43,7 +45,12 @@ export class AuthMiddleware {
         request.userId = decodedToken.id;
       } catch (error) {
         if (error instanceof ForbiddenError) throw error;
-        throw new UnauthorizedError('Authentication token is invalid');
+        if (
+          error instanceof jwt.JsonWebTokenError ||
+          error instanceof jwt.TokenExpiredError
+        ) {
+          throw new UnauthorizedError('Token expired or invalid');
+        }
       }
     };
   };
