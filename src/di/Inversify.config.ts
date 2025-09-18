@@ -18,6 +18,7 @@ import { Login } from '../application/usecases/Login.usecase';
 import { RefreshToken } from '../application/usecases/RefreshToken.usecase';
 import { AuthMiddleware } from '../infrastructure/http/fastify/middlewares/AuthMiddleware';
 import { Logout } from '../application/usecases/Logout.usecase';
+import { JwtService } from '../infrastructure/auth/JwtService';
 
 const container = new Container();
 
@@ -47,6 +48,7 @@ container
 container
   .bind<PasswordHasher>(TYPES.PasswordHasher)
   .toConstantValue(new BcryptPasswordHasher(configService.saltrounds));
+container.bind<JwtService>(TYPES.JwtService).to(JwtService).inSingletonScope();
 
 //UseCases
 container.bind<Login>(TYPES.LoginUseCase).to(Login).inSingletonScope();

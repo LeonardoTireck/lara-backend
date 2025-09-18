@@ -4,6 +4,7 @@ export const TYPES = {
   DynamoDBClient: Symbol.for('DynamoDBClient'),
   //utils
   PasswordHasher: Symbol.for('PasswordHasher'),
+  JwtService: Symbol.for('JwtService'),
   //repos
   UserRepository: Symbol.for('UserRepository'),
   RefreshTokenRepository: Symbol.for('RefreshTokenRepository'),

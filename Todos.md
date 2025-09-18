@@ -2,7 +2,7 @@
 
 - [ ] **4. Create `Logout` Usecase & Endpoint:**
   - [ ] Create an endpoint (e.g., `POST /v1/logout`).
-  - [ ] Invalidate the refresh token in the database.
+  - [x] add the refresh token to a blacklist database.
   - [ ] Instruct the browser to clear the refresh token cookie.
 
 - [ ] **6. Security: Implement Rate Limiting:**
