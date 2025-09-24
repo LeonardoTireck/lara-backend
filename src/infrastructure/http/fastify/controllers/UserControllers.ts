@@ -1,5 +1,5 @@
 import '@fastify/cookie';
-import { FastifyReply } from 'fastify';
+import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'inversify';
 import { CreateUser } from '../../../../application/usecases/CreateUser.usecase';
 import { FindAllUsers } from '../../../../application/usecases/FindAllUsers.usecase';
@@ -8,6 +8,7 @@ import { GetAllUsersRequest, LoginRequest } from './RequestTypes';
 import { Login } from '../../../../application/usecases/Login.usecase';
 import { RefreshToken } from '../../../../application/usecases/RefreshToken.usecase';
 import { ConfigService } from '../../../config/ConfigService';
+import { Logout } from '../../../../application/usecases/Logout.usecase';
 
 @injectable()
 export class UserControllers {
@@ -22,6 +23,8 @@ export class UserControllers {
     private loginUseCase: Login,
     @inject(TYPES.RefreshTokenUseCase)
     private refreshTokenUseCase: RefreshToken,
+    @inject(TYPES.LogoutUseCase)
+    private logoutUseCase: Logout,
   ) {}
 
   getAll = async (request: GetAllUsersRequest, reply: FastifyReply) => {
@@ -55,6 +58,13 @@ export class UserControllers {
       })
       .status(200)
       .send({ name, accessToken });
+  };
+
+  logout = async (request: FastifyRequest, reply: FastifyReply) => {
+    const refreshToken = request.cookies.refreshToken;
+    if (!refreshToken) return reply.status(401).send('Unauthorized');
+    await this.logoutUseCase.execute({ refreshToken: refreshToken });
+    return reply.status(200).send();
   };
 
   refreshToken = async (request: any, reply: FastifyReply) => {

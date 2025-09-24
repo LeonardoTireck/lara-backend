@@ -13,7 +13,7 @@ export class FastifyAdapter {
 
   constructor() {
     this.app = fastify({
-      logger: true,
+      logger: false,
     });
     this.app.setValidatorCompiler(validatorCompiler);
     this.app.setSerializerCompiler(serializerCompiler);

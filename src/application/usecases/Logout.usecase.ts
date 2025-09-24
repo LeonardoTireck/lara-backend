@@ -3,15 +3,25 @@ import { TYPES } from '../../di/Types';
 import { RefreshTokenRepository } from '../ports/RefreshTokenRepository';
 import { JwtPayload } from 'jsonwebtoken';
 import { UnauthorizedError } from '../errors/AppError';
+import { ConfigService } from '../../infrastructure/config/ConfigService';
+import jwt from 'jsonwebtoken';
 
 @injectable()
 export class Logout {
   constructor(
     @inject(TYPES.RefreshTokenRepository)
     private refreshTokensRepo: RefreshTokenRepository,
+    @inject(TYPES.ConfigService)
+    private configService: ConfigService,
   ) {}
 
-  public execute = async (input: Input) => {
+  public execute = async (input: any) => {
+    console.log(input);
+    const payload = jwt.verify(
+      input.refreshToken,
+      this.configService.jwtRefreshSecret,
+    );
+    console.log('Token payload', payload);
     if (typeof input.refreshToken == 'string') {
       throw new UnauthorizedError('Invalid refresh token');
     }

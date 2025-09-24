@@ -49,6 +49,11 @@ export class Router {
       },
       {
         method: 'post',
+        path: '/logout',
+        handler: this.userControllers.logout as RouteHandlerMethod,
+      },
+      {
+        method: 'post',
         path: '/refresh',
         handler: this.userControllers.refreshToken as RouteHandlerMethod,
       },

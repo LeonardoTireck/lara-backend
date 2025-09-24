@@ -1,5 +1,9 @@
 # Lara's Personal Training Platform - Development Roadmap
 
+!!Urgent
+Refresh token is getting serialized into a string when coming from axios on Logout.test.ts
+Receiving [Object object] at the controller.
+
 - [ ] **4. Create `Logout` Usecase & Endpoint:**
   - [ ] Create an endpoint (e.g., `POST /v1/logout`).
   - [x] add the refresh token to a blacklist database.

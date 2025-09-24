@@ -11,6 +11,7 @@ import { UnauthorizedError } from '../../../../src/application/errors/AppError';
 import { CreateUser } from '../../../../src/application/usecases/CreateUser.usecase';
 import { Login } from '../../../../src/application/usecases/Login.usecase';
 import { TrainingPlan } from '../../../../src/domain/ValueObjects/TrainingPlan';
+import axios from 'axios';
 
 describe('POST /logout route test', () => {
   let userRepo: UserRepository;
@@ -67,6 +68,21 @@ describe('POST /logout route test', () => {
     name = outputLogin.name;
     accessToken = payloadAccessToken;
     refreshToken = payloadRefreshToken;
+  });
+
+  it.only('Should revoke a valid refresh token by adding it to the blacklist, using axios', async () => {
+    const response = await axios.post(
+      'http://localhost:3001/v1/logout',
+      {},
+      {
+        headers: {
+          Cookie: `refreshToken=${refreshToken}`,
+        },
+      },
+    );
+    console.log(response);
+
+    expect(response.status).toBe(200);
   });
 
   it('Should revoke a valid refresh token by adding it to the blacklist', async () => {
