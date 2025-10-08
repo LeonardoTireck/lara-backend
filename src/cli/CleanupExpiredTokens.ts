@@ -7,7 +7,7 @@ import { container } from '../di/Inversify.config';
 import { TYPES } from '../di/Types';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
-async function cleanupExpiredToken() {
+export async function cleanupExpiredToken() {
   const client = container.get<DynamoDBClient>(TYPES.DynamoDBClient);
   const docClient = DynamoDBDocumentClient.from(client);
   const tableName = 'RefreshTokens';

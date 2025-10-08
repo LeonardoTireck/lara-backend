@@ -1,105 +1,123 @@
-import { JwtPayload } from 'jsonwebtoken';
+import axios, { AxiosError } from 'axios';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import PasswordHasher from '../../../../src/application/ports/PasswordHasher';
 import { RefreshTokenRepository } from '../../../../src/application/ports/RefreshTokenRepository';
 import { UserRepository } from '../../../../src/application/ports/UserRepository';
-import { Logout } from '../../../../src/application/usecases/Logout.usecase';
-import { container } from '../../../../src/di/Inversify.config';
-import { TYPES } from '../../../../src/di/Types';
-import { ConfigService } from '../../../../src/infrastructure/config/ConfigService';
-import jwt from 'jsonwebtoken';
-import { UnauthorizedError } from '../../../../src/application/errors/AppError';
 import { CreateUser } from '../../../../src/application/usecases/CreateUser.usecase';
 import { Login } from '../../../../src/application/usecases/Login.usecase';
+import { cleanupExpiredToken } from '../../../../src/cli/CleanupExpiredTokens';
+import { container } from '../../../../src/di/Inversify.config';
+import { TYPES } from '../../../../src/di/Types';
+import { User } from '../../../../src/domain/Aggregates/User';
 import { TrainingPlan } from '../../../../src/domain/ValueObjects/TrainingPlan';
-import axios from 'axios';
+import { ConfigService } from '../../../../src/infrastructure/config/ConfigService';
 
 describe('POST /logout route test', () => {
   let userRepo: UserRepository;
   let refreshTokenRepo: RefreshTokenRepository;
   let configService: ConfigService;
   let passwordHasher: PasswordHasher;
-  let logoutUseCase: Logout;
-  let name: string;
-  let accessToken: JwtPayload;
-  let refreshToken: JwtPayload;
+  let user: User;
+  let refreshToken: string;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     userRepo = container.get<UserRepository>(TYPES.UserRepository);
     refreshTokenRepo = container.get<RefreshTokenRepository>(
       TYPES.RefreshTokenRepository,
     );
     configService = container.get<ConfigService>(TYPES.ConfigService);
     passwordHasher = container.get<PasswordHasher>(TYPES.PasswordHasher);
-    logoutUseCase = container.get<Logout>(TYPES.LogoutUseCase);
 
     const createUserUseCase = new CreateUser(userRepo, passwordHasher);
-
-    const input = {
-      name: 'John Doe',
-      email: 'johndoe@email.com',
+    const userInput = {
+      name: 'Test User',
+      email: 'test.user@email.com',
       documentCPF: '11144477735',
       password: 'aVeryStrongPassword123@',
-      phone: '47982000622',
-      dateOfBirth: new Date(),
+      phone: '1234567890',
+      dateOfBirth: new Date('1990-01-01'),
       activePlan: TrainingPlan.create('silver', 'PIX'),
     };
-
-    await createUserUseCase.execute(input);
+    const createdUserOutput = await createUserUseCase.execute(userInput);
+    const foundUser = await userRepo.getById(createdUserOutput.id);
+    if (!foundUser) {
+      throw new Error('Test setup failed: could not find created user');
+    }
+    user = foundUser;
 
     const loginUseCase = new Login(userRepo, passwordHasher, configService);
-
-    const outputLogin = await loginUseCase.execute({
-      email: input.email,
-      password: input.password,
+    const loginOutput = await loginUseCase.execute({
+      email: userInput.email,
+      password: userInput.password,
     });
-
-    const payloadRefreshToken = jwt.verify(
-      outputLogin.refreshToken,
-      configService.jwtRefreshSecret,
-    );
-
-    const payloadAccessToken = jwt.verify(
-      outputLogin.refreshToken,
-      configService.jwtRefreshSecret,
-    );
-    if (typeof payloadRefreshToken === 'string') throw new UnauthorizedError();
-    if (typeof payloadAccessToken === 'string') throw new UnauthorizedError();
-
-    name = outputLogin.name;
-    accessToken = payloadAccessToken;
-    refreshToken = payloadRefreshToken;
+    refreshToken = loginOutput.refreshToken;
   });
 
-  it.only('Should revoke a valid refresh token by adding it to the blacklist, using axios', async () => {
+  afterEach(async () => {
+    if (user) {
+      await userRepo.delete(user.id);
+    }
+    await cleanupExpiredToken();
+  });
+
+  it('should successfully logout and revoke the refresh token', async () => {
     const response = await axios.post(
       'http://localhost:3001/v1/logout',
       {},
       {
-        headers: {
-          Cookie: `refreshToken=${refreshToken}`,
-        },
+        headers: { Cookie: `refreshToken=${refreshToken}` },
       },
     );
-    console.log(response);
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(204);
+
+    const payload = jwt.decode(refreshToken) as JwtPayload;
+    expect(payload.jti).toBeDefined();
+    const isRevoked = await refreshTokenRepo.exists(payload.jti!);
+    expect(isRevoked).toBe(true);
   });
 
-  it('Should revoke a valid refresh token by adding it to the blacklist', async () => {
-    await logoutUseCase.execute({ refreshToken });
+  it('should fail to logout if the token is already revoked', async () => {
+    await axios.post(
+      'http://localhost:3001/v1/logout',
+      {},
+      {
+        headers: { Cookie: `refreshToken=${refreshToken}` },
+      },
+    );
 
-    if (!refreshToken.jti) {
-      throw new UnauthorizedError();
+    try {
+      await axios.post(
+        'http://localhost:3001/v1/logout',
+        {},
+        {
+          headers: { Cookie: `refreshToken=${refreshToken}` },
+        },
+      );
+      fail('The second logout should have failed');
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      expect(axiosError.response).toBeDefined();
+      expect(axiosError.response?.status).toBe(401);
     }
-
-    expect(await refreshTokenRepo.exists(refreshToken.jti)).toBe(true);
   });
 
-  afterAll(async () => {
-    let user = await userRepo.getByEmail('johndoe@email.com');
-    if (user) {
-      let userId = user.id;
-      await userRepo.delete(userId);
+  it('should fail to logout if the token is invalid', async () => {
+    const invalidToken = 'this-is-not-a-valid-jwt';
+    try {
+      await axios.post(
+        'http://localhost:3001/v1/logout',
+        {},
+        {
+          headers: { Cookie: `refreshToken=${invalidToken}` },
+        },
+      );
+      fail('Logout with an invalid token should have failed');
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      expect(axiosError.response).toBeDefined();
+      expect(axiosError.response?.status).toBe(401);
     }
   });
 });
+

@@ -8,8 +8,10 @@ import fp from 'fastify-plugin';
 import { ZodError } from 'zod';
 import {
   AppError,
+  UnauthorizedError,
   ValidationError,
 } from '../../../../application/errors/AppError';
+import { JsonWebTokenError } from 'jsonwebtoken';
 
 export const errorHandlerPlugin: FastifyPluginAsync = fp(async (fastify) => {
   fastify.setErrorHandler(
@@ -35,6 +37,17 @@ export const errorHandlerPlugin: FastifyPluginAsync = fp(async (fastify) => {
           error: {
             message: validationError.message,
             details: validationError.details,
+          },
+        });
+        return;
+      }
+
+      if (error instanceof JsonWebTokenError) {
+        const unauthorizedError = new UnauthorizedError('Invalid Token');
+        reply.status(unauthorizedError.statusCode).send({
+          error: {
+            message: unauthorizedError.message,
+            details: unauthorizedError.details,
           },
         });
         return;

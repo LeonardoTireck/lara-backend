@@ -8,6 +8,7 @@ import { GetAllUsersRequest, LoginRequest } from './RequestTypes';
 import { Login } from '../../../../application/usecases/Login.usecase';
 import { RefreshToken } from '../../../../application/usecases/RefreshToken.usecase';
 import { ConfigService } from '../../../config/ConfigService';
+import { UnauthorizedError } from '../../../../application/errors/AppError';
 import { Logout } from '../../../../application/usecases/Logout.usecase';
 
 @injectable()
@@ -61,10 +62,12 @@ export class UserControllers {
   };
 
   logout = async (request: FastifyRequest, reply: FastifyReply) => {
-    const refreshToken = request.cookies.refreshToken;
-    if (!refreshToken) return reply.status(401).send('Unauthorized');
-    await this.logoutUseCase.execute({ refreshToken: refreshToken });
-    return reply.status(200).send();
+    const refreshToken = request.cookies?.refreshToken;
+    if (!refreshToken) {
+      throw new UnauthorizedError('Refresh token not found.');
+    }
+    await this.logoutUseCase.execute({ refreshToken });
+    return reply.status(204).send();
   };
 
   refreshToken = async (request: any, reply: FastifyReply) => {

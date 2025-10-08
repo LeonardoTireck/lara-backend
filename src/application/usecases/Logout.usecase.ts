@@ -1,7 +1,6 @@
 import { injectable, inject } from 'inversify';
 import { TYPES } from '../../di/Types';
 import { RefreshTokenRepository } from '../ports/RefreshTokenRepository';
-import { JwtPayload } from 'jsonwebtoken';
 import { UnauthorizedError } from '../errors/AppError';
 import { ConfigService } from '../../infrastructure/config/ConfigService';
 import jwt from 'jsonwebtoken';
@@ -15,39 +14,29 @@ export class Logout {
     private configService: ConfigService,
   ) {}
 
-  public execute = async (input: any) => {
-    console.log(input);
+  public async execute(input: Input): Promise<void> {
     const payload = jwt.verify(
       input.refreshToken,
       this.configService.jwtRefreshSecret,
     );
-    console.log('Token payload', payload);
-    if (typeof input.refreshToken == 'string') {
-      throw new UnauthorizedError('Invalid refresh token');
-    }
-    if (
-      !input.refreshToken.jti ||
-      !input.refreshToken.exp ||
-      !input.refreshToken.id
-    ) {
+
+    if (typeof payload === 'string' || !payload.jti || !payload.exp || !payload.id) {
       throw new UnauthorizedError('Invalid refresh token payload');
     }
-    const isTokenRevoked = await this.refreshTokensRepo.exists(
-      input.refreshToken.jti,
-    );
+
+    const isTokenRevoked = await this.refreshTokensRepo.exists(payload.jti);
+
     if (isTokenRevoked) {
       console.log(
-        `Revoked token used. Potential security risk for ${input.refreshToken.id} user.`,
+        `Revoked token used. Potential security risk for ${payload.id} user.`,
       );
       throw new UnauthorizedError('Invalid Credentials.');
     }
-    await this.refreshTokensRepo.add(
-      input.refreshToken.jti,
-      input.refreshToken.exp,
-    );
-  };
+
+    await this.refreshTokensRepo.add(payload.jti, payload.exp);
+  }
 }
 
 interface Input {
-  refreshToken: JwtPayload;
+  refreshToken: string;
 }

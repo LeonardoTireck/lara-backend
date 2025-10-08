@@ -19,15 +19,15 @@ describe('Logout usecase in-memory test', () => {
   let bcryptPasswordHasher: PasswordHasher;
   let logoutUseCase: Logout;
   let name: string;
-  let accessToken: JwtPayload;
-  let refreshToken: JwtPayload;
+  let accessToken: string;
+  let refreshToken: string;
 
   beforeAll(async () => {
     userRepo = new InMemoryUserRepo();
     refreshTokenRepo = new InMemoryRefreshTokenRepository();
     configService = new ConfigService();
     bcryptPasswordHasher = new BcryptPasswordHasher(configService.saltrounds);
-    logoutUseCase = new Logout(refreshTokenRepo);
+    logoutUseCase = new Logout(refreshTokenRepo, configService);
     const createUserUseCase = new CreateUser(userRepo, bcryptPasswordHasher);
 
     const input = {
@@ -53,30 +53,20 @@ describe('Logout usecase in-memory test', () => {
       password: input.password,
     });
 
-    const payloadRefreshToken = jwt.verify(
-      outputLogin.refreshToken,
-      configService.jwtRefreshSecret,
-    );
-
-    const payloadAccessToken = jwt.verify(
-      outputLogin.refreshToken,
-      configService.jwtRefreshSecret,
-    );
-    if (typeof payloadRefreshToken === 'string') throw new UnauthorizedError();
-    if (typeof payloadAccessToken === 'string') throw new UnauthorizedError();
-
     name = outputLogin.name;
-    accessToken = payloadAccessToken;
-    refreshToken = payloadRefreshToken;
+    accessToken = outputLogin.accessToken;
+    refreshToken = outputLogin.refreshToken;
   });
 
   it('Should revoke a valid refresh token', async () => {
     await logoutUseCase.execute({ refreshToken });
 
-    if (!refreshToken.jti) {
-      throw new UnauthorizedError();
+    const payload = jwt.decode(refreshToken) as JwtPayload;
+
+    if (!payload || !payload.jti) {
+      throw new UnauthorizedError('JTI not found in refresh token');
     }
 
-    expect(await refreshTokenRepo.exists(refreshToken.jti)).toBe(true);
+    expect(await refreshTokenRepo.exists(payload.jti)).toBe(true);
   });
 });
