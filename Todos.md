@@ -5,7 +5,7 @@ Refresh token is getting serialized into a string when coming from axios on Logo
 Receiving [Object object] at the controller.
 
 - [ ] **4. Create `Logout` Usecase & Endpoint:**
-  - [ ] Create an endpoint (e.g., `POST /v1/logout`).
+  - [x] Create an endpoint (e.g., `POST /v1/logout`).
   - [x] add the refresh token to a blacklist database.
   - [ ] Instruct the browser to clear the refresh token cookie.
 
