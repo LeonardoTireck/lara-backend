@@ -3,7 +3,7 @@ import { RefreshTokenRepository } from '../../application/ports/RefreshTokenRepo
 
 @injectable()
 export class InMemoryRefreshTokenRepository implements RefreshTokenRepository {
-  private refreshTokens: Map<string, number> = new Map(); // jti -> expiresAt
+  private refreshTokens = new Map<string, number>();
 
   async add(jti: string, tokenExpiresIn: number): Promise<void> {
     this.refreshTokens.set(jti, tokenExpiresIn);
@@ -13,3 +13,4 @@ export class InMemoryRefreshTokenRepository implements RefreshTokenRepository {
     return this.refreshTokens.has(jti);
   }
 }
+

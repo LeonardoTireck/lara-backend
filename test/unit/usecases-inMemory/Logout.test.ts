@@ -18,8 +18,6 @@ describe('Logout usecase in-memory test', () => {
   let configService: ConfigService;
   let bcryptPasswordHasher: PasswordHasher;
   let logoutUseCase: Logout;
-  let name: string;
-  let accessToken: string;
   let refreshToken: string;
 
   beforeAll(async () => {
@@ -53,8 +51,6 @@ describe('Logout usecase in-memory test', () => {
       password: input.password,
     });
 
-    name = outputLogin.name;
-    accessToken = outputLogin.accessToken;
     refreshToken = outputLogin.refreshToken;
   });
 

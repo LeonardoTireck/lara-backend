@@ -1,18 +1,15 @@
 # Lara's Personal Training Platform - Development Roadmap
 
-!!Urgent
-Refresh token is getting serialized into a string when coming from axios on Logout.test.ts
-Receiving [Object object] at the controller.
-
 - [ ] **4. Create `Logout` Usecase & Endpoint:**
   - [x] Create an endpoint (e.g., `POST /v1/logout`).
   - [x] add the refresh token to a blacklist database.
   - [ ] Instruct the browser to clear the refresh token cookie.
 
 - [ ] **6. Security: Implement Rate Limiting:**
-  - [ ] Add rate limiting to sensitive endpoints like login, refresh token, and user creation to prevent brute-force attacks.
+  - [ ] Add rate limiting to sensitive endpoints like login, refresh token, and
+        user creation to prevent brute-force attacks.
 
-### Step 5: Enhance Observability and Documentation (Planned)
+## Step 5: Enhance Observability and Documentation (Planned)
 
 - [ ] **API Documentation:** Integrate Swagger/OpenAPI.
 - [ ] **Tracing:** Implement distributed tracing (e.g., OpenTelemetry).
