@@ -1,4 +1,3 @@
-import { NotFoundError } from '../../../../../src/application/errors/AppError';
 import { RefreshTokenRepository } from '../../../../../src/application/ports/RefreshTokenRepository';
 import { container } from '../../../../../src/di/Inversify.config';
 import { TYPES } from '../../../../../src/di/Types';

@@ -4,7 +4,7 @@ import { inject, injectable } from 'inversify';
 import { TYPES } from '../../../../di/Types';
 import { ConfigService } from '../../../config/ConfigService';
 import { UserType } from '../../../../domain/ValueObjects/UserType';
-import { FastifyReply, FastifyRequest } from 'fastify';
+import { FastifyRequest } from 'fastify';
 import {
   ForbiddenError,
   UnauthorizedError,
@@ -24,7 +24,7 @@ export class AuthMiddleware {
   ) {}
 
   public verify = (allowedRoles: UserType[]) => {
-    return async (request: FastifyRequest, _reply: FastifyReply) => {
+    return async (request: FastifyRequest) => {
       const { authorization } = request.headers;
       if (!authorization || !authorization.startsWith('Bearer ')) {
         throw new UnauthorizedError('Missing or invalid token');

@@ -2,15 +2,12 @@ import { container } from '../../../../src/di/Inversify.config';
 import { TYPES } from '../../../../src/di/Types';
 import { UserType } from '../../../../src/domain/ValueObjects/UserType';
 import { JwtService } from '../../../../src/infrastructure/auth/JwtService';
-import { ConfigService } from '../../../../src/infrastructure/config/ConfigService';
 import crypto from 'crypto';
 
 describe('JWT service test', () => {
   let jwtService: JwtService;
-  let configService: ConfigService;
   beforeAll(() => {
     jwtService = container.get<JwtService>(TYPES.JwtService);
-    configService = container.get<ConfigService>(TYPES.ConfigService);
   });
   it('Should create a jwt and return the string and VO', async () => {
     const input = {

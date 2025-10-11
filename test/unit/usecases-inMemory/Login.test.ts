@@ -4,13 +4,11 @@ import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase
 import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
 import { ConfigService } from '../../../src/infrastructure/config/ConfigService';
 import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
-import { InMemoryRefreshTokenRepository } from '../../../src/infrastructure/inMemory/inMemoryRefreshTokenRepo';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
 import { Login } from '../../../src/application/usecases/Login.usecase';
 
 describe('UserLogin Use Case', () => {
   let userRepo: InMemoryUserRepo;
-  let refreshTokensRepo: InMemoryRefreshTokenRepository;
   let configService: ConfigService;
   let bcryptPasswordHasher: BcryptPasswordHasher;
   let useCaseLogin: Login;
@@ -22,7 +20,6 @@ describe('UserLogin Use Case', () => {
 
   beforeEach(async () => {
     userRepo = new InMemoryUserRepo();
-    refreshTokensRepo = new InMemoryRefreshTokenRepository();
     configService = new ConfigService();
     bcryptPasswordHasher = new BcryptPasswordHasher(1);
     configService = new ConfigService();

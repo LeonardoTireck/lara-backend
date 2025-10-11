@@ -24,7 +24,7 @@ export class RefreshToken {
       );
       if (typeof payload === 'string') throw new UnauthorizedError();
       decodedRefreshToken = payload;
-    } catch (error) {
+    } catch {
       throw new UnauthorizedError('Refresh token expired or invalid');
     }
     if (

@@ -3,7 +3,6 @@ import { RefreshToken } from '../../../src/domain/ValueObjects/RefreshToken';
 import { UserType } from '../../../src/domain/ValueObjects/UserType';
 
 describe('Refresh Token Value Object Test', () => {
-  beforeAll(() => {});
   it('Should create a new refresh token successfully', async () => {
     const input = {
       id: crypto.randomUUID(),

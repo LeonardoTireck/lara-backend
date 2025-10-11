@@ -1,6 +1,5 @@
 import { NotFoundError } from '../../../src/application/errors/AppError';
 import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
-import { FindUserById } from '../../../src/application/usecases/FindUserById.usecase';
 import { UpdateTrainingSessions } from '../../../src/application/usecases/UpdateTrainingSessions.usecase';
 import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
 import { TrainingSession } from '../../../src/domain/ValueObjects/TrainingSession';
@@ -10,14 +9,12 @@ import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryU
 describe('UpdateTrainingSessions Use Case', () => {
   let repo: InMemoryUserRepo;
   let user: { id: string };
-  let useCaseFindById: FindUserById;
   let useCaseUpdateTrainingSessions: UpdateTrainingSessions;
 
   beforeEach(async () => {
     repo = new InMemoryUserRepo();
     const bcryptPasswordHasher = new BcryptPasswordHasher(1);
     const useCaseCreate = new CreateUser(repo, bcryptPasswordHasher);
-    useCaseFindById = new FindUserById(repo);
     useCaseUpdateTrainingSessions = new UpdateTrainingSessions(repo);
 
     const input = {

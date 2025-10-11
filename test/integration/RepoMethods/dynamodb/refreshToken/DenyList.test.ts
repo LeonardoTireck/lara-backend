@@ -5,7 +5,6 @@ import { randomUUID } from 'crypto';
 
 describe('DynamoDbRefreshTokensRepo - Deny List Functionality', () => {
   let refreshTokenRepo: RefreshTokenRepository;
-  let jtiToCleanup: string | undefined; // Variable to hold JTI for cleanup
 
   beforeAll(() => {
     refreshTokenRepo = container.get<RefreshTokenRepository>(
@@ -13,15 +12,8 @@ describe('DynamoDbRefreshTokensRepo - Deny List Functionality', () => {
     );
   });
 
-  afterEach(() => {
-    // Reset the JTI variable for the next test.
-    // Actual cleanup in DynamoDB relies on TTL, as there's no 'delete by JTI' method.
-    jtiToCleanup = undefined;
-  });
-
   it('should add a jti to the deny list and confirm it exists', async () => {
     const jti = randomUUID();
-    jtiToCleanup = jti; // Assign JTI for cleanup
     const expiresIn = Math.floor(Date.now() / 1000) + 3600; // Expires in 1 hour
 
     // Ensure it doesn't exist initially

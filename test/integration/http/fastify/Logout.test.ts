@@ -5,7 +5,6 @@ import { RefreshTokenRepository } from '../../../../src/application/ports/Refres
 import { UserRepository } from '../../../../src/application/ports/UserRepository';
 import { CreateUser } from '../../../../src/application/usecases/CreateUser.usecase';
 import { Login } from '../../../../src/application/usecases/Login.usecase';
-import { cleanupExpiredToken } from '../../../../src/cli/CleanupExpiredTokens';
 import { container } from '../../../../src/di/Inversify.config';
 import { TYPES } from '../../../../src/di/Types';
 import { User } from '../../../../src/domain/Aggregates/User';

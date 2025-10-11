@@ -9,7 +9,6 @@ import { TYPES } from '../../../../src/di/Types';
 
 describe('Test for the /refresh route', () => {
   let userRepo: UserRepository;
-  let refreshTokenRepo: RefreshTokenRepository;
   let createUserUseCase: CreateUser;
   let loginUseCase: Login;
   const testUserEmail = 'refresh.test@example.com';
@@ -18,9 +17,6 @@ describe('Test for the /refresh route', () => {
 
   beforeAll(async () => {
     userRepo = container.get<UserRepository>(TYPES.UserRepository);
-    refreshTokenRepo = container.get<RefreshTokenRepository>(
-      TYPES.RefreshTokenRepository,
-    );
     createUserUseCase = container.get<CreateUser>(TYPES.CreateUserUseCase);
     loginUseCase = container.get<Login>(TYPES.LoginUseCase);
 
