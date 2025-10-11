@@ -1,10 +1,5 @@
 # Lara's Personal Training Platform - Development Roadmap
 
-- [ ] **4. Create `Logout` Usecase & Endpoint:**
-  - [x] Create an endpoint (e.g., `POST /v1/logout`).
-  - [x] add the refresh token to a blacklist database.
-  - [ ] Instruct the browser to clear the refresh token cookie.
-
 - [ ] **6. Security: Implement Rate Limiting:**
   - [ ] Add rate limiting to sensitive endpoints like login, refresh token, and
         user creation to prevent brute-force attacks.

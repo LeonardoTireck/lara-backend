@@ -67,7 +67,15 @@ export class UserControllers {
       throw new UnauthorizedError('Refresh token not found.');
     }
     await this.logoutUseCase.execute({ refreshToken });
-    return reply.status(204).send();
+    return reply
+      .clearCookie('refreshToken', {
+        path: '/v1/refresh',
+        httpOnly: true,
+        secure: this.configService.secureCookie,
+        sameSite: 'strict',
+      })
+      .status(204)
+      .send();
   };
 
   refreshToken = async (request: any, reply: FastifyReply) => {

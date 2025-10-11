@@ -57,7 +57,6 @@ describe('POST /logout route test', () => {
     if (user) {
       await userRepo.delete(user.id);
     }
-    await cleanupExpiredToken();
   });
 
   it('should successfully logout and revoke the refresh token', async () => {
@@ -75,6 +74,24 @@ describe('POST /logout route test', () => {
     expect(payload.jti).toBeDefined();
     const isRevoked = await refreshTokenRepo.exists(payload.jti!);
     expect(isRevoked).toBe(true);
+  });
+
+  it('should send a clearCookie header on logout', async () => {
+    const response = await axios.post(
+      'http://localhost:3001/v1/logout',
+      {},
+      {
+        headers: { Cookie: `refreshToken=${refreshToken}` },
+      },
+    );
+
+    expect(response.status).toBe(204);
+    const setCookieHeader = response.headers['set-cookie'];
+    expect(setCookieHeader).toBeDefined();
+    expect(setCookieHeader![0]).toContain('refreshToken=');
+    expect(setCookieHeader![0]).toContain(
+      'Expires=Thu, 01 Jan 1970 00:00:00 GMT',
+    );
   });
 
   it('should fail to logout if the token is already revoked', async () => {
@@ -120,4 +137,3 @@ describe('POST /logout route test', () => {
     }
   });
 });
-
