@@ -1,10 +1,12 @@
 # API Endpoint Roadmap
 
-This document outlines the API endpoints for the application, based on the development roadmap.
+This document outlines the API endpoints for the application, based on the
+development roadmap.
 
 ## Currently Implemented (Internal Routes)
 
-These routes are currently implemented for initial development but do not follow the final API design.
+These routes are currently implemented for initial development but do not follow
+the final API design.
 
 | Status        | Method | Endpoint   | Description        |
 | :------------ | :----- | :--------- | :----------------- |
@@ -30,7 +32,7 @@ These routes are currently implemented for initial development but do not follow
 | :-------- | :----- | :----------------------------- | :---------------------------------------- | :------------------------------------ |
 | `Planned` | `GET`  | `/api/v1/me`                   | Get the current user's profile.           | `GetMyProfile.usecase.ts`             |
 | `Planned` | `PUT`  | `/api/v1/me/personal-info`     | Update the current user's info.           | `UpdateClientPersonalInfo.usecase.ts` |
-| `Planned` | `POST` | `/api/v_1/me/parq`             | Submit the PAR-Q form.                    | `SubmitParq.usecase.ts`               |
+| `Planned` | `POST` | `/api/v1/me/parq`              | Submit the PAR-Q form.                    | `SubmitParq.usecase.ts`               |
 | `Planned` | `GET`  | `/api/v1/me/training-sessions` | Get the current user's training sessions. | `GetMyTrainingSessions.usecase.ts`    |
 | `Planned` | `GET`  | `/api/v1/me/plan`              | Get the current user's active plan.       | `GetMyActivePlan.usecase.ts`          |
 | `Planned` | `GET`  | `/api/v1/me/past-plans`        | Get the current user's past plans.        | `GetMyPastPlans.usecase.ts`           |

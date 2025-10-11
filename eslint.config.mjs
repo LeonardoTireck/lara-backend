@@ -2,6 +2,7 @@
 
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
+import markdown from '@eslint/markdown';
 
 export default tseslint.config(
   {
@@ -24,6 +25,13 @@ export default tseslint.config(
       'no-empty': 'warn',
       '@typescript-eslint/no-empty-function': 'warn',
       '@typescript-eslint/no-confusing-non-null-assertion': 'off',
+    },
+  },
+  ...markdown.configs.recommended,
+  {
+    files: ['**/*.md'],
+    rules: {
+      'markdown/no-missing-label-refs': 'off',
     },
   },
 );

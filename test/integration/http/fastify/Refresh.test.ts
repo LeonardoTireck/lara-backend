@@ -1,6 +1,5 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
-import { RefreshTokenRepository } from '../../../../src/application/ports/RefreshTokenRepository';
 import { UserRepository } from '../../../../src/application/ports/UserRepository';
 import { CreateUser } from '../../../../src/application/usecases/CreateUser.usecase';
 import { Login } from '../../../../src/application/usecases/Login.usecase';
