@@ -20,7 +20,6 @@ the final API design.
 
 | Status    | Method   | Endpoint                                            | Description                        | Relevant Use Case                  |
 | :-------- | :------- | :-------------------------------------------------- | :--------------------------------- | :--------------------------------- |
-| `Planned` | `GET`    | `/api/v1/admin/clients`                             | Get all clients.                   | `GetAllClients.usecase.ts`         |
 | `Planned` | `GET`    | `/api/v1/admin/clients/:clientId`                   | Get a specific client by their ID. | `GetClientById.usecase.ts`         |
 | `Planned` | `POST`   | `/api/v1/admin/clients/:clientId/training-sessions` | Create a new training session.     | `CreateTrainingSession.usecase.ts` |
 | `Planned` | `PUT`    | `/api/v1/admin/training-sessions/:sessionId`        | Update a training session.         | `UpdateTrainingSession.usecase.ts` |
