@@ -14,10 +14,7 @@
 ## Phase 2: Admin & User Functionality (Planned)
 
 - **Admin Dashboard:**
-  - [ ] `GetAllClients` use case
-  - [ ] `GetClientById` use case
   - [ ] `CreateTrainingSession` use case
-  - [ ] `UpdateTrainingSession` use case
   - [ ] `DeleteTrainingSession` use case
   - [ ] Implement role-based access control (RBAC).
 - **Client Dashboard:**
