@@ -3,7 +3,7 @@ import {
   ValidationError,
 } from '../../../src/application/errors/AppError';
 import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
-import { FindUserById } from '../../../src/application/usecases/FindUserById.usecase';
+import { GetUserById } from '../../../src/application/usecases/GetUserById.usecase';
 import { UpdateClientPersonalInfo } from '../../../src/application/usecases/UpdateClientPersonalInfo.usecase';
 import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
 import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
@@ -46,7 +46,7 @@ describe('UpdateClientPersonalInfo Use Case', () => {
     };
     await useCaseUpdateClientPersonalInfo.execute(inputForUpdate);
 
-    const findUserByIdUseCase = new FindUserById(repo);
+    const findUserByIdUseCase = new GetUserById(repo);
     const updatedUser = await findUserByIdUseCase.execute({
       userId: user.id,
     });
@@ -69,7 +69,7 @@ describe('UpdateClientPersonalInfo Use Case', () => {
     };
     await useCaseUpdateClientPersonalInfo.execute(inputForUpdate);
 
-    const findUserByIdUseCase = new FindUserById(repo);
+    const findUserByIdUseCase = new GetUserById(repo);
     const updatedUser = await findUserByIdUseCase.execute({
       userId: user.id,
     });
@@ -87,7 +87,7 @@ describe('UpdateClientPersonalInfo Use Case', () => {
     };
     await useCaseUpdateClientPersonalInfo.execute(inputForUpdate);
 
-    const findUserByIdUseCase = new FindUserById(repo);
+    const findUserByIdUseCase = new GetUserById(repo);
     const updatedUser = await findUserByIdUseCase.execute({
       userId: user.id,
     });
@@ -105,7 +105,7 @@ describe('UpdateClientPersonalInfo Use Case', () => {
     };
     await useCaseUpdateClientPersonalInfo.execute(inputForUpdate);
 
-    const findUserByIdUseCase = new FindUserById(repo);
+    const findUserByIdUseCase = new GetUserById(repo);
     const updatedUser = await findUserByIdUseCase.execute({
       userId: user.id,
     });
@@ -127,7 +127,7 @@ describe('UpdateClientPersonalInfo Use Case', () => {
     };
     await useCaseUpdateClientPersonalInfo.execute(inputForUpdate);
 
-    const findUserByIdUseCase = new FindUserById(repo);
+    const findUserByIdUseCase = new GetUserById(repo);
     const updatedUser = await findUserByIdUseCase.execute({
       userId: user.id,
     });

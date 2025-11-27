@@ -2,7 +2,7 @@ import { Container } from 'inversify';
 import PasswordHasher from '../application/ports/PasswordHasher';
 import { UserRepository } from '../application/ports/UserRepository';
 import { CreateUser } from '../application/usecases/CreateUser.usecase';
-import { FindAllUsers } from '../application/usecases/FindAllUsers.usecase';
+import { GetAllUsers } from '../application/usecases/GetAllUsers.usecase';
 import { ConfigService } from '../infrastructure/config/ConfigService';
 import { DynamoDbUserRepo } from '../infrastructure/dynamodb/repos/UserRepo';
 import BcryptPasswordHasher from '../infrastructure/hashing/BcryptPasswordHasher';
@@ -58,8 +58,8 @@ container
   .to(RefreshToken)
   .inSingletonScope();
 container
-  .bind<FindAllUsers>(TYPES.FindAllUsersUseCase)
-  .to(FindAllUsers)
+  .bind<GetAllUsers>(TYPES.FindAllUsersUseCase)
+  .to(GetAllUsers)
   .inSingletonScope();
 container
   .bind<CreateUser>(TYPES.CreateUserUseCase)

@@ -6,7 +6,7 @@ import { AuthMiddleware } from './middlewares/AuthMiddleware';
 import { container } from '../../../di/Inversify.config';
 import { TYPES } from '../../../di/Types';
 import { CreateUser } from '../../../application/usecases/CreateUser.usecase';
-import { FindAllUsers } from '../../../application/usecases/FindAllUsers.usecase';
+import { FindAllUsers } from '../../../application/usecases/GetAllUsers.usecase';
 import { Login } from '../../../application/usecases/Login.usecase';
 import { RefreshToken } from '../../../application/usecases/RefreshToken.usecase';
 import { Logout } from '../../../application/usecases/Logout.usecase';

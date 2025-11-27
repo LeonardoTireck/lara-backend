@@ -1,18 +1,18 @@
 import { NotFoundError } from '../../../src/application/errors/AppError';
 import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
-import { FindUserById } from '../../../src/application/usecases/FindUserById.usecase';
+import { GetUserById } from '../../../src/application/usecases/GetUserById.usecase';
 import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
 import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
 
-describe('FindUserById Use Case', () => {
+describe('GetUserById Use Case', () => {
   let repo: InMemoryUserRepo;
-  let useCaseFind: FindUserById;
+  let useCaseGetById: GetUserById;
   let userCreatedId: string;
 
   beforeEach(async () => {
     repo = new InMemoryUserRepo();
-    useCaseFind = new FindUserById(repo);
+    useCaseGetById = new GetUserById(repo);
 
     const bcryptPasswordHasher = new BcryptPasswordHasher(1);
     const useCaseCreate = new CreateUser(repo, bcryptPasswordHasher);
@@ -34,7 +34,7 @@ describe('FindUserById Use Case', () => {
       userId: userCreatedId,
     };
 
-    const user = await useCaseFind.execute(input);
+    const user = await useCaseGetById.execute(input);
 
     expect(user.id).toBe(userCreatedId);
     expect(user.name).toBe('Leonardo Tireck');
@@ -54,7 +54,7 @@ describe('FindUserById Use Case', () => {
       userId: 'non-existent-id',
     };
 
-    await expect(useCaseFind.execute(input)).rejects.toThrow(NotFoundError);
+    await expect(useCaseGetById.execute(input)).rejects.toThrow(NotFoundError);
   });
 
   it('should throw an error if user ID is empty', async () => {
@@ -62,6 +62,6 @@ describe('FindUserById Use Case', () => {
       userId: '',
     };
 
-    await expect(useCaseFind.execute(input)).rejects.toThrow(NotFoundError);
+    await expect(useCaseGetById.execute(input)).rejects.toThrow(NotFoundError);
   });
 });

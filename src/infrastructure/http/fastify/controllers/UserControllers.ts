@@ -2,7 +2,7 @@ import '@fastify/cookie';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'inversify';
 import { CreateUser } from '../../../../application/usecases/CreateUser.usecase';
-import { FindAllUsers } from '../../../../application/usecases/FindAllUsers.usecase';
+import { GetAllUsers } from '../../../../application/usecases/GetAllUsers.usecase';
 import { TYPES } from '../../../../di/Types';
 import { GetAllUsersRequest, LoginRequest } from './RequestTypes';
 import { Login } from '../../../../application/usecases/Login.usecase';
@@ -17,7 +17,7 @@ export class UserControllers {
     @inject(TYPES.ConfigService)
     private configService: ConfigService,
     @inject(TYPES.FindAllUsersUseCase)
-    private findAllUsersUseCase: FindAllUsers,
+    private findAllUsersUseCase: GetAllUsers,
     @inject(TYPES.CreateUserUseCase)
     private createUserUseCase: CreateUser,
     @inject(TYPES.LoginUseCase)

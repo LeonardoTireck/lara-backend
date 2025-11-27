@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { CreateUser } from '../../../../application/usecases/CreateUser.usecase';
-import { FindAllUsers } from '../../../../application/usecases/FindAllUsers.usecase';
+import { FindAllUsers } from '../../../../application/usecases/GetAllUsers.usecase';
 import { TYPES } from '../../../../di/Types';
 import { Login } from '../../../../application/usecases/Login.usecase';
 import { RefreshToken } from '../../../../application/usecases/RefreshToken.usecase';

@@ -8,7 +8,7 @@ import { UserType } from '../../domain/ValueObjects/UserType';
 import { UserRepository } from '../ports/UserRepository';
 
 @injectable()
-export class FindUserById {
+export class GetUserById {
   constructor(
     @inject(TYPES.UserRepository)
     private readonly userRepo: UserRepository,

@@ -4,13 +4,13 @@ import { TYPES } from '../../di/Types';
 import { TrainingPlan } from '../../domain/ValueObjects/TrainingPlan';
 
 @injectable()
-export class FindAllUsers {
+export class GetAllUsers {
   constructor(
     @inject(TYPES.UserRepository)
     private readonly userRepo: UserRepository,
   ) {}
 
-  async execute(input: FindAllUsersInput): Promise<FindAllUsersOutput> {
+  async execute(input: GetAllUsersInput): Promise<GetAllUsersOutput> {
     const paginatedResult = await this.userRepo.getAll(
       input.limit,
       input.exclusiveStartKey,
@@ -32,7 +32,7 @@ export class FindAllUsers {
   }
 }
 
-export interface FindAllUsersInput {
+export interface GetAllUsersInput {
   limit: number;
   exclusiveStartKey?: string;
 }
@@ -44,7 +44,7 @@ interface UserOutput {
   activePlan?: TrainingPlan;
 }
 
-export interface FindAllUsersOutput {
+export interface GetAllUsersOutput {
   users: UserOutput[];
   lastEvaluatedKey?: { id: string };
 }

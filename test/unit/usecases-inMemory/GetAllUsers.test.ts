@@ -1,14 +1,14 @@
 import {
-  FindAllUsers,
-  FindAllUsersInput,
-} from '../../../src/application/usecases/FindAllUsers.usecase';
+  GetAllUsers,
+  GetAllUsersInput,
+} from '../../../src/application/usecases/GetAllUsers.usecase';
 import { User } from '../../../src/domain/Aggregates/User';
 import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
 
 describe('FindAllUsers Use Case Test', () => {
   let repo: InMemoryUserRepo;
-  let useCaseFindAllUsers: FindAllUsers;
+  let useCaseGetAllUsers: GetAllUsers;
 
   const testUsersData = [
     { name: 'User Alpha', cpf: '11144477735', phone: '11987654321' },
@@ -18,7 +18,7 @@ describe('FindAllUsers Use Case Test', () => {
 
   beforeEach(async () => {
     repo = new InMemoryUserRepo();
-    useCaseFindAllUsers = new FindAllUsers(repo);
+    useCaseGetAllUsers = new GetAllUsers(repo);
 
     for (let i = 0; i < testUsersData.length; i++) {
       const userData = testUsersData[i];
@@ -37,8 +37,8 @@ describe('FindAllUsers Use Case Test', () => {
   });
 
   it('should return the first page of users', async () => {
-    const input: FindAllUsersInput = { limit: 2 };
-    const output = await useCaseFindAllUsers.execute(input);
+    const input: GetAllUsersInput = { limit: 2 };
+    const output = await useCaseGetAllUsers.execute(input);
 
     expect(output.users).toHaveLength(2);
     expect(output.users[0].name).toBe('User Alpha');
@@ -50,19 +50,19 @@ describe('FindAllUsers Use Case Test', () => {
 
   it('should return the second page of users', async () => {
     // First, get the first page to obtain the lastEvaluatedKey
-    const firstPageInput: FindAllUsersInput = { limit: 2 };
-    const firstPageOutput = await useCaseFindAllUsers.execute(firstPageInput);
+    const firstPageInput: GetAllUsersInput = { limit: 2 };
+    const firstPageOutput = await useCaseGetAllUsers.execute(firstPageInput);
 
     expect(firstPageOutput.users).toHaveLength(2);
     expect(firstPageOutput.lastEvaluatedKey).toBeDefined();
     const lastEvaluatedId = firstPageOutput.lastEvaluatedKey?.id;
 
     // Now, request the second page using the lastEvaluatedId
-    const secondPageInput: FindAllUsersInput = {
+    const secondPageInput: GetAllUsersInput = {
       limit: 2,
       exclusiveStartKey: lastEvaluatedId,
     };
-    const secondPageOutput = await useCaseFindAllUsers.execute(secondPageInput);
+    const secondPageOutput = await useCaseGetAllUsers.execute(secondPageInput);
 
     expect(secondPageOutput.users).toHaveLength(1);
     expect(secondPageOutput.users[0].name).toBe('User Gamma');
@@ -72,32 +72,32 @@ describe('FindAllUsers Use Case Test', () => {
 
   it('should return an empty array when the repository is empty', async () => {
     repo.users = []; // Clear the repository
-    const input: FindAllUsersInput = { limit: 5 };
-    const output = await useCaseFindAllUsers.execute(input);
+    const input: GetAllUsersInput = { limit: 5 };
+    const output = await useCaseGetAllUsers.execute(input);
 
     expect(output.users).toHaveLength(0);
     expect(output.lastEvaluatedKey).toBeUndefined();
   });
 
   it('should return all users when limit is greater than total users', async () => {
-    const input: FindAllUsersInput = { limit: 10 };
-    const output = await useCaseFindAllUsers.execute(input);
+    const input: GetAllUsersInput = { limit: 10 };
+    const output = await useCaseGetAllUsers.execute(input);
 
     expect(output.users).toHaveLength(testUsersData.length);
     expect(output.lastEvaluatedKey).toBeUndefined();
   });
 
   it('should return an empty array when limit is 0', async () => {
-    const input: FindAllUsersInput = { limit: 0 };
-    const output = await useCaseFindAllUsers.execute(input);
+    const input: GetAllUsersInput = { limit: 0 };
+    const output = await useCaseGetAllUsers.execute(input);
 
     expect(output.users).toHaveLength(0);
     expect(output.lastEvaluatedKey).toBeUndefined();
   });
 
   it('should return an empty array when limit is negative', async () => {
-    const input: FindAllUsersInput = { limit: -1 };
-    const output = await useCaseFindAllUsers.execute(input);
+    const input: GetAllUsersInput = { limit: -1 };
+    const output = await useCaseGetAllUsers.execute(input);
 
     expect(output.users).toHaveLength(0);
     expect(output.lastEvaluatedKey).toBeUndefined();
