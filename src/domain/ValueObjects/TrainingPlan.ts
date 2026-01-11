@@ -1,5 +1,5 @@
-import { ValidationError } from '../../application/errors/AppError';
-import { PlanType } from './PlanType';
+import { ValidationError } from '../../application/errors/appError';
+import { PlanType } from './planType';
 
 export class TrainingPlan {
   public startDate: Date;

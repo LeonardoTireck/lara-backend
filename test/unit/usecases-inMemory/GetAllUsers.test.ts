@@ -1,10 +1,10 @@
 import {
   GetAllUsers,
   GetAllUsersInput,
-} from '../../../src/application/usecases/GetAllUsers.usecase';
-import { User } from '../../../src/domain/Aggregates/User';
-import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
-import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
+} from '../../../src/application/usecases/getAllUsers.usecase';
+import { User } from '../../../src/domain/aggregates/user';
+import { TrainingPlan } from '../../../src/domain/valueObjects/trainingPlan';
+import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/inMemoryUserRepo';
 
 describe('FindAllUsers Use Case Test', () => {
   let repo: InMemoryUserRepo;

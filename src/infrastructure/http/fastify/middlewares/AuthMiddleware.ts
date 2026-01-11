@@ -1,14 +1,14 @@
 /// <reference path="../../../../types/fastify.d.ts" />
 
 import { inject, injectable } from 'inversify';
-import { TYPES } from '../../../../di/Types';
-import { ConfigService } from '../../../config/ConfigService';
-import { UserType } from '../../../../domain/ValueObjects/UserType';
+import { TYPES } from '../../../../di/types';
+import { ConfigService } from '../../../config/configService';
+import { UserType } from '../../../../domain/valueObjects/userType';
 import { FastifyRequest } from 'fastify';
 import {
   ForbiddenError,
   UnauthorizedError,
-} from '../../../../application/errors/AppError';
+} from '../../../../application/errors/appError';
 import jwt from 'jsonwebtoken';
 
 interface DecodedToken {

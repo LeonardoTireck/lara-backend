@@ -1,11 +1,11 @@
 import jwt from 'jsonwebtoken';
-import { UnauthorizedError } from '../../../src/application/errors/AppError';
-import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
-import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
-import { ConfigService } from '../../../src/infrastructure/config/ConfigService';
-import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
-import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
-import { Login } from '../../../src/application/usecases/Login.usecase';
+import { UnauthorizedError } from '../../../src/application/errors/appError';
+import { CreateUser } from '../../../src/application/usecases/createUser.usecase';
+import { TrainingPlan } from '../../../src/domain/valueObjects/trainingPlan';
+import { ConfigService } from '../../../src/infrastructure/config/configService';
+import BcryptPasswordHasher from '../../../src/infrastructure/hashing/bcryptPasswordHasher';
+import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/inMemoryUserRepo';
+import { Login } from '../../../src/application/usecases/login.usecase';
 
 describe('UserLogin Use Case', () => {
   let userRepo: InMemoryUserRepo;

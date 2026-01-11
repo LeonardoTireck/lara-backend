@@ -10,11 +10,11 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import 'dotenv/config';
 import { inject, injectable } from 'inversify';
-import { NotFoundError } from '../../../application/errors/AppError';
-import { PaginatedUsers } from '../../../application/ports/PaginatedUsers';
-import { UserRepository } from '../../../application/ports/UserRepository';
-import { TYPES } from '../../../di/Types';
-import { User } from '../../../domain/Aggregates/User';
+import { NotFoundError } from '../../../application/errors/appError';
+import { PaginatedUsers } from '../../../application/ports/paginatedUsers';
+import { UserRepository } from '../../../application/ports/userRepository';
+import { TYPES } from '../../../di/types';
+import { User } from '../../../domain/aggregates/user';
 
 @injectable()
 export class DynamoDbUserRepo implements UserRepository {

@@ -1,13 +1,13 @@
 import crypto from 'crypto';
-import { BadRequestError } from '../../application/errors/AppError';
-import { Document } from '../ValueObjects/Document';
-import { Email } from '../ValueObjects/Email';
-import { Name } from '../ValueObjects/Name';
-import { Parq } from '../ValueObjects/Parq';
-import { Phone } from '../ValueObjects/Phone';
-import { TrainingPlan } from '../ValueObjects/TrainingPlan';
-import { TrainingSession } from '../ValueObjects/TrainingSession';
-import { UserType } from '../ValueObjects/UserType';
+import { BadRequestError } from '../../application/errors/appError';
+import { Document } from '../valueObjects/document';
+import { Email } from '../valueObjects/email';
+import { Name } from '../valueObjects/name';
+import { Parq } from '../valueObjects/parq';
+import { Phone } from '../valueObjects/phone';
+import { TrainingPlan } from '../valueObjects/trainingPlan';
+import { TrainingSession } from '../valueObjects/trainingSession';
+import { UserType } from '../valueObjects/userType';
 
 export class User {
   private _name: Name;

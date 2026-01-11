@@ -1,6 +1,6 @@
-import { RefreshTokenRepository } from '../../../../../src/application/ports/RefreshTokenRepository';
-import { container } from '../../../../../src/di/Inversify.config';
-import { TYPES } from '../../../../../src/di/Types';
+import { RefreshTokenRepository } from '../../../../../src/application/ports/refreshTokenRepository';
+import { container } from '../../../../../src/di/inversify.config';
+import { TYPES } from '../../../../../src/di/types';
 
 describe('DynamoDbRefreshTokensRepo - Exists', () => {
   let refreshTokenRepo: RefreshTokenRepository;

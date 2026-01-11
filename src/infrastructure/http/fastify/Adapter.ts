@@ -1,11 +1,11 @@
 import fastify, { FastifyInstance } from 'fastify';
-import { FastifyRoute } from '../../../application/ports/FastifyRoute';
+import { FastifyRoute } from '../../../application/ports/fastifyRoute';
 import {
   serializerCompiler,
   validatorCompiler,
   ZodTypeProvider,
 } from 'fastify-type-provider-zod';
-import { errorHandlerPlugin } from './middlewares/ErrorHandler';
+import { errorHandlerPlugin } from './middlewares/errorHandler';
 import cookie from '@fastify/cookie';
 
 export class FastifyAdapter {

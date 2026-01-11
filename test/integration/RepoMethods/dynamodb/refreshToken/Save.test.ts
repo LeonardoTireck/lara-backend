@@ -1,6 +1,6 @@
-import { RefreshTokenRepository } from '../../../../../src/application/ports/RefreshTokenRepository';
-import { container } from '../../../../../src/di/Inversify.config';
-import { TYPES } from '../../../../../src/di/Types';
+import { RefreshTokenRepository } from '../../../../../src/application/ports/refreshTokenRepository';
+import { container } from '../../../../../src/di/inversify.config';
+import { TYPES } from '../../../../../src/di/types';
 
 describe('DynamoDbRefreshTokensRepo - Add', () => {
   let refreshTokenRepo: RefreshTokenRepository;
@@ -19,7 +19,9 @@ describe('DynamoDbRefreshTokensRepo - Add', () => {
   });
 
   test('should add a refresh token to DynamoDB', async () => {
-    await expect(refreshTokenRepo.add(jti, tokenExpiresIn)).resolves.not.toThrow();
+    await expect(
+      refreshTokenRepo.add(jti, tokenExpiresIn),
+    ).resolves.not.toThrow();
     const exists = await refreshTokenRepo.exists(jti);
     expect(exists).toBe(true);
   });

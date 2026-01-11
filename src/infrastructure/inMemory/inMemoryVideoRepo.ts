@@ -1,6 +1,6 @@
-import { NotFoundError } from '../../application/errors/AppError';
-import { VideoMetadataRepository } from '../../application/ports/VideoMetadataRepository';
-import { Video } from '../../domain/Aggregates/Video';
+import { NotFoundError } from '../../application/errors/appError';
+import { VideoMetadataRepository } from '../../application/ports/videoMetadataRepository';
+import { Video } from '../../domain/aggregates/video';
 
 export class InMemoryVideoRepository implements VideoMetadataRepository {
   public videos: Video[] = [];

@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import PasswordHasher from '../../application/ports/PasswordHasher';
+import PasswordHasher from '../../application/ports/passwordHasher';
 import { injectable } from 'inversify';
 
 @injectable()

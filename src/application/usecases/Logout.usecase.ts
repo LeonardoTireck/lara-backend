@@ -1,8 +1,8 @@
 import { injectable, inject } from 'inversify';
-import { TYPES } from '../../di/Types';
-import { RefreshTokenRepository } from '../ports/RefreshTokenRepository';
-import { UnauthorizedError } from '../errors/AppError';
-import { ConfigService } from '../../infrastructure/config/ConfigService';
+import { TYPES } from '../../di/types';
+import { RefreshTokenRepository } from '../ports/refreshTokenRepository';
+import { UnauthorizedError } from '../errors/appError';
+import { ConfigService } from '../../infrastructure/config/configService';
 import jwt from 'jsonwebtoken';
 
 @injectable()
@@ -20,7 +20,12 @@ export class Logout {
       this.configService.jwtRefreshSecret,
     );
 
-    if (typeof payload === 'string' || !payload.jti || !payload.exp || !payload.id) {
+    if (
+      typeof payload === 'string' ||
+      !payload.jti ||
+      !payload.exp ||
+      !payload.id
+    ) {
       throw new UnauthorizedError('Invalid refresh token payload');
     }
 

@@ -1,7 +1,7 @@
-import { container } from '../../../di/Inversify.config';
-import { TYPES } from '../../../di/Types';
-import { FastifyAdapter } from './Adapter';
-import { Router } from './Routes';
+import { container } from '../../../di/inversify.config';
+import { TYPES } from '../../../di/types';
+import { FastifyAdapter } from './adapter';
+import { Router } from './routes';
 
 export function instantiateServer() {
   const router = container.get<Router>(TYPES.Router);

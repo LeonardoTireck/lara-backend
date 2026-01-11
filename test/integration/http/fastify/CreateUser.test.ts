@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { UserRepository } from '../../../../src/application/ports/UserRepository';
-import { container } from '../../../../src/di/Inversify.config';
-import { TYPES } from '../../../../src/di/Types';
+import { UserRepository } from '../../../../src/application/ports/userRepository';
+import { container } from '../../../../src/di/inversify.config';
+import { TYPES } from '../../../../src/di/types';
 
 describe('Create user route Test', () => {
   const input = {

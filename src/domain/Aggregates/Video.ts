@@ -2,8 +2,8 @@ import crypto from 'crypto';
 import {
   NotFoundError,
   ValidationError,
-} from '../../application/errors/AppError';
-import { VideoComment } from '../Entities/VideoComment';
+} from '../../application/errors/appError';
+import { VideoComment } from '../entities/videoComment';
 
 export class Video {
   private constructor(
@@ -71,4 +71,3 @@ export class Video {
     this._videoComments.splice(commentIndex, 1);
   }
 }
-

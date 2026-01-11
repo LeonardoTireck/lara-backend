@@ -1,10 +1,11 @@
-import { ValidationError } from '../../application/errors/AppError';
+import { ValidationError } from '../../application/errors/appError';
 
 export class Email {
   private _value: string;
 
   constructor(value: string) {
-    if (!this.isValid(value)) throw new ValidationError('Email does not meet criteria.');
+    if (!this.isValid(value))
+      throw new ValidationError('Email does not meet criteria.');
     this._value = value;
   }
 
@@ -16,3 +17,4 @@ export class Email {
     return this._value;
   }
 }
+

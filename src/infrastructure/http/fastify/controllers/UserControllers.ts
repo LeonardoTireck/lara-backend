@@ -1,15 +1,15 @@
 import '@fastify/cookie';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'inversify';
-import { CreateUser } from '../../../../application/usecases/CreateUser.usecase';
-import { GetAllUsers } from '../../../../application/usecases/GetAllUsers.usecase';
-import { TYPES } from '../../../../di/Types';
-import { GetAllUsersRequest, LoginRequest } from './RequestTypes';
-import { Login } from '../../../../application/usecases/Login.usecase';
-import { RefreshToken } from '../../../../application/usecases/RefreshToken.usecase';
-import { ConfigService } from '../../../config/ConfigService';
-import { UnauthorizedError } from '../../../../application/errors/AppError';
-import { Logout } from '../../../../application/usecases/Logout.usecase';
+import { CreateUser } from '../../../../application/usecases/createUser.usecase';
+import { GetAllUsers } from '../../../../application/usecases/getAllUsers.usecase';
+import { TYPES } from '../../../../di/types';
+import { GetAllUsersRequest, LoginRequest } from './requestTypes';
+import { Login } from '../../../../application/usecases/login.usecase';
+import { RefreshToken } from '../../../../application/usecases/refreshToken.usecase';
+import { ConfigService } from '../../../config/configService';
+import { UnauthorizedError } from '../../../../application/errors/appError';
+import { Logout } from '../../../../application/usecases/logout.usecase';
 
 @injectable()
 export class UserControllers {

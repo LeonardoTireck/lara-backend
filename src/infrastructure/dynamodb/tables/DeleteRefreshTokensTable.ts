@@ -3,8 +3,8 @@ import {
   waitUntilTableNotExists,
   DynamoDBClient,
 } from '@aws-sdk/client-dynamodb';
-import { container } from '../../../di/Inversify.config';
-import { TYPES } from '../../../di/Types';
+import { container } from '../../../di/inversify.config';
+import { TYPES } from '../../../di/types';
 
 async function dropUsersTable() {
   const client = container.get<DynamoDBClient>(TYPES.DynamoDBClient);

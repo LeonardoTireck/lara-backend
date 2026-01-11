@@ -1,9 +1,9 @@
 import {
   ConflictError,
   NotFoundError,
-} from '../../application/errors/AppError';
-import { UserRepository } from '../../application/ports/UserRepository';
-import { User } from '../../domain/Aggregates/User';
+} from '../../application/errors/appError';
+import { UserRepository } from '../../application/ports/userRepository';
+import { User } from '../../domain/aggregates/user';
 
 export class InMemoryUserRepo implements UserRepository {
   public users: User[] = [];

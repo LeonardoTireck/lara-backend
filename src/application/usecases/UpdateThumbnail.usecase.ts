@@ -1,9 +1,9 @@
 import { injectable, inject } from 'inversify';
-import { NotFoundError } from '../errors/AppError';
-import { TYPES } from '../../di/Types';
-import { VideoMetadataRepository } from '../ports/VideoMetadataRepository';
-import { VideoStorageService } from '../ports/VideoStorageService';
-import { StorageKeyBuilder } from '../../domain/Services/StorageKeyBuilder';
+import { NotFoundError } from '../errors/appError';
+import { TYPES } from '../../di/types';
+import { VideoMetadataRepository } from '../ports/videoMetadataRepository';
+import { VideoStorageService } from '../ports/videoStorageService';
+import { StorageKeyBuilder } from '../../domain/services/storageKeyBuilder';
 
 @injectable()
 export class UpdateThumbnail {

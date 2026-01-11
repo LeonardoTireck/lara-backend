@@ -1,10 +1,10 @@
 import crypto from 'crypto';
 import { inject, injectable } from 'inversify';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { TYPES } from '../../di/Types';
-import { ConfigService } from '../../infrastructure/config/ConfigService';
-import { UnauthorizedError } from '../errors/AppError';
-import { RefreshTokenRepository } from '../ports/RefreshTokenRepository';
+import { TYPES } from '../../di/types';
+import { ConfigService } from '../../infrastructure/config/configService';
+import { UnauthorizedError } from '../errors/appError';
+import { RefreshTokenRepository } from '../ports/refreshTokenRepository';
 
 @injectable()
 export class RefreshToken {

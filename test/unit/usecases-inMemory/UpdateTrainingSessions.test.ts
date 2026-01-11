@@ -1,10 +1,10 @@
-import { NotFoundError } from '../../../src/application/errors/AppError';
-import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
-import { UpdateTrainingSessions } from '../../../src/application/usecases/UpdateTrainingSessions.usecase';
-import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
-import { TrainingSession } from '../../../src/domain/ValueObjects/TrainingSession';
-import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
-import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
+import { NotFoundError } from '../../../src/application/errors/appError';
+import { CreateUser } from '../../../src/application/usecases/createUser.usecase';
+import { UpdateTrainingSessions } from '../../../src/application/usecases/updateTrainingSessions.usecase';
+import { TrainingPlan } from '../../../src/domain/valueObjects/trainingPlan';
+import { TrainingSession } from '../../../src/domain/valueObjects/trainingSession';
+import BcryptPasswordHasher from '../../../src/infrastructure/hashing/bcryptPasswordHasher';
+import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/inMemoryUserRepo';
 
 describe('UpdateTrainingSessions Use Case', () => {
   let repo: InMemoryUserRepo;

@@ -1,8 +1,8 @@
 import { inject, injectable } from 'inversify';
-import { TYPES } from '../../di/Types';
-import { Parq } from '../../domain/ValueObjects/Parq';
-import { NotFoundError } from '../errors/AppError';
-import { UserRepository } from '../ports/UserRepository';
+import { TYPES } from '../../di/types';
+import { Parq } from '../../domain/valueObjects/parq';
+import { NotFoundError } from '../errors/appError';
+import { UserRepository } from '../ports/userRepository';
 
 @injectable()
 export class UpdateParq {
@@ -34,4 +34,3 @@ interface Output {
   userId: string;
   parq: Parq;
 }
-

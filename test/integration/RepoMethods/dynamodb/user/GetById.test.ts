@@ -1,8 +1,8 @@
-import { UserRepository } from '../../../../../src/application/ports/UserRepository';
-import { container } from '../../../../../src/di/Inversify.config';
-import { TYPES } from '../../../../../src/di/Types';
-import { User } from '../../../../../src/domain/Aggregates/User';
-import { TrainingPlan } from '../../../../../src/domain/ValueObjects/TrainingPlan';
+import { UserRepository } from '../../../../../src/application/ports/userRepository';
+import { container } from '../../../../../src/di/inversify.config';
+import { TYPES } from '../../../../../src/di/types';
+import { User } from '../../../../../src/domain/aggregates/user';
+import { TrainingPlan } from '../../../../../src/domain/valueObjects/trainingPlan';
 
 describe('DynamoDbUserRepo - GetById', () => {
   let userRepo: UserRepository;

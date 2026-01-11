@@ -1,4 +1,4 @@
-import { User } from '../../domain/Aggregates/User';
+import { User } from '../../domain/aggregates/user';
 
 export interface PaginatedUsers {
   users: User[];

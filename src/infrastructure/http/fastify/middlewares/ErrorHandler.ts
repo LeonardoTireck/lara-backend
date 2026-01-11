@@ -10,7 +10,7 @@ import {
   AppError,
   UnauthorizedError,
   ValidationError,
-} from '../../../../application/errors/AppError';
+} from '../../../../application/errors/appError';
 import { JsonWebTokenError } from 'jsonwebtoken';
 
 export const errorHandlerPlugin: FastifyPluginAsync = fp(async (fastify) => {
@@ -60,3 +60,4 @@ export const errorHandlerPlugin: FastifyPluginAsync = fp(async (fastify) => {
     },
   );
 });
+

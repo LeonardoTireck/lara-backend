@@ -2,10 +2,10 @@ import 'dotenv/config';
 import {
   ConflictError,
   ValidationError,
-} from '../../../src/application/errors/AppError';
-import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
-import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
-import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
+} from '../../../src/application/errors/appError';
+import { CreateUser } from '../../../src/application/usecases/createUser.usecase';
+import BcryptPasswordHasher from '../../../src/infrastructure/hashing/bcryptPasswordHasher';
+import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/inMemoryUserRepo';
 
 describe('CreateUser Use Case', () => {
   let repo: InMemoryUserRepo;

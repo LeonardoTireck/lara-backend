@@ -1,8 +1,8 @@
 import { inject, injectable } from 'inversify';
-import { NotFoundError } from '../errors/AppError';
-import { VideoMetadataRepository } from '../ports/VideoMetadataRepository';
-import { TYPES } from '../../di/Types';
-import { VideoComment } from '../../domain/Entities/VideoComment';
+import { TYPES } from '../../di/types';
+import { VideoComment } from '../../domain/entities/videoComment';
+import { NotFoundError } from '../errors/appError';
+import { VideoMetadataRepository } from '../ports/videoMetadataRepository';
 
 @injectable()
 export class AddCommentToVideo {

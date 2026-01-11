@@ -6,8 +6,8 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import 'dotenv/config';
 import { inject, injectable } from 'inversify';
-import { RefreshTokenRepository } from '../../../application/ports/RefreshTokenRepository';
-import { TYPES } from '../../../di/Types';
+import { RefreshTokenRepository } from '../../../application/ports/refreshTokenRepository';
+import { TYPES } from '../../../di/types';
 
 @injectable()
 export class DynamoDbRefreshTokensRepo implements RefreshTokenRepository {

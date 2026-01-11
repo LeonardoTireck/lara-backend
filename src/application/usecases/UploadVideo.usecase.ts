@@ -1,9 +1,9 @@
-import { VideoStorageService } from '../ports/VideoStorageService';
-import { VideoMetadataRepository } from '../ports/VideoMetadataRepository';
+import { VideoStorageService } from '../ports/videoStorageService';
+import { VideoMetadataRepository } from '../ports/videoMetadataRepository';
 import { injectable, inject } from 'inversify';
-import { TYPES } from '../../di/Types';
-import { Video } from '../../domain/Aggregates/Video';
-import { StorageKeyBuilder } from '../../domain/Services/StorageKeyBuilder';
+import { TYPES } from '../../di/types';
+import { Video } from '../../domain/aggregates/video';
+import { StorageKeyBuilder } from '../../domain/services/storageKeyBuilder';
 
 @injectable()
 export class UploadVideo {

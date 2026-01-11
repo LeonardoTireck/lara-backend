@@ -5,7 +5,7 @@ import {
   NotFoundError,
   UnauthorizedError,
   ValidationError,
-} from '../../../src/application/errors/AppError';
+} from '../../../src/application/errors/appError';
 
 describe('AppError Classes', () => {
   describe('AppError', () => {

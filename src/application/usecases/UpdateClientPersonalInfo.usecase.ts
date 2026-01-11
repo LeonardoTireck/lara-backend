@@ -1,9 +1,9 @@
-import PasswordHasher from '../ports/PasswordHasher';
-import { UserRepository } from '../ports/UserRepository';
-import { TYPES } from '../../di/Types';
+import PasswordHasher from '../ports/passwordHasher';
+import { UserRepository } from '../ports/userRepository';
+import { TYPES } from '../../di/types';
 import { injectable, inject } from 'inversify';
-import { Password } from '../../domain/ValueObjects/Password';
-import { NotFoundError } from '../errors/AppError';
+import { Password } from '../../domain/valueObjects/password';
+import { NotFoundError } from '../errors/appError';
 
 @injectable()
 export class UpdateClientPersonalInfo {

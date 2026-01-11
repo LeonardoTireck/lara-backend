@@ -1,5 +1,5 @@
 import 'express';
-import { UserType } from '../domain/ValueObjects/UserType';
+import { UserType } from '../domain/valueObjects/userType';
 
 declare global {
   namespace Express {

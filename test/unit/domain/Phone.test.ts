@@ -1,5 +1,5 @@
-import { ValidationError } from '../../../src/application/errors/AppError';
-import { Phone } from '../../../src/domain/ValueObjects/Phone';
+import { ValidationError } from '../../../src/application/errors/appError';
+import { Phone } from '../../../src/domain/valueObjects/phone';
 
 describe('Phone Value Object', () => {
   describe('Valid Phone Numbers', () => {

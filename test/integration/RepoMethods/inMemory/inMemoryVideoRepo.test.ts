@@ -1,5 +1,5 @@
-import { NotFoundError } from '../../../../src/application/errors/AppError';
-import { Video } from '../../../../src/domain/Aggregates/Video';
+import { NotFoundError } from '../../../../src/application/errors/appError';
+import { Video } from '../../../../src/domain/aggregates/video';
 import { InMemoryVideoRepository } from '../../../../src/infrastructure/inMemory/inMemoryVideoRepo';
 
 describe('InMemoryVideoRepository', () => {

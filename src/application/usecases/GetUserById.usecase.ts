@@ -1,11 +1,11 @@
 import { injectable, inject } from 'inversify';
-import { NotFoundError } from '../errors/AppError';
-import { TYPES } from '../../di/Types';
-import { Parq } from '../../domain/ValueObjects/Parq';
-import { TrainingPlan } from '../../domain/ValueObjects/TrainingPlan';
-import { TrainingSession } from '../../domain/ValueObjects/TrainingSession';
-import { UserType } from '../../domain/ValueObjects/UserType';
-import { UserRepository } from '../ports/UserRepository';
+import { NotFoundError } from '../errors/appError';
+import { TYPES } from '../../di/types';
+import { Parq } from '../../domain/valueObjects/parq';
+import { TrainingPlan } from '../../domain/valueObjects/trainingPlan';
+import { TrainingSession } from '../../domain/valueObjects/trainingSession';
+import { UserType } from '../../domain/valueObjects/userType';
+import { UserRepository } from '../ports/userRepository';
 
 @injectable()
 export class GetUserById {

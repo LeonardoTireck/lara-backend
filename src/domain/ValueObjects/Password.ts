@@ -1,4 +1,4 @@
-import { ValidationError } from '../../application/errors/AppError';
+import { ValidationError } from '../../application/errors/appError';
 
 export class Password {
   private _value: string;
@@ -28,3 +28,4 @@ export class Password {
     return this._value;
   }
 }
+

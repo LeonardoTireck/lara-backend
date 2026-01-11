@@ -1,11 +1,11 @@
 import { inject, injectable } from 'inversify';
 import jwt from 'jsonwebtoken';
-import { UserType } from '../../domain/ValueObjects/UserType';
-import { ConfigService } from '../config/ConfigService';
-import { TYPES } from '../../di/Types';
+import { UserType } from '../../domain/valueObjects/userType';
+import { ConfigService } from '../config/configService';
+import { TYPES } from '../../di/types';
 import crypto from 'crypto';
-import { RefreshToken } from '../../domain/ValueObjects/RefreshToken';
-import { UnauthorizedError } from '../../application/errors/AppError';
+import { RefreshToken } from '../../domain/valueObjects/refreshToken';
+import { UnauthorizedError } from '../../application/errors/appError';
 
 @injectable()
 export class JwtService {

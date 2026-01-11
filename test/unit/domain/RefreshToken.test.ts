@@ -1,6 +1,6 @@
 import crypto from 'crypto';
-import { RefreshToken } from '../../../src/domain/ValueObjects/RefreshToken';
-import { UserType } from '../../../src/domain/ValueObjects/UserType';
+import { RefreshToken } from '../../../src/domain/valueObjects/refreshToken';
+import { UserType } from '../../../src/domain/valueObjects/userType';
 
 describe('Refresh Token Value Object Test', () => {
   it('Should create a new refresh token successfully', async () => {

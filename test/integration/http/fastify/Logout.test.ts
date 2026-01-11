@@ -1,15 +1,15 @@
 import axios, { AxiosError } from 'axios';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import PasswordHasher from '../../../../src/application/ports/PasswordHasher';
-import { RefreshTokenRepository } from '../../../../src/application/ports/RefreshTokenRepository';
-import { UserRepository } from '../../../../src/application/ports/UserRepository';
-import { CreateUser } from '../../../../src/application/usecases/CreateUser.usecase';
-import { Login } from '../../../../src/application/usecases/Login.usecase';
-import { container } from '../../../../src/di/Inversify.config';
-import { TYPES } from '../../../../src/di/Types';
-import { User } from '../../../../src/domain/Aggregates/User';
-import { TrainingPlan } from '../../../../src/domain/ValueObjects/TrainingPlan';
-import { ConfigService } from '../../../../src/infrastructure/config/ConfigService';
+import PasswordHasher from '../../../../src/application/ports/passwordHasher';
+import { RefreshTokenRepository } from '../../../../src/application/ports/refreshTokenRepository';
+import { UserRepository } from '../../../../src/application/ports/userRepository';
+import { CreateUser } from '../../../../src/application/usecases/createUser.usecase';
+import { Login } from '../../../../src/application/usecases/login.usecase';
+import { container } from '../../../../src/di/inversify.config';
+import { TYPES } from '../../../../src/di/types';
+import { User } from '../../../../src/domain/aggregates/user';
+import { TrainingPlan } from '../../../../src/domain/valueObjects/trainingPlan';
+import { ConfigService } from '../../../../src/infrastructure/config/configService';
 
 describe('POST /logout route test', () => {
   let userRepo: UserRepository;

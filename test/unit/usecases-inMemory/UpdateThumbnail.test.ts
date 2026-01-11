@@ -1,7 +1,7 @@
-import { NotFoundError } from '../../../src/application/errors/AppError';
-import { UpdateThumbnail } from '../../../src/application/usecases/UpdateThumbnail.usecase';
-import { UploadVideo } from '../../../src/application/usecases/UploadVideo.usecase';
-import { StorageKeyBuilder } from '../../../src/domain/Services/StorageKeyBuilder';
+import { NotFoundError } from '../../../src/application/errors/appError';
+import { UpdateThumbnail } from '../../../src/application/usecases/updateThumbnail.usecase';
+import { UploadVideo } from '../../../src/application/usecases/uploadVideo.usecase';
+import { StorageKeyBuilder } from '../../../src/domain/services/storageKeyBuilder';
 import { InMemoryVideoRepository } from '../../../src/infrastructure/inMemory/inMemoryVideoRepo';
 import { InMemoryVideoStorage } from '../../../src/infrastructure/inMemory/inMemoryVideoStorage';
 

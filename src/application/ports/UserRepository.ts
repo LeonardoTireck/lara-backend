@@ -1,5 +1,5 @@
-import { User } from '../../domain/Aggregates/User';
-import { PaginatedUsers } from './PaginatedUsers';
+import { User } from '../../domain/aggregates/user';
+import { PaginatedUsers } from './paginatedUsers';
 
 export interface UserRepository {
   save(user: User): Promise<void>;

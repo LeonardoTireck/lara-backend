@@ -1,11 +1,11 @@
 import { RouteHandlerMethod } from 'fastify';
-import { FastifyRoute } from '../../../application/ports/FastifyRoute';
-import { UserControllers } from './controllers/UserControllers';
-import { createUserSchema, loginSchema } from './schemas/UserSchemas';
-import { ServerControllers } from './controllers/ServerController';
+import { FastifyRoute } from '../../../application/ports/fastifyRoute';
+import { UserControllers } from './controllers/userControllers';
+import { createUserSchema, loginSchema } from './schemas/userSchemas';
+import { ServerControllers } from './controllers/serverController';
 import { inject, injectable } from 'inversify';
-import { TYPES } from '../../../di/Types';
-import { AuthMiddleware } from './middlewares/AuthMiddleware';
+import { TYPES } from '../../../di/types';
+import { AuthMiddleware } from './middlewares/authMiddleware';
 
 @injectable()
 export class Router {

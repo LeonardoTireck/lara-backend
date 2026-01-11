@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { UserRepository } from '../../../../src/application/ports/UserRepository';
-import { CreateUser } from '../../../../src/application/usecases/CreateUser.usecase';
-import { container } from '../../../../src/di/Inversify.config';
-import { TYPES } from '../../../../src/di/Types';
+import { UserRepository } from '../../../../src/application/ports/userRepository';
+import { CreateUser } from '../../../../src/application/usecases/createUser.usecase';
+import { container } from '../../../../src/di/inversify.config';
+import { TYPES } from '../../../../src/di/types';
 
 describe('Test for the /login route', () => {
   let userRepo: UserRepository;

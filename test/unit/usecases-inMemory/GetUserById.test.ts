@@ -1,9 +1,9 @@
-import { NotFoundError } from '../../../src/application/errors/AppError';
-import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
-import { GetUserById } from '../../../src/application/usecases/GetUserById.usecase';
-import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
-import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
-import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
+import { NotFoundError } from '../../../src/application/errors/appError';
+import { CreateUser } from '../../../src/application/usecases/createUser.usecase';
+import { GetUserById } from '../../../src/application/usecases/getUserById.usecase';
+import { TrainingPlan } from '../../../src/domain/valueObjects/trainingPlan';
+import BcryptPasswordHasher from '../../../src/infrastructure/hashing/bcryptPasswordHasher';
+import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/inMemoryUserRepo';
 
 describe('GetUserById Use Case', () => {
   let repo: InMemoryUserRepo;

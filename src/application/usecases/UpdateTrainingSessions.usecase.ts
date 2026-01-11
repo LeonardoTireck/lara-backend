@@ -1,8 +1,8 @@
 import { injectable, inject } from 'inversify';
-import { NotFoundError } from '../errors/AppError';
-import { TYPES } from '../../di/Types';
-import { UserRepository } from '../ports/UserRepository';
-import { TrainingSession } from '../../domain/ValueObjects/TrainingSession';
+import { NotFoundError } from '../errors/appError';
+import { TYPES } from '../../di/types';
+import { UserRepository } from '../ports/userRepository';
+import { TrainingSession } from '../../domain/valueObjects/trainingSession';
 
 @injectable()
 export class UpdateTrainingSessions {

@@ -1,13 +1,13 @@
 import {
   BadRequestError,
   NotFoundError,
-} from '../../../src/application/errors/AppError';
-import { CreateUser } from '../../../src/application/usecases/CreateUser.usecase';
-import { UpdateParq } from '../../../src/application/usecases/UpdateParq.usecase';
-import { Parq } from '../../../src/domain/ValueObjects/Parq';
-import { TrainingPlan } from '../../../src/domain/ValueObjects/TrainingPlan';
-import BcryptPasswordHasher from '../../../src/infrastructure/hashing/BcryptPasswordHasher';
-import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/InMemoryUserRepo';
+} from '../../../src/application/errors/appError';
+import { CreateUser } from '../../../src/application/usecases/createUser.usecase';
+import { UpdateParq } from '../../../src/application/usecases/updateParq.usecase';
+import { Parq } from '../../../src/domain/valueObjects/parq';
+import { TrainingPlan } from '../../../src/domain/valueObjects/trainingPlan';
+import BcryptPasswordHasher from '../../../src/infrastructure/hashing/bcryptPasswordHasher';
+import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/inMemoryUserRepo';
 
 describe('UpdateParq Use Case', () => {
   let repo: InMemoryUserRepo;

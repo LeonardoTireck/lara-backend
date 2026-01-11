@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { RefreshTokenRepository } from '../../application/ports/RefreshTokenRepository';
+import { RefreshTokenRepository } from '../../application/ports/refreshTokenRepository';
 
 @injectable()
 export class InMemoryRefreshTokenRepository implements RefreshTokenRepository {
@@ -13,4 +13,3 @@ export class InMemoryRefreshTokenRepository implements RefreshTokenRepository {
     return this.refreshTokens.has(jti);
   }
 }
-

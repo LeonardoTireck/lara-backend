@@ -1,9 +1,9 @@
 import 'dotenv/config';
 import 'reflect-metadata';
-import { instantiateServer as instantiateFastifyServer } from './infrastructure/http/fastify/Server';
-import { container } from './di/Inversify.config';
-import { TYPES } from './di/Types';
-import { ConfigService } from './infrastructure/config/ConfigService';
+import { instantiateServer as instantiateFastifyServer } from './infrastructure/http/fastify/server';
+import { container } from './di/inversify.config';
+import { TYPES } from './di/types';
+import { ConfigService } from './infrastructure/config/configService';
 
 async function start() {
   const httpServer = instantiateFastifyServer();

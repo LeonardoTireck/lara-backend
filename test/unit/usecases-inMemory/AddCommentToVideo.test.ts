@@ -1,6 +1,6 @@
-import { NotFoundError } from '../../../src/application/errors/AppError';
-import { AddCommentToVideo } from '../../../src/application/usecases/AddCommentToVideo.usecase';
-import { UploadVideo } from '../../../src/application/usecases/UploadVideo.usecase';
+import { NotFoundError } from '../../../src/application/errors/appError';
+import { AddCommentToVideo } from '../../../src/application/usecases/addCommentToVideo.usecase';
+import { UploadVideo } from '../../../src/application/usecases/uploadVideo.usecase';
 import { InMemoryVideoRepository } from '../../../src/infrastructure/inMemory/inMemoryVideoRepo';
 import { InMemoryVideoStorage } from '../../../src/infrastructure/inMemory/inMemoryVideoStorage';
 
@@ -58,3 +58,4 @@ describe('AddCommentToVideo Use Case', () => {
     ).rejects.toThrow(NotFoundError);
   });
 });
+

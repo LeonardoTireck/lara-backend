@@ -1,4 +1,4 @@
-import { VideoStorageService } from '../../application/ports/VideoStorageService';
+import { VideoStorageService } from '../../application/ports/videoStorageService';
 
 export class InMemoryVideoStorage implements VideoStorageService {
   private storage = new Map<string, Buffer>();

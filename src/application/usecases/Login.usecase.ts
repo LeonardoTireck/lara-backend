@@ -2,11 +2,11 @@ import crypto from 'crypto';
 import 'dotenv/config';
 import { inject, injectable } from 'inversify';
 import jwt from 'jsonwebtoken';
-import { TYPES } from '../../di/Types';
-import { ConfigService } from '../../infrastructure/config/ConfigService';
-import { UnauthorizedError } from '../errors/AppError';
-import PasswordHasher from '../ports/PasswordHasher';
-import { UserRepository } from '../ports/UserRepository';
+import { TYPES } from '../../di/types';
+import { ConfigService } from '../../infrastructure/config/configService';
+import { UnauthorizedError } from '../errors/appError';
+import PasswordHasher from '../ports/passwordHasher';
+import { UserRepository } from '../ports/userRepository';
 
 @injectable()
 export class Login {

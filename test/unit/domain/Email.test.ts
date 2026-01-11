@@ -1,5 +1,5 @@
-import { ValidationError } from '../../../src/application/errors/AppError';
-import { Email } from '../../../src/domain/ValueObjects/Email';
+import { ValidationError } from '../../../src/application/errors/appError';
+import { Email } from '../../../src/domain/valueObjects/email';
 
 describe('Email Value Object', () => {
   describe('Valid Emails', () => {

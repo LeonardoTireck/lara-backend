@@ -1,4 +1,4 @@
-import { ValidationError } from '../../application/errors/AppError';
+import { ValidationError } from '../../application/errors/appError';
 
 export class TrainingSession {
   private constructor(
@@ -52,3 +52,4 @@ interface Set {
   reps: number;
   weight: number;
 }
+
