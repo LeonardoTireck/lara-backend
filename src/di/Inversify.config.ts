@@ -5,6 +5,7 @@ import { CreateUser } from '../application/usecases/CreateUser.usecase';
 import { GetAllUsers } from '../application/usecases/GetAllUsers.usecase';
 import { ConfigService } from '../infrastructure/config/ConfigService';
 import { DynamoDbUserRepo } from '../infrastructure/dynamodb/repos/UserRepo';
+import BcryptPasswordHasher from '../infrastructure/hashing/BcryptPasswordHasher';
 import { UserControllers } from '../infrastructure/http/fastify/controllers/UserControllers';
 import { TYPES } from './Types';
 import { createDynamoDBClient } from '../infrastructure/dynamodb/DynamoDBClient';
@@ -18,7 +19,6 @@ import { RefreshToken } from '../application/usecases/RefreshToken.usecase';
 import { AuthMiddleware } from '../infrastructure/http/fastify/middlewares/AuthMiddleware';
 import { Logout } from '../application/usecases/Logout.usecase';
 import { JwtService } from '../infrastructure/auth/JwtService';
-import BcryptPasswordHasher from '../infrastructure/Hashing/BcryptPasswordHasher';
 
 const container = new Container();
 
@@ -84,4 +84,5 @@ container
   .bind<AuthMiddleware>(TYPES.AuthMiddleware)
   .to(AuthMiddleware)
   .inSingletonScope();
+
 export { container };
