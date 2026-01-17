@@ -1,5 +1,5 @@
 import { ValidationError } from '../../../src/error/appError';
-import { TrainingSession } from '../../../src/domain/valueObjects/trainingSession';
+import { TrainingSession } from '../../../src/user/domain/trainingSession';
 
 describe('TrainingSession Entity', () => {
   describe('TrainingSession Creation', () => {

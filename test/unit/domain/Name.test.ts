@@ -1,5 +1,5 @@
 import { ValidationError } from '../../../src/error/appError';
-import { Name } from '../../../src/domain/valueObjects/name';
+import { Name } from '../../../src/user/domain/name';
 
 describe('Name Value Object', () => {
   describe('Valid Names', () => {

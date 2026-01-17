@@ -1,4 +1,4 @@
-import { Parq } from '../../../src/domain/valueObjects/parq';
+import { Parq } from '../../../src/user/domain/parq';
 
 describe('Parq', () => {
   const sampleQuestions = ['Q1', 'Q2'];

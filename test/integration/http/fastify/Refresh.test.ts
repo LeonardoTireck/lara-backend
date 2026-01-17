@@ -1,10 +1,10 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import { UserRepository } from '../../../../src/user/application/interface/userRepository';
-import { CreateUser } from '../../../../src/application/usecases/createUser.usecase';
 import { Login } from '../../../../src/auth/application/usecase/login.usecase';
 import { container } from '../../../../src/di/inversify.config';
 import { TYPES } from '../../../../src/di/types';
+import { CreateUser } from '../../../../src/user/application/usecase/createUser.usecase';
 
 describe('Test for the /refresh route', () => {
   let userRepo: UserRepository;

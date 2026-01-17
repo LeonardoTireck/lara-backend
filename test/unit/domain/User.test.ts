@@ -1,9 +1,9 @@
 import { BadRequestError, ValidationError } from '../../../src/error/appError';
-import { User } from '../../../src/domain/aggregates/user';
-import { Parq } from '../../../src/domain/valueObjects/parq';
-import { TrainingPlan } from '../../../src/domain/valueObjects/trainingPlan';
-import { TrainingSession } from '../../../src/domain/valueObjects/trainingSession';
-import { UserType } from '../../../src/domain/valueObjects/userType';
+import { Parq } from '../../../src/user/domain/parq';
+import { TrainingPlan } from '../../../src/user/domain/trainingPlan';
+import { TrainingSession } from '../../../src/user/domain/trainingSession';
+import { User } from '../../../src/user/domain/user';
+import { UserType } from '../../../src/user/domain/userType';
 
 describe('User Entity', () => {
   let activePlan: TrainingPlan;

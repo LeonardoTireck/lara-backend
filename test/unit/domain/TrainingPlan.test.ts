@@ -1,6 +1,6 @@
 import { ValidationError } from '../../../src/error/appError';
-import { PlanType } from '../../../src/domain/valueObjects/planType';
-import { TrainingPlan } from '../../../src/domain/valueObjects/trainingPlan';
+import { PlanType } from '../../../src/user/domain/planType';
+import { TrainingPlan } from '../../../src/user/domain/trainingPlan';
 
 describe('TrainingPlan Value Object', () => {
   it('should create a valid silver plan and set expiration date to 1 month from now', () => {

@@ -1,5 +1,5 @@
 import { ValidationError } from '../../../src/error/appError';
-import { Password } from '../../../src/domain/valueObjects/password';
+import { Password } from '../../../src/user/domain/password';
 
 describe('Password Value Object', () => {
   describe('Valid Passwords', () => {

@@ -3,13 +3,13 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import PasswordHasher from '../../../../src/hashing/interface/passwordHasher';
 import { RefreshTokenRepository } from '../../../../src/auth/application/interface/refreshTokenRepository';
 import { UserRepository } from '../../../../src/user/application/interface/userRepository';
-import { CreateUser } from '../../../../src/application/usecases/createUser.usecase';
 import { Login } from '../../../../src/auth/application/usecase/login.usecase';
 import { container } from '../../../../src/di/inversify.config';
 import { TYPES } from '../../../../src/di/types';
-import { User } from '../../../../src/domain/aggregates/user';
-import { TrainingPlan } from '../../../../src/domain/valueObjects/trainingPlan';
 import { ConfigService } from '../../../../src/config/configService';
+import { CreateUser } from '../../../../src/user/application/usecase/createUser.usecase';
+import { TrainingPlan } from '../../../../src/user/domain/trainingPlan';
+import { User } from '../../../../src/user/domain/user';
 
 describe('POST /logout route test', () => {
   let userRepo: UserRepository;

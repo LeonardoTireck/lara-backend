@@ -1,6 +1,6 @@
 import { NotFoundError, ValidationError } from '../../../src/error/appError';
-import { Video } from '../../../src/domain/aggregates/video';
-import { VideoComment } from '../../../src/domain/entities/videoComment';
+import { Video } from '../../../src/video/domain/video';
+import { VideoComment } from '../../../src/video/domain/videoComment';
 
 describe('Video Entity', () => {
   let video: Video;

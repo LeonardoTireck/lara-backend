@@ -1,5 +1,5 @@
 import { ValidationError } from '../../../src/error/appError';
-import { Document } from '../../../src/domain/valueObjects/document';
+import { Document } from '../../../src/user/domain/document';
 
 describe('Document (CPF) Value Object', () => {
   describe('Valid CPFs', () => {
