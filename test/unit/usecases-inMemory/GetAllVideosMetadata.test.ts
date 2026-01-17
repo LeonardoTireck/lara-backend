@@ -1,5 +1,5 @@
-import { GetAllVideosMetadata } from '../../../src/application/usecases/getAllVideosMetadata.usecase';
-import { UploadVideo } from '../../../src/application/usecases/uploadVideo.usecase';
+import { GetAllVideosMetadata } from '../../../src/video/application/usecase/getAllVideosMetadata.usecase';
+import { UploadVideo } from '../../../src/video/application/usecase/uploadVideo.usecase';
 import { InMemoryVideoRepository } from '../../../src/infrastructure/inMemory/inMemoryVideoRepo';
 import { InMemoryVideoStorage } from '../../../src/infrastructure/inMemory/inMemoryVideoStorage';
 
@@ -59,4 +59,3 @@ describe('GetAllVideosMetadata Use Case', () => {
     expect(result).toEqual([]);
   });
 });
-

@@ -1,4 +1,4 @@
-import { ValidationError } from '../../../src/application/errors/appError';
+import { ValidationError } from '../../../src/error/appError';
 import { Name } from '../../../src/domain/valueObjects/name';
 
 describe('Name Value Object', () => {

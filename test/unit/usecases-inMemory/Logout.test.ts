@@ -1,14 +1,14 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { UnauthorizedError } from '../../../src/application/errors/appError';
-import PasswordHasher from '../../../src/application/ports/passwordHasher';
-import { RefreshTokenRepository } from '../../../src/application/ports/refreshTokenRepository';
-import { UserRepository } from '../../../src/application/ports/userRepository';
+import { UnauthorizedError } from '../../../src/error/appError';
+import PasswordHasher from '../../../src/hashing/interface/passwordHasher';
+import { RefreshTokenRepository } from '../../../src/auth/application/interface/refreshTokenRepository';
+import { UserRepository } from '../../../src/user/application/interface/userRepository';
 import { CreateUser } from '../../../src/application/usecases/createUser.usecase';
-import { Login } from '../../../src/application/usecases/login.usecase';
-import { Logout } from '../../../src/application/usecases/logout.usecase';
+import { Login } from '../../../src/auth/application/usecase/login.usecase';
+import { Logout } from '../../../src/auth/application/usecase/logout.usecase';
 import { TrainingPlan } from '../../../src/domain/valueObjects/trainingPlan';
-import { ConfigService } from '../../../src/infrastructure/config/configService';
-import BcryptPasswordHasher from '../../../src/infrastructure/hashing/bcryptPasswordHasher';
+import { ConfigService } from '../../../src/config/configService';
+import BcryptPasswordHasher from '../../../src/hashing/bcryptPasswordHasher';
 import { InMemoryRefreshTokenRepository } from '../../../src/infrastructure/inMemory/inMemoryRefreshTokenRepo';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/inMemoryUserRepo';
 

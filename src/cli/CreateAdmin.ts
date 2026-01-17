@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import { container } from '../di/inversify.config';
 import { TYPES } from '../di/types';
-import { UserRepository } from '../application/ports/userRepository';
+import { UserRepository } from '../user/application/interface/userRepository';
 import { User } from '../domain/aggregates/user';
-import PasswordHasher from '../application/ports/passwordHasher';
+import PasswordHasher from '../hashing/interface/passwordHasher';
 
 async function createAdmin() {
   console.log('--- Admin Creation Script ---');

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { UserRepository } from '../../../../src/application/ports/userRepository';
+import { UserRepository } from '../../../../src/user/application/interface/userRepository';
 import { container } from '../../../../src/di/inversify.config';
 import { TYPES } from '../../../../src/di/types';
 

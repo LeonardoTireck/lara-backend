@@ -1,12 +1,9 @@
-import {
-  NotFoundError,
-  ValidationError,
-} from '../../../src/application/errors/appError';
+import { NotFoundError, ValidationError } from '../../../src/error/appError';
 import { CreateUser } from '../../../src/application/usecases/createUser.usecase';
-import { GetUserById } from '../../../src/application/usecases/getUserById.usecase';
-import { UpdateClientPersonalInfo } from '../../../src/application/usecases/updateClientPersonalInfo.usecase';
+import { GetUserById } from '../../../src/user/application/usecase/getUserById.usecase';
+import { UpdateClientPersonalInfo } from '../../../src/user/application/usecase/updateClientPersonalInfo.usecase';
 import { TrainingPlan } from '../../../src/domain/valueObjects/trainingPlan';
-import BcryptPasswordHasher from '../../../src/infrastructure/hashing/bcryptPasswordHasher';
+import BcryptPasswordHasher from '../../../src/hashing/bcryptPasswordHasher';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/inMemoryUserRepo';
 
 describe('UpdateClientPersonalInfo Use Case', () => {

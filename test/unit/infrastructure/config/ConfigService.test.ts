@@ -1,4 +1,4 @@
-import { ConfigService } from '../../../../src/infrastructure/config/configService';
+import { ConfigService } from '../../../../src/config/configService';
 
 describe('ConfigService', () => {
   const originalEnv = process.env;

@@ -1,4 +1,4 @@
-import { RefreshTokenRepository } from '../../../../../src/application/ports/refreshTokenRepository';
+import { RefreshTokenRepository } from '../../../../../src/auth/application/interface/refreshTokenRepository';
 import { container } from '../../../../../src/di/inversify.config';
 import { TYPES } from '../../../../../src/di/types';
 import { randomUUID } from 'crypto';
@@ -37,4 +37,3 @@ describe('DynamoDbRefreshTokensRepo - Deny List Functionality', () => {
   // Note: Testing the actual TTL deletion is difficult in integration tests
   // as it depends on DynamoDB's internal, non-instantaneous process.
 });
-

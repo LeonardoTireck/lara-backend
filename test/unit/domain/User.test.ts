@@ -1,7 +1,4 @@
-import {
-  BadRequestError,
-  ValidationError,
-} from '../../../src/application/errors/appError';
+import { BadRequestError, ValidationError } from '../../../src/error/appError';
 import { User } from '../../../src/domain/aggregates/user';
 import { Parq } from '../../../src/domain/valueObjects/parq';
 import { TrainingPlan } from '../../../src/domain/valueObjects/trainingPlan';

@@ -1,5 +1,5 @@
-import { ValidationError } from '../../../src/application/errors/appError';
-import { UploadVideo } from '../../../src/application/usecases/uploadVideo.usecase';
+import { ValidationError } from '../../../src/error/appError';
+import { UploadVideo } from '../../../src/video/application/usecase/uploadVideo.usecase';
 import { StorageKeyBuilder } from '../../../src/domain/services/storageKeyBuilder';
 import { InMemoryVideoRepository } from '../../../src/infrastructure/inMemory/inMemoryVideoRepo';
 import { InMemoryVideoStorage } from '../../../src/infrastructure/inMemory/inMemoryVideoStorage';

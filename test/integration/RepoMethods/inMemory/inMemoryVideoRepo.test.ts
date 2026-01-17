@@ -1,4 +1,4 @@
-import { NotFoundError } from '../../../../src/application/errors/appError';
+import { NotFoundError } from '../../../../src/error/appError';
 import { Video } from '../../../../src/domain/aggregates/video';
 import { InMemoryVideoRepository } from '../../../../src/infrastructure/inMemory/inMemoryVideoRepo';
 

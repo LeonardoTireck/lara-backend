@@ -1,11 +1,11 @@
 import jwt from 'jsonwebtoken';
-import { UnauthorizedError } from '../../../src/application/errors/appError';
+import { UnauthorizedError } from '../../../src/error/appError';
 import { CreateUser } from '../../../src/application/usecases/createUser.usecase';
 import { TrainingPlan } from '../../../src/domain/valueObjects/trainingPlan';
-import { ConfigService } from '../../../src/infrastructure/config/configService';
-import BcryptPasswordHasher from '../../../src/infrastructure/hashing/bcryptPasswordHasher';
+import { ConfigService } from '../../../src/config/configService';
+import BcryptPasswordHasher from '../../../src/hashing/bcryptPasswordHasher';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/inMemoryUserRepo';
-import { Login } from '../../../src/application/usecases/login.usecase';
+import { Login } from '../../../src/auth/application/usecase/login.usecase';
 
 describe('UserLogin Use Case', () => {
   let userRepo: InMemoryUserRepo;

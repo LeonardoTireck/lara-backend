@@ -1,4 +1,4 @@
-import { ValidationError } from '../../../src/application/errors/appError';
+import { ValidationError } from '../../../src/error/appError';
 import { TrainingSession } from '../../../src/domain/valueObjects/trainingSession';
 
 describe('TrainingSession Entity', () => {

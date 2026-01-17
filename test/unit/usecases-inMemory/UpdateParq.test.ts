@@ -1,12 +1,9 @@
-import {
-  BadRequestError,
-  NotFoundError,
-} from '../../../src/application/errors/appError';
+import { BadRequestError, NotFoundError } from '../../../src/error/appError';
 import { CreateUser } from '../../../src/application/usecases/createUser.usecase';
-import { UpdateParq } from '../../../src/application/usecases/updateParq.usecase';
+import { UpdateParq } from '../../../src/video/application/usecase/updateParq.usecase';
 import { Parq } from '../../../src/domain/valueObjects/parq';
 import { TrainingPlan } from '../../../src/domain/valueObjects/trainingPlan';
-import BcryptPasswordHasher from '../../../src/infrastructure/hashing/bcryptPasswordHasher';
+import BcryptPasswordHasher from '../../../src/hashing/bcryptPasswordHasher';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/inMemoryUserRepo';
 
 describe('UpdateParq Use Case', () => {

@@ -1,7 +1,4 @@
-import {
-  NotFoundError,
-  ValidationError,
-} from '../../../src/application/errors/appError';
+import { NotFoundError, ValidationError } from '../../../src/error/appError';
 import { Video } from '../../../src/domain/aggregates/video';
 import { VideoComment } from '../../../src/domain/entities/videoComment';
 

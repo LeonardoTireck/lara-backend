@@ -1,7 +1,7 @@
 import { container } from '../../../../src/di/inversify.config';
 import { TYPES } from '../../../../src/di/types';
 import { UserType } from '../../../../src/domain/valueObjects/userType';
-import { JwtService } from '../../../../src/infrastructure/auth/jwtService';
+import { JwtService } from '../../../../src/auth/infrastructure/jwtService';
 import crypto from 'crypto';
 
 describe('JWT service test', () => {

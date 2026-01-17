@@ -1,9 +1,9 @@
-import { NotFoundError } from '../../../src/application/errors/appError';
+import { NotFoundError } from '../../../src/error/appError';
 import { CreateUser } from '../../../src/application/usecases/createUser.usecase';
-import { UpdateTrainingSessions } from '../../../src/application/usecases/updateTrainingSessions.usecase';
+import { UpdateTrainingSessions } from '../../../src/video/application/usecase/updateTrainingSessions.usecase';
 import { TrainingPlan } from '../../../src/domain/valueObjects/trainingPlan';
 import { TrainingSession } from '../../../src/domain/valueObjects/trainingSession';
-import BcryptPasswordHasher from '../../../src/infrastructure/hashing/bcryptPasswordHasher';
+import BcryptPasswordHasher from '../../../src/hashing/bcryptPasswordHasher';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/inMemoryUserRepo';
 
 describe('UpdateTrainingSessions Use Case', () => {

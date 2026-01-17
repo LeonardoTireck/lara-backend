@@ -1,4 +1,4 @@
-import { ValidationError } from '../../../src/application/errors/appError';
+import { ValidationError } from '../../../src/error/appError';
 import { Document } from '../../../src/domain/valueObjects/document';
 
 describe('Document (CPF) Value Object', () => {

@@ -1,4 +1,4 @@
-import { ValidationError } from '../../../src/application/errors/appError';
+import { ValidationError } from '../../../src/error/appError';
 import { PlanType } from '../../../src/domain/valueObjects/planType';
 import { TrainingPlan } from '../../../src/domain/valueObjects/trainingPlan';
 

@@ -1,7 +1,7 @@
 import {
   GetAllUsers,
   GetAllUsersInput,
-} from '../../../src/application/usecases/getAllUsers.usecase';
+} from '../../../src/user/application/usecase/getAllUsers.usecase';
 import { User } from '../../../src/domain/aggregates/user';
 import { TrainingPlan } from '../../../src/domain/valueObjects/trainingPlan';
 import { InMemoryUserRepo } from '../../../src/infrastructure/inMemory/inMemoryUserRepo';
