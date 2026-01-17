@@ -1,12 +1,12 @@
-/// <reference path="../../../../types/fastify.d.ts" />
+/// <reference path="../../../src/types/fastify.d.ts" />
 
-import { inject, injectable } from 'inversify';
-import { TYPES } from '../../../../di/types';
-import { ConfigService } from '../../../../config/configService';
-import { UserType } from '../../../../domain/valueObjects/userType';
 import { FastifyRequest } from 'fastify';
-import { ForbiddenError, UnauthorizedError } from '../../../../error/appError';
+import { inject, injectable } from 'inversify';
 import jwt from 'jsonwebtoken';
+import { ConfigService } from '../../config/configService';
+import { TYPES } from '../../di/types';
+import { UnauthorizedError, ForbiddenError } from '../../error/appError';
+import { UserType } from '../../user/domain/userType';
 
 interface DecodedToken {
   id: string;

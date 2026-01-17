@@ -1,8 +1,8 @@
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../../../di/types';
-import { Parq } from '../../../domain/valueObjects/parq';
 import { NotFoundError } from '../../../error/appError';
 import { UserRepository } from '../../../user/application/interface/userRepository';
+import { Parq } from '../../../user/domain/parq';
 
 @injectable()
 export class UpdateParq {

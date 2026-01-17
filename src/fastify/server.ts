@@ -1,5 +1,5 @@
-import { container } from '../../../di/inversify.config';
-import { TYPES } from '../../../di/types';
+import { container } from '../di/inversify.config';
+import { TYPES } from '../di/types';
 import { FastifyAdapter } from './adapter';
 import { Router } from './routes';
 

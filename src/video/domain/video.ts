@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import { NotFoundError, ValidationError } from '../../error/appError';
-import { VideoComment } from '../entities/videoComment';
+import { VideoComment } from './videoComment';
 
 export class Video {
   private constructor(

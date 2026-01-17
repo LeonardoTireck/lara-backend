@@ -1,5 +1,5 @@
 import { ValidationError } from '../../error/appError';
-import { UserType } from './userType';
+import { UserType } from '../../user/domain/userType';
 
 export class RefreshToken {
   private constructor(

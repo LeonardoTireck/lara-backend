@@ -14,7 +14,7 @@ import { NotFoundError } from '../../error/appError';
 import { PaginatedUsers } from '../../user/application/interface/paginatedUsers';
 import { UserRepository } from '../../user/application/interface/userRepository';
 import { TYPES } from '../../di/types';
-import { User } from '../../domain/aggregates/user';
+import { User } from '../../user/domain/user';
 
 @injectable()
 export class DynamoDbUserRepo implements UserRepository {

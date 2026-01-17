@@ -3,7 +3,7 @@ import { NotFoundError } from '../../../error/appError';
 import { TYPES } from '../../../di/types';
 import { VideoMetadataRepository } from '../interface/videoMetadataRepository';
 import { VideoStorageService } from '../interface/videoStorageService';
-import { StorageKeyBuilder } from '../../../domain/services/storageKeyBuilder';
+import { StorageKeyBuilder } from '../../domain/storageKeyBuilder';
 
 @injectable()
 export class UpdateThumbnail {

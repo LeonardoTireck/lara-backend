@@ -3,10 +3,10 @@ import { ConflictError, ValidationError } from '../../../error/appError';
 import PasswordHasher from '../../../hashing/interface/passwordHasher';
 import { UserRepository } from '../interface/userRepository';
 import { TYPES } from '../../../di/types';
-import { User } from '../../../domain/aggregates/user';
-import { Password } from '../../../domain/valueObjects/password';
-import { TrainingPlan } from '../../../domain/valueObjects/trainingPlan';
-import { UserType } from '../../../domain/valueObjects/userType';
+import { Password } from '../../domain/password';
+import { TrainingPlan } from '../../domain/trainingPlan';
+import { User } from '../../domain/user';
+import { UserType } from '../../domain/userType';
 
 @injectable()
 export class CreateUser {

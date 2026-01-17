@@ -1,4 +1,4 @@
-import { User } from '../../../domain/aggregates/user';
+import { User } from '../../domain/user';
 import { PaginatedUsers } from './paginatedUsers';
 
 export interface UserRepository {

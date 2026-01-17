@@ -2,7 +2,7 @@ import { injectable, inject } from 'inversify';
 import { NotFoundError } from '../../../error/appError';
 import { TYPES } from '../../../di/types';
 import { UserRepository } from '../../../user/application/interface/userRepository';
-import { TrainingSession } from '../../../domain/valueObjects/trainingSession';
+import { TrainingSession } from '../../../user/domain/trainingSession';
 
 @injectable()
 export class UpdateTrainingSessions {

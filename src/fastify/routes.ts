@@ -4,8 +4,8 @@ import { UserControllers } from './controllers/userControllers';
 import { createUserSchema, loginSchema } from './schemas/userSchemas';
 import { ServerControllers } from './controllers/serverController';
 import { inject, injectable } from 'inversify';
-import { TYPES } from '../../../di/types';
 import { AuthMiddleware } from './middlewares/authMiddleware';
+import { TYPES } from '../di/types';
 
 @injectable()
 export class Router {

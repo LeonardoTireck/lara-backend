@@ -6,12 +6,9 @@ import {
 } from 'fastify';
 import fp from 'fastify-plugin';
 import { ZodError } from 'zod';
-import {
-  AppError,
-  UnauthorizedError,
-  ValidationError,
-} from '../../../../error/appError';
 import { JsonWebTokenError } from 'jsonwebtoken';
+import { ValidationError } from '../../error/appError';
+import { AppError, UnauthorizedError } from '../../error/appError';
 
 export const errorHandlerPlugin: FastifyPluginAsync = fp(async (fastify) => {
   fastify.setErrorHandler(

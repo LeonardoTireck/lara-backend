@@ -2,8 +2,8 @@ import { VideoStorageService } from '../interface/videoStorageService';
 import { VideoMetadataRepository } from '../interface/videoMetadataRepository';
 import { injectable, inject } from 'inversify';
 import { TYPES } from '../../../di/types';
-import { Video } from '../../../domain/aggregates/video';
-import { StorageKeyBuilder } from '../../../domain/services/storageKeyBuilder';
+import { StorageKeyBuilder } from '../../domain/storageKeyBuilder';
+import { Video } from '../../domain/video';
 
 @injectable()
 export class UploadVideo {
